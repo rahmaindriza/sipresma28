@@ -13,10 +13,23 @@ return new class extends Migration
     {
         Schema::create('prestasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('siswas')->cascadeOnDelete();
-            $table->enum('jenis_prestasi', ['Akademik', 'Non-Akademik']);
-            $table->text('keterangan');
-            $table->date('tanggal');
+            $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade');
+            
+            // Old columns for compatibility with Wali Kelas controller/views
+            $table->string('jenis_prestasi')->nullable();
+            $table->text('keterangan')->nullable();
+            $table->date('tanggal')->nullable();
+
+            // New columns for Admin and advanced prestasi features
+            $table->string('nama_lomba')->nullable();
+            $table->enum('kategori', ['Akademik', 'Non-Akademik'])->nullable();
+            $table->enum('jenis_pelaksanaan', ['Dalam Sekolah', 'Luar Sekolah'])->nullable();
+            $table->enum('tingkat', ['Kecamatan', 'Kabupaten', 'Provinsi', 'Nasional'])->nullable();
+            $table->enum('juara', ['Juara 1', 'Juara 2', 'Juara 3', 'Harapan'])->nullable();
+            $table->integer('poin')->nullable();
+            $table->string('sertifikat')->nullable();
+            $table->date('tanggal_penghargaan')->nullable();
+
             $table->timestamps();
         });
     }

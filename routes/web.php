@@ -10,6 +10,7 @@ use App\Http\Controllers\KepalaSekolahController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\GuruGradeController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\PrestasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -155,10 +156,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/assignments/{id}', [AdminController::class, 'assignmentDestroy'])->name('assignments.destroy');
 
     // Prestasis
-    Route::get('/prestasis', [AdminController::class, 'prestasis'])->name('prestasis');
-    Route::post('/prestasis', [AdminController::class, 'prestasiStore'])->name('prestasis.store');
-    Route::put('/prestasis/{id}', [AdminController::class, 'prestasiUpdate'])->name('prestasis.update');
-    Route::delete('/prestasis/{id}', [AdminController::class, 'prestasiDestroy'])->name('prestasis.destroy');
+    Route::get('/prestasis', [PrestasiController::class, 'index'])->name('prestasis');
+    Route::post('/prestasis', [PrestasiController::class, 'store'])->name('prestasis.store');
+    Route::put('/prestasis/{id}', [PrestasiController::class, 'update'])->name('prestasis.update');
+    Route::delete('/prestasis/{id}', [PrestasiController::class, 'destroy'])->name('prestasis.destroy');
+    Route::get('/prestasis/cetak/{siswa_id}', [PrestasiController::class, 'cetakPdf'])->name('prestasis.cetak');
 
     // Kegiatans
     Route::get('/kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
@@ -166,6 +168,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/kegiatan/{id}/edit', [AdminKegiatanController::class, 'edit'])->name('kegiatan.edit');
     Route::put('/kegiatan/{id}', [AdminKegiatanController::class, 'update'])->name('kegiatan.update');
     Route::delete('/kegiatan/{id}', [AdminKegiatanController::class, 'destroy'])->name('kegiatan.destroy');
+
+    // Monitoring Akademik
+    Route::get('/monitoring-nilai', [AdminController::class, 'monitoringNilai'])->name('nilai.index');
+    Route::get('/monitoring-nilai/cetak-rekap', [AdminController::class, 'cetakRekapNilaiPdf'])->name('nilai.cetak_rekap');
+    Route::get('/monitoring-nilai/print/{siswa_id}', [AdminController::class, 'printSiswaPdf'])->name('nilai.print_siswa');
+    Route::get('/monitoring-prestasi', [AdminController::class, 'monitoringPrestasi'])->name('prestasi.index');
+    Route::get('/prestasi/cetak-rekap', [AdminController::class, 'cetakRekapPdf'])->name('prestasi.cetak_rekap');
 });
 
 // ==========================================
@@ -192,12 +201,13 @@ Route::middleware(['auth', 'role:wali_kelas'])->prefix('wali')->name('wali.')->g
     Route::get('/nilai', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/rekap', [WaliKelasController::class, 'rekap'])->name('rekap');
     Route::get('/print/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('print');
-    Route::get('/prestasi/create', [WaliKelasController::class, 'createPrestasi'])->name('prestasi.create');
     Route::get('/prestasi', [WaliKelasController::class, 'prestasi'])->name('prestasi');
-    Route::get('/grades/{mapel_id}', [WaliKelasController::class, 'showGeneralGradeForm'])->name('grades');
-    Route::post('/grades/{mapel_id}', [WaliKelasController::class, 'storeGeneralGrades'])->name('grades.store');
+    Route::get('/prestasi/create', [WaliKelasController::class, 'createPrestasi'])->name('prestasi.create');
     Route::post('/prestasi', [WaliKelasController::class, 'storePrestasi'])->name('prestasi.store');
     Route::delete('/prestasi/{id}', [WaliKelasController::class, 'destroyPrestasi'])->name('prestasi.destroy');
+    Route::get('/prestasi/cetak/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('prestasi.cetak');
+    Route::get('/grades/{mapel_id}', [WaliKelasController::class, 'showGeneralGradeForm'])->name('grades');
+    Route::post('/grades/{mapel_id}', [WaliKelasController::class, 'storeGeneralGrades'])->name('grades.store');
 });
 
 Route::middleware(['auth', 'role:wali_kelas'])->group(function() {

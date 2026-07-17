@@ -86,7 +86,7 @@ class GuruController extends Controller
 
         // Get existing grades for these students in this subject and academic year
         $grades = Nilai::where('mapel_id', $mapel->id)
-            ->where('tahun_ajaran_id', $activeTa->id)
+            ->where('kelas_id', $kelas->id)
             ->get()
             ->keyBy('siswa_id');
 
@@ -122,14 +122,13 @@ class GuruController extends Controller
                 [
                     'siswa_id' => $gradeData['siswa_id'],
                     'mapel_id' => $mapel_id,
-                    'tahun_ajaran_id' => $activeTa->id,
+                    'kelas_id' => $kelas->id,
                 ],
                 [
-                    'guru_id' => $guru->id,
-                    'tugas' => $gradeData['tugas'],
-                    'uh' => $gradeData['uh'],
-                    'uts' => $gradeData['uts'],
-                    'uas' => $gradeData['uas'],
+                    'nilai_tugas' => $gradeData['tugas'],
+                    'nilai_uh' => $gradeData['uh'],
+                    'nilai_uts' => $gradeData['uts'],
+                    'nilai_uas' => $gradeData['uas'],
                 ]
             );
         }

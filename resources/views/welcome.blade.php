@@ -20,6 +20,7 @@
     <style>
         :root {
             --primary-color: #9F5261; /* Luxury Burgundy */
+            --primary-burgundy: #9F5261; /* Burgundy Utama */
             --primary-hover: #86414E;
             --primary-rgb: 159, 82, 97;
             --dark-color: #4A2830; /* Soft Cream Text / Dark Mauve */
@@ -95,12 +96,13 @@
             color: #F59E0B !important;
         }
 
-        /* Glassmorphism Navbar */
+        /* Balanced Burgundy Navbar & Menu Text */
         .navbar-custom {
-            background: rgba(255, 255, 255, 0.85);
+            background-color: var(--primary-burgundy) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
 
@@ -108,26 +110,26 @@
             font-size: 1.25rem;
             font-weight: 800;
             letter-spacing: 0.5px;
-            color: #0F172A !important;
+            color: #FFFFFF !important;
         }
 
         .navbar-brand-sub {
             font-size: 0.75rem;
             font-weight: 500;
-            color: #64748B;
+            color: rgba(255, 255, 255, 0.75) !important;
             display: block;
             margin-top: -3px;
         }
 
         .nav-link {
             font-weight: 500;
-            color: #475569;
+            color: rgba(255, 255, 255, 0.85) !important;
             transition: color 0.25s ease;
             position: relative;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--primary-color) !important;
+            color: #FFFFFF !important;
         }
 
         .nav-link::after {
@@ -137,12 +139,20 @@
             height: 2px;
             bottom: 0;
             left: 0;
-            background-color: var(--primary-color);
+            background-color: #FFFFFF;
             transition: width 0.25s ease;
         }
 
         .nav-link:hover::after {
             width: 100%;
+        }
+
+        .navbar-custom .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .navbar-custom .navbar-toggler-icon {
+            filter: invert(1) grayscale(1) brightness(2);
         }
 
         .btn-electric {
@@ -178,6 +188,29 @@
             background-color: #F1F5F9;
             border-color: #CBD5E1;
             transform: translateY(-2px);
+        }
+
+        /* Navbar Login Button Custom Style */
+        .btn-login-nav {
+            background-color: #FFFFFF;
+            color: var(--primary-burgundy) !important;
+            font-weight: 700; /* tebal (bold) */
+            border-radius: 8px;
+            padding: 10px 24px;
+            border: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-login-nav:hover {
+            background-color: #FDF4F5; /* rose soft sangat muda */
+            color: var(--primary-burgundy) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Hero Section */
@@ -787,9 +820,9 @@
                 <div class="d-flex justify-content-center mt-3 mt-lg-0">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="btn-electric" id="btn-login-auth">Ke Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="btn-login-nav" id="btn-login-auth">Ke Dashboard</a>
                         @else
-                            <a href="{{ url('/login') }}" class="btn-electric" id="btn-login-auth">Login</a>
+                            <a href="{{ url('/login') }}" class="btn-login-nav" id="btn-login-auth">Login</a>
                         @endauth
                     @endif
                 </div>

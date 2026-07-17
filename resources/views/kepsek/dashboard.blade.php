@@ -23,16 +23,15 @@
     @php
         // Fetch all required data dynamically to avoid nulls or errors
         $totalPrestasi = \App\Models\Prestasi::count();
-        $totalGrades = \App\Models\Nilai::where('tahun_ajaran_id', $activeTa->id)->count();
-        $passingGrades = \App\Models\Nilai::where('tahun_ajaran_id', $activeTa->id)->where('nilai_akhir', '>=', 75)->count();
+        $totalGrades = \App\Models\Nilai::count();
+        $passingGrades = \App\Models\Nilai::where('nilai_akhir', '>=', 75)->count();
         $passingPercentage = $totalGrades > 0 ? ($passingGrades / $totalGrades) * 100 : 88.5; // default fallback if empty
 
         // Get Top 5 student rankings safely
         $topStudents = \App\Models\Siswa::with(['kelas'])
             ->get()
-            ->map(function($siswa) use ($activeTa) {
+            ->map(function($siswa) {
                 $siswa->rata_rata = \App\Models\Nilai::where('siswa_id', $siswa->id)
-                    ->where('tahun_ajaran_id', $activeTa->id)
                     ->avg('nilai_akhir') ?? 0;
                 return $siswa;
             })
@@ -40,14 +39,13 @@
             ->take(5);
 
         // Get classes summary for KKM completion report
-        $classesSummary = \App\Models\Kelas::with(['waliKelas'])->get()->map(function($cl) use ($activeTa) {
+        $classesSummary = \App\Models\Kelas::with(['waliKelas'])->get()->map(function($cl) {
             $studentsInClass = \App\Models\Siswa::where('kelas_id', $cl->id)->get();
             $totalSiswaInClass = $studentsInClass->count();
             
             $remedialCountInClass = \App\Models\Siswa::where('kelas_id', $cl->id)
-                ->whereHas('nilai', function($q) use ($activeTa) {
-                    $q->where('tahun_ajaran_id', $activeTa->id)
-                      ->where('nilai_akhir', '<', 75);
+                ->whereHas('nilai', function($q) {
+                    $q->where('nilai_akhir', '<', 75);
                 })->count();
                 
             $tuntasCountInClass = $totalSiswaInClass - $remedialCountInClass;
@@ -210,6 +208,85 @@
             </table>
         </div>
     </div>
+
+    <!-- Achievements Analytics & Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Leaderboard (Top 5 Siswa Berprestasi) -->
+        <div class="bg-[#2D1B1F] border border-slate-800/80 p-6 rounded-3xl lg:col-span-2 space-y-4 shadow-xl">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div>
+                    <h4 class="text-lg font-bold text-white">Leaderboard - Top 5 Siswa Berprestasi (Sertifikat)</h4>
+                    <p class="text-xs text-slate-400 mt-1">Peringkat siswa berdasarkan total akumulasi poin piagam penghargaan</p>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                @forelse($topPrestasi as $index => $tp)
+                    <div class="p-3 rounded-xl border border-slate-800 bg-[#1F1215] flex items-center justify-between transition hover:shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#9F5261]/20 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #{{ $index + 1 }}
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">{{ $tp->nama }}</p>
+                                <p class="text-[10px] text-slate-400">Kelas: {{ $tp->nama_kelas }}</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                            {{ $tp->total_poin }} Poin
+                        </span>
+                    </div>
+                @empty
+                    <!-- Fallback Mock Leaderboard items if empty database -->
+                    <div class="p-3 rounded-xl border border-slate-800 bg-[#1F1215] flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#9F5261]/20 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #1
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Rian Hidayat (Demo)</p>
+                                <p class="text-[10px] text-slate-400">Kelas: Kelas 6-A</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                            115 Poin
+                        </span>
+                    </div>
+                    <div class="p-3 rounded-xl border border-slate-800 bg-[#1F1215] flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#9F5261]/20 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #2
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Siti Rahma (Demo)</p>
+                                <p class="text-[10px] text-slate-400">Kelas: Kelas 5-B</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                            95 Poin
+                        </span>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Donut Chart -->
+        <div class="bg-[#2D1B1F] border border-slate-800/80 p-6 rounded-3xl flex flex-col justify-between shadow-xl">
+            <div class="mb-4 border-b border-slate-800 pb-3">
+                <h4 class="text-lg font-bold text-white">Kategori Prestasi</h4>
+                <p class="text-xs text-slate-400 mt-1">Perbandingan persentase prestasi akademik & non-akademik</p>
+            </div>
+            
+            <div style="position: relative; height: 180px; width: 100%;">
+                <canvas id="prestasiDonutChart"></canvas>
+            </div>
+            
+            <div class="flex justify-around mt-4 text-xs font-semibold text-slate-300">
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Script Stack Section for Chart.js Rendering -->
@@ -290,6 +367,37 @@
                         }
                     }
                 }
+            }
+        });
+
+        // Achievements Donut Chart
+        const donutCtx = document.getElementById('prestasiDonutChart').getContext('2d');
+        const akademikVal = {{ $akademikCount }};
+        const nonAkademikVal = {{ $nonAkademikCount }};
+        
+        // Show sample data if both are zero
+        const donutData = (akademikVal === 0 && nonAkademikVal === 0) ? [60, 40] : [akademikVal, nonAkademikVal];
+
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Akademik', 'Non-Akademik'],
+                datasets: [{
+                    data: donutData,
+                    backgroundColor: ['#9F5261', '#3D8B6F'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                cutout: '70%'
             }
         });
     });

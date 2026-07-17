@@ -10,6 +10,7 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -30,8 +31,22 @@ class DashboardController extends Controller
             ];
             
             $activeTa = TahunAjaran::active();
+
+            // 1. Leaderboard - Top 5 Siswa Berprestasi
+            $topPrestasi = DB::table('prestasis')
+                ->join('siswas', 'prestasis.siswa_id', '=', 'siswas.id')
+                ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+                ->select('siswas.nama', 'kelas.nama_kelas', DB::raw('SUM(prestasis.poin) as total_poin'))
+                ->groupBy('siswas.id', 'siswas.nama', 'kelas.nama_kelas')
+                ->orderBy('total_poin', 'desc')
+                ->take(5)
+                ->get();
+
+            // 2. Kategori Prestasi count
+            $akademikCount = DB::table('prestasis')->where('kategori', 'Akademik')->count();
+            $nonAkademikCount = DB::table('prestasis')->where('kategori', 'Non-Akademik')->count();
             
-            return view('admin.dashboard', compact('stats', 'activeTa'));
+            return view('admin.dashboard', compact('stats', 'activeTa', 'topPrestasi', 'akademikCount', 'nonAkademikCount'));
         } elseif ($role === 'guru_mapel') {
             return redirect()->route('guru.index');
         } elseif ($role === 'wali_kelas') {

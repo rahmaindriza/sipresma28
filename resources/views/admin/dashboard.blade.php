@@ -129,5 +129,124 @@
             </a>
         </div>
     </div>
+
+    <!-- Achievements Analytics & Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Leaderboard (Top 5 Siswa Berprestasi) -->
+        <div class="lg:col-span-2 glass-panel p-6 rounded-2xl shadow-sm">
+            <div class="flex items-center justify-between mb-4 border-b border-[var(--border-light)] pb-3">
+                <div>
+                    <h4 class="text-sm font-bold text-[var(--text-dark-main)]">Leaderboard - Top 5 Siswa Berprestasi</h4>
+                    <p class="text-[10px] text-[var(--text-muted)]">Peringkat siswa berdasarkan total akumulasi poin piagam penghargaan</p>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-1 rounded bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.15)]">
+                    SDN 28 Kinali
+                </span>
+            </div>
+            
+            <div class="space-y-3">
+                @forelse($topPrestasi as $index => $tp)
+                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #{{ $index + 1 }}
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-[var(--text-dark-main)]">{{ $tp->nama }}</p>
+                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: {{ $tp->nama_kelas }}</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                            {{ $tp->total_poin }} Poin
+                        </span>
+                    </div>
+                @empty
+                    <!-- Fallback Mock Leaderboard items if empty database -->
+                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #1
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-[var(--text-dark-main)]">Rian Hidayat (Demo)</p>
+                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: Kelas 6-A</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                            115 Poin
+                        </span>
+                    </div>
+                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                #2
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-[var(--text-dark-main)]">Siti Rahma (Demo)</p>
+                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: Kelas 5-B</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                            95 Poin
+                        </span>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Donut Chart -->
+        <div class="lg:col-span-1 glass-panel p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+            <div class="mb-4 border-b border-[var(--border-light)] pb-3">
+                <h4 class="text-sm font-bold text-[var(--text-dark-main)]">Kategori Prestasi</h4>
+                <p class="text-[10px] text-[var(--text-muted)]">Perbandingan persentase prestasi akademik & non-akademik</p>
+            </div>
+            
+            <div style="position: relative; height: 180px; width: 100%;">
+                <canvas id="prestasiDonutChart"></canvas>
+            </div>
+            
+            <div class="flex justify-around mt-4 text-[10px] font-bold text-[var(--text-dark-main)]">
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('prestasiDonutChart').getContext('2d');
+        const akademikVal = {{ $akademikCount }};
+        const nonAkademikVal = {{ $nonAkademikCount }};
+        
+        // Show sample data if both are zero
+        const chartData = (akademikVal === 0 && nonAkademikVal === 0) ? [60, 40] : [akademikVal, nonAkademikVal];
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Akademik', 'Non-Akademik'],
+                datasets: [{
+                    data: chartData,
+                    backgroundColor: ['#9F5261', '#3D8B6F'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

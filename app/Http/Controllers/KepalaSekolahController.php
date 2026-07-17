@@ -41,10 +41,7 @@ class KepalaSekolahController extends Controller
             $studentCount = Siswa::where('kelas_id', $assign->kelas_id)->count();
             
             $gradesCount = Nilai::where('mapel_id', $assign->mapel_id)
-                ->where('tahun_ajaran_id', $activeTa->id)
-                ->whereHas('siswa', function($q) use ($assign) {
-                    $q->where('kelas_id', $assign->kelas_id);
-                })
+                ->where('kelas_id', $assign->kelas_id)
                 ->count();
 
             if ($studentCount == 0) {
@@ -74,10 +71,7 @@ class KepalaSekolahController extends Controller
         $kelasAverages = [];
         $classes = Kelas::all();
         foreach ($classes as $cl) {
-            $avgScore = Nilai::where('tahun_ajaran_id', $activeTa->id)
-                ->whereHas('siswa', function($q) use ($cl) {
-                    $q->where('kelas_id', $cl->id);
-                })
+            $avgScore = Nilai::where('kelas_id', $cl->id)
                 ->avg('nilai_akhir');
             
             $kelasAverages[] = [
@@ -86,6 +80,23 @@ class KepalaSekolahController extends Controller
             ];
         }
 
-        return view('kepsek.dashboard', compact('totalSiswa', 'totalGuru', 'totalKelas', 'remedialCount', 'gradingStatus', 'kelasAverages', 'activeTa'));
+        // 5. Leaderboard - Top 5 Siswa Berprestasi
+        $topPrestasi = \DB::table('prestasis')
+            ->join('siswas', 'prestasis.siswa_id', '=', 'siswas.id')
+            ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+            ->select('siswas.nama', 'kelas.nama_kelas', \DB::raw('SUM(prestasis.poin) as total_poin'))
+            ->groupBy('siswas.id', 'siswas.nama', 'kelas.nama_kelas')
+            ->orderBy('total_poin', 'desc')
+            ->take(5)
+            ->get();
+
+        // 6. Kategori Prestasi count
+        $akademikCount = \DB::table('prestasis')->where('kategori', 'Akademik')->count();
+        $nonAkademikCount = \DB::table('prestasis')->where('kategori', 'Non-Akademik')->count();
+
+        return view('kepsek.dashboard', compact(
+            'totalSiswa', 'totalGuru', 'totalKelas', 'remedialCount', 'gradingStatus', 'kelasAverages', 'activeTa',
+            'topPrestasi', 'akademikCount', 'nonAkademikCount'
+        ));
     }
 }

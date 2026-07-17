@@ -10,19 +10,18 @@ class Nilai extends Model
 {
     use HasFactory;
 
-    protected $table = 'nilai';
+    protected $table = 'nilais';
 
     protected $fillable = [
         'siswa_id',
         'mapel_id',
-        'tahun_ajaran_id',
-        'guru_id',
-        'tugas',
-        'uh',
-        'uts',
-        'uas',
+        'kelas_id',
+        'nilai_tugas',
+        'nilai_uh',
+        'nilai_uts',
+        'nilai_uas',
         'nilai_akhir',
-        'status_remedial',
+        'status_kkm',
     ];
 
     /**
@@ -34,13 +33,13 @@ class Nilai extends Model
 
         // Automatically calculate final score and remedial status on save
         static::saving(function ($nilai) {
-            $nilai->nilai_akhir = ($nilai->tugas * 0.2) + 
-                                  ($nilai->uh * 0.3) + 
-                                  ($nilai->uts * 0.2) + 
-                                  ($nilai->uas * 0.3);
+            $nilai->nilai_akhir = (($nilai->nilai_tugas ?? 0.0) * 0.20) + 
+                                  (($nilai->nilai_uh ?? 0.0) * 0.20) + 
+                                  (($nilai->nilai_uts ?? 0.0) * 0.30) + 
+                                  (($nilai->nilai_uas ?? 0.0) * 0.30);
             
-            // Logika KKM standard is 75 (if < 75, remedial is 'Ya', otherwise 'Tidak')
-            $nilai->status_remedial = ($nilai->nilai_akhir < 75) ? 'Ya' : 'Tidak';
+            // KKM status threshold: >= 75 is 'Lulus', otherwise 'Remedial'
+            $nilai->status_kkm = ($nilai->nilai_akhir >= 75) ? 'Lulus' : 'Remedial';
         });
     }
 
@@ -61,18 +60,10 @@ class Nilai extends Model
     }
 
     /**
-     * Get the academic year of this score.
+     * Get the class of this score.
      */
-    public function tahunAjaran(): BelongsTo
+    public function kelas(): BelongsTo
     {
-        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
-    }
-
-    /**
-     * Get the teacher who graded this score.
-     */
-    public function guru(): BelongsTo
-    {
-        return $this->belongsTo(Guru::class, 'guru_id');
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 }

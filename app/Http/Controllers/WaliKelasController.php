@@ -68,14 +68,18 @@ class WaliKelasController extends Controller
 
         // Fetch grades from both nilais (general subject grades) and nilai (others)
         $umumGrades = DB::table('nilais')
-            ->whereIn('siswa_id', $students->pluck('id'))
-            ->where('kelas_id', $kelas->id)
-            ->select('id', 'siswa_id', 'mapel_id', 'nilai_tugas as tugas', 'nilai_uh as uh', 'nilai_uts as uts', 'nilai_uas as uas', 'nilai_akhir', 'status_kkm')
+            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+            ->whereIn('nilais.siswa_id', $students->pluck('id'))
+            ->where('nilais.kelas_id', $kelas->id)
+            ->where('mapels.jenis_mapel', 'umum')
+            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
 
-        $khususGrades = DB::table('nilai')
-            ->whereIn('siswa_id', $students->pluck('id'))
-            ->where('tahun_ajaran_id', $activeTa->id)
+        $khususGrades = DB::table('nilais')
+            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+            ->whereIn('nilais.siswa_id', $students->pluck('id'))
+            ->where('mapels.jenis_mapel', 'khusus')
+            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
 
         $mergedGrades = collect();
@@ -88,6 +92,7 @@ class WaliKelasController extends Controller
                 $mergedGrades->push($ug);
             }
             foreach ($siswaKhusus as $kg) {
+                $kg->mapel = Mapel::find($kg->mapel_id);
                 $mergedGrades->push($kg);
             }
         }
@@ -109,7 +114,7 @@ class WaliKelasController extends Controller
             } else {
                 $avg = Nilai::whereIn('siswa_id', $students->pluck('id'))
                     ->where('mapel_id', $mapel->id)
-                    ->where('tahun_ajaran_id', $activeTa->id)
+                    ->where('kelas_id', $kelas->id)
                     ->avg('nilai_akhir');
             }
 
@@ -126,7 +131,7 @@ class WaliKelasController extends Controller
     public function siswa(Request $request)
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -160,7 +165,7 @@ class WaliKelasController extends Controller
     public function nilai()
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -184,7 +189,7 @@ class WaliKelasController extends Controller
     public function rekap()
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -206,16 +211,19 @@ class WaliKelasController extends Controller
         // Calculate rankings
         $ranks = $this->calculateRankings($kelas->id, $activeTa->id);
 
-        // Get all grades and achievements for this class to pass to view
         $umumGrades = DB::table('nilais')
-            ->whereIn('siswa_id', $students->pluck('id'))
-            ->where('kelas_id', $kelas->id)
-            ->select('id', 'siswa_id', 'mapel_id', 'nilai_tugas as tugas', 'nilai_uh as uh', 'nilai_uts as uts', 'nilai_uas as uas', 'nilai_akhir', 'status_kkm')
+            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+            ->whereIn('nilais.siswa_id', $students->pluck('id'))
+            ->where('nilais.kelas_id', $kelas->id)
+            ->where('mapels.jenis_mapel', 'umum')
+            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
 
-        $khususGrades = DB::table('nilai')
-            ->whereIn('siswa_id', $students->pluck('id'))
-            ->where('tahun_ajaran_id', $activeTa->id)
+        $khususGrades = DB::table('nilais')
+            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+            ->whereIn('nilais.siswa_id', $students->pluck('id'))
+            ->where('mapels.jenis_mapel', 'khusus')
+            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
 
         $mergedGrades = collect();
@@ -228,6 +236,7 @@ class WaliKelasController extends Controller
                 $mergedGrades->push($ug);
             }
             foreach ($siswaKhusus as $kg) {
+                $kg->mapel = Mapel::find($kg->mapel_id);
                 $mergedGrades->push($kg);
             }
         }
@@ -258,7 +267,7 @@ class WaliKelasController extends Controller
     public function prestasi()
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -285,7 +294,7 @@ class WaliKelasController extends Controller
     public function createPrestasi()
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -309,7 +318,7 @@ class WaliKelasController extends Controller
     public function showGeneralGradeForm($mapel_id)
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
         $activeTa = TahunAjaran::active();
 
         $kelas = Kelas::where('wali_kelas_id', $guru->id)->firstOrFail();
@@ -317,7 +326,7 @@ class WaliKelasController extends Controller
 
         $students = Siswa::where('kelas_id', $kelas->id)->orderBy('nama')->get();
         $grades = Nilai::where('mapel_id', $mapel->id)
-            ->where('tahun_ajaran_id', $activeTa->id)
+            ->where('kelas_id', $kelas->id)
             ->get()
             ->keyBy('siswa_id');
 
@@ -327,7 +336,7 @@ class WaliKelasController extends Controller
     public function storeGeneralGrades(Request $request, $mapel_id)
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
         $activeTa = TahunAjaran::active();
 
         $kelas = Kelas::where('wali_kelas_id', $guru->id)->firstOrFail();
@@ -347,14 +356,13 @@ class WaliKelasController extends Controller
                 [
                     'siswa_id' => $gradeData['siswa_id'],
                     'mapel_id' => $mapel->id,
-                    'tahun_ajaran_id' => $activeTa->id,
+                    'kelas_id' => $kelas->id,
                 ],
                 [
-                    'guru_id' => $guru->id,
-                    'tugas' => $gradeData['tugas'],
-                    'uh' => $gradeData['uh'],
-                    'uts' => $gradeData['uts'],
-                    'uas' => $gradeData['uas'],
+                    'nilai_tugas' => $gradeData['tugas'],
+                    'nilai_uh' => $gradeData['uh'],
+                    'nilai_uts' => $gradeData['uts'],
+                    'nilai_uas' => $gradeData['uas'],
                 ]
             );
         }
@@ -387,7 +395,7 @@ class WaliKelasController extends Controller
     public function printPdf($siswa_id)
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
         $activeTa = TahunAjaran::active();
 
         $kelas = Kelas::where('wali_kelas_id', $guru->id)->firstOrFail();
@@ -395,9 +403,11 @@ class WaliKelasController extends Controller
 
         // Fetch grades for this student from both tables
         $umumGrades = DB::table('nilais')
-            ->where('siswa_id', $siswa->id)
-            ->where('kelas_id', $kelas->id)
-            ->select('id', 'siswa_id', 'mapel_id', 'nilai_tugas as tugas', 'nilai_uh as uh', 'nilai_uts as uts', 'nilai_uas as uas', 'nilai_akhir', 'status_kkm')
+            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+            ->where('nilais.siswa_id', $siswa->id)
+            ->where('nilais.kelas_id', $kelas->id)
+            ->where('mapels.jenis_mapel', 'umum')
+            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
 
         foreach ($umumGrades as $ug) {
@@ -406,7 +416,9 @@ class WaliKelasController extends Controller
 
         $khususGrades = Nilai::with('mapel')
             ->where('siswa_id', $siswa->id)
-            ->where('tahun_ajaran_id', $activeTa->id)
+            ->whereHas('mapel', function($q) {
+                $q->where('jenis_mapel', 'khusus');
+            })
             ->get();
 
         $grades = $umumGrades->concat($khususGrades);
@@ -450,15 +462,18 @@ class WaliKelasController extends Controller
 
         foreach ($siswas as $siswa) {
             $umumGrades = DB::table('nilais')
-                ->where('siswa_id', $siswa->id)
-                ->where('kelas_id', $kelas_id)
-                ->select('nilai_akhir')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->where('nilais.siswa_id', $siswa->id)
+                ->where('nilais.kelas_id', $kelas_id)
+                ->where('mapels.jenis_mapel', 'umum')
+                ->select('nilais.nilai_akhir')
                 ->get();
 
-            $khususGrades = DB::table('nilai')
-                ->where('siswa_id', $siswa->id)
-                ->where('tahun_ajaran_id', $ta_id)
-                ->select('nilai_akhir')
+            $khususGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->where('nilais.siswa_id', $siswa->id)
+                ->where('mapels.jenis_mapel', 'khusus')
+                ->select('nilais.nilai_akhir')
                 ->get();
 
             $allGrades = $umumGrades->concat($khususGrades);
@@ -499,7 +514,7 @@ class WaliKelasController extends Controller
     public function cetakSiswa(Request $request)
     {
         $user = Auth::user();
-        $guru = $user->guru;
+        $guru = $this->getGuruForUser($user);
 
         if (!$guru) {
             return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
@@ -536,5 +551,37 @@ class WaliKelasController extends Controller
 
         $pdf = Pdf::loadView('pdf.cetak_siswa', $data);
         return $pdf->stream('Data_Siswa_Kelas_' . str_replace(' ', '_', $kelas->nama_kelas) . '.pdf');
+    }
+
+    /**
+     * Get the Guru profile linked to a User using relation and various fallbacks.
+     */
+    private function getGuruForUser($user)
+    {
+        if (!$user) return null;
+        
+        // 1. Try relationship
+        $guru = $user->guru;
+        if ($guru) return $guru;
+
+        // 2. Try by user_id directly in DB
+        $guru = Guru::where('user_id', $user->id)->first();
+        if ($guru) return $guru;
+
+        // 3. Fallback: match NIP with username
+        $guru = Guru::where('nip', $user->username)->first();
+        if ($guru) return $guru;
+
+        // 4. Fallback: match NIP property
+        if (isset($user->nip)) {
+            $guru = Guru::where('nip', $user->nip)->first();
+            if ($guru) return $guru;
+        }
+
+        // 5. Fallback: match Name
+        $guru = Guru::where('nama', $user->name)->first();
+        if ($guru) return $guru;
+
+        return null;
     }
 }
