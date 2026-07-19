@@ -11,6 +11,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\GuruGradeController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\WaliPrestasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -201,11 +202,11 @@ Route::middleware(['auth', 'role:wali_kelas'])->prefix('wali')->name('wali.')->g
     Route::get('/nilai', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/rekap', [WaliKelasController::class, 'rekap'])->name('rekap');
     Route::get('/print/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('print');
-    Route::get('/prestasi', [WaliKelasController::class, 'prestasi'])->name('prestasi');
-    Route::get('/prestasi/create', [WaliKelasController::class, 'createPrestasi'])->name('prestasi.create');
-    Route::post('/prestasi', [WaliKelasController::class, 'storePrestasi'])->name('prestasi.store');
-    Route::delete('/prestasi/{id}', [WaliKelasController::class, 'destroyPrestasi'])->name('prestasi.destroy');
-    Route::get('/prestasi/cetak/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('prestasi.cetak');
+    Route::get('/prestasi', [WaliPrestasiController::class, 'index'])->name('prestasi');
+    Route::post('/prestasi', [WaliPrestasiController::class, 'store'])->name('prestasi.store');
+    Route::put('/prestasi/{id}', [WaliPrestasiController::class, 'update'])->name('prestasi.update');
+    Route::delete('/prestasi/{id}', [WaliPrestasiController::class, 'destroy'])->name('prestasi.destroy');
+    Route::get('/prestasi/cetak/{siswa_id}', [WaliPrestasiController::class, 'cetakPdf'])->name('prestasi.cetak');
     Route::get('/grades/{mapel_id}', [WaliKelasController::class, 'showGeneralGradeForm'])->name('grades');
     Route::post('/grades/{mapel_id}', [WaliKelasController::class, 'storeGeneralGrades'])->name('grades.store');
 });

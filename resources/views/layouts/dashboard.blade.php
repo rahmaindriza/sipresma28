@@ -414,10 +414,7 @@
                     <svg class="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                     Penugasan Guru
                 </a>
-                <a href="{{ route('admin.prestasis') }}" class="flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200 text-sm {{ request()->routeIs('admin.prestasis') ? 'sidebar-active' : '' }}">
-                    <svg class="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    Prestasi Sekolah
-                </a>
+
                 <a href="{{ route('admin.kegiatan.index') }}" class="flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200 text-sm {{ request()->routeIs('admin.kegiatan.*') ? 'sidebar-active' : '' }}">
                     <svg class="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 4a2 2 0 11-4 0 2 2 0 014 0zm-2 9a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     Kegiatan Sekolah
