@@ -216,7 +216,8 @@
         /* Hero Section */
         .hero-section {
             padding: 140px 0 100px 0;
-            background: linear-gradient(135deg, rgba(244, 247, 245, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), url('{{ asset('images/gedung_sd.jpg') }}') no-repeat center center;
+            background-size: cover;
             position: relative;
             overflow: hidden;
         }
@@ -256,9 +257,41 @@
             font-size: 3rem;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFFFFF !important;
+            -webkit-text-fill-color: #FFFFFF !important;
+            background: none !important;
+            -webkit-background-clip: initial !important;
+        }
+
+        .hero-section .section-subtitle {
+            color: rgba(255, 255, 255, 0.9) !important;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-section .section-tag {
+            color: #FFFFFF !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .btn-outline-light-custom {
+            color: #FFFFFF !important;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 24px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-outline-light-custom:hover {
+            color: var(--primary-burgundy) !important;
+            background-color: #FFFFFF;
+            border-color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
         }
 
         .hero-img-container {
@@ -375,10 +408,15 @@
 
         /* Profile Block */
         .profile-img-container {
-            border-radius: 20px;
+            border-radius: 24px; /* rounded-4 */
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* soft shadow */
             border: 6px solid #FFFFFF;
+            transition: all 0.3s ease;
+        }
+        .profile-img-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(var(--primary-rgb), 0.12);
         }
 
         /* Visi Misi Card */
@@ -833,20 +871,14 @@
     <!-- 2. HERO SECTION -->
     <header class="hero-section">
         <div class="container">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6 hero-content text-center text-lg-start">
+            <div class="row justify-content-center g-5">
+                <div class="col-lg-10 hero-content text-center">
                     <span class="section-tag">Portal Resmi</span>
                     <h1 class="hero-title">Sistem Informasi Manajemen Nilai & Monitoring Prestasi (SIPRESMA 28)</h1>
                     <p class="section-subtitle mb-4">Portal integrasi penilaian akademik dan pemantauan capaian prestasi siswa SD Negeri 28 Kinali secara transparan, akurat, dan modern.</p>
-                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
                         <a href="#profil" class="btn-electric py-3 px-4">Mulai Jelajah</a>
-                        <a href="#informasi" class="btn-outline-custom py-3 px-4">Panduan Sistem</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="hero-img-container">
-                        <img src="{{ asset('images/sdn28kinali.jpg') }}" alt="SDN 28 Kinali" class="img-fluid w-100">
-                        <div class="hero-img-overlay"></div>
+                        <a href="#informasi" class="btn-outline-light-custom py-3 px-4">Panduan Sistem</a>
                     </div>
                 </div>
             </div>
@@ -898,38 +930,40 @@
     </section>
 
     <!-- 4. SAMBUTAN & PROFIL SINGKAT -->
-    <section class="section-padding" id="profil">
+    <section class="section-padding pb-5 mb-4" id="profil">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
                     <span class="section-tag">Profil Sekolah</span>
-                    <h2 class="section-title">Pendidikan Berkualitas di SDN 28 Kinali</h2>
+                    <h2 class="section-title">Visi & Misi Utama Sekolah</h2>
                     <p class="lead text-muted mb-4">Melahirkan generasi penerus yang cerdas, berkarakter mulia, dan siap berkontribusi positif bagi bangsa dan negara.</p>
                     <p class="text-secondary mb-4">SD Negeri 28 Kinali berkomitmen untuk terus berinovasi dalam mengintegrasikan teknologi digital guna meningkatkan tata kelola akademik. Kami meyakini bahwa transparansi penilaian, interaksi sinergis dengan wali murid, serta pendataan prestasi siswa secara terpadu melalui platform <strong>SIPRESMA 28</strong> merupakan fondasi utama dalam menciptakan ekosistem sekolah yang unggul dan akuntabel.</p>
-                    <div class="row g-4 pt-2">
-                        <div class="col-md-6 d-flex align-items-start gap-3">
-                            <div class="p-2 bg-primary bg-opacity-10 text-primary rounded-3">
-                                <i class="bi bi-shield-check fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="mb-1 fs-6">Karakter Mulia</h5>
-                                <p class="text-secondary small mb-0">Pembiasaan budi pekerti yang luhur dan nilai moral keagamaan.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 d-flex align-items-start gap-3">
-                            <div class="p-2 bg-success bg-opacity-10 text-success rounded-3">
-                                <i class="bi bi-award fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="mb-1 fs-6">Prestasi Unggul</h5>
-                                <p class="text-secondary small mb-0">Mendukung potensi terbaik siswa dalam bidang akademik & minat bakat.</p>
-                            </div>
-                        </div>
+                    
+                    <!-- Poin Ringkas Visi & Misi -->
+                    <div class="mb-0 pt-2">
+                        <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                <span class="text-secondary"><strong>Visi:</strong> Terwujudnya insan yang religius, unggul dalam prestasi, berkarakter mulia, dan peduli lingkungan.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                <span class="text-secondary"><strong>Misi 1:</strong> Melaksanakan pembelajaran aktif, inovatif, kreatif, dan menyenangkan.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                <span class="text-secondary"><strong>Misi 2:</strong> Membimbing bakat anak secara maksimal demi mendorong prestasi.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                <span class="text-secondary"><strong>Misi 3:</strong> Menerapkan nilai keimanan yang kokoh dalam aktivitas sehari-hari.</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="profile-img-container">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="Guru dan Staf SDN 28 Kinali" class="img-fluid w-100 rounded-3">
+                        <img src="{{ asset('images/suasana_kelas.jpg') }}" alt="Suasana Kelas Belajar SDN 28 Kinali" class="img-fluid w-100">
                     </div>
                 </div>
             </div>
@@ -937,26 +971,25 @@
     </section>
 
     <!-- 5. VISI, MISI & ARTIKEL STRATEGIS -->
-    <section class="section-padding bg-light-section">
+    <section class="section-padding bg-light-section py-5">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Arah & Strategi</span>
-                <h2 class="section-title">Visi, Misi & Fokus Mutu</h2>
+                <span class="section-tag">Fokus Mutu</span>
+                <h2 class="section-title">Arah & Strategi</h2>
                 <p class="section-subtitle">Arah strategis yang memandu langkah SDN 28 Kinali dalam mendidik dan mengembangkan siswa secara holistik.</p>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <div class="feature-card">
+                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
                         <div class="feature-icon bg-primary bg-opacity-10 text-primary p-3 rounded-4 d-inline-flex">
-                            <i class="bi bi-compass"></i>
+                            <i class="bi bi-trophy"></i>
                         </div>
-                        <h4 class="mb-3">Visi & Misi</h4>
-                        <p class="text-secondary mb-3"><strong>Visi:</strong> Terwujudnya insan yang religius, unggul dalam prestasi, berkarakter mulia, dan peduli lingkungan.</p>
-                        <p class="text-secondary mb-0"><strong>Misi:</strong> Melaksanakan pembelajaran aktif, membimbing bakat anak secara maksimal, serta menerapkan nilai keimanan yang kokoh dalam aktivitas sehari-hari.</p>
+                        <h4 class="mb-3">Monitoring Prestasi</h4>
+                        <p class="text-secondary mb-0">SIPRESMA 28 berfokus pada pencatatan dan pemantauan rekam jejak capaian prestasi siswa, baik akademik maupun non-akademik secara digital untuk membangun generasi unggul.</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="feature-card">
+                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
                         <div class="feature-icon bg-success bg-opacity-10 text-success p-3 rounded-4 d-inline-flex">
                             <i class="bi bi-people"></i>
                         </div>
@@ -966,7 +999,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="feature-card">
+                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
                         <div class="feature-icon bg-danger bg-opacity-10 text-danger p-3 rounded-4 d-inline-flex">
                             <i class="bi bi-mortarboard"></i>
                         </div>
@@ -995,9 +1028,7 @@
                             @if($guru->foto && file_exists(public_path('uploads/guru/' . $guru->foto)))
                                 <img src="{{ asset('uploads/guru/' . $guru->foto) }}" alt="{{ $guru->nama }}" class="w-100 h-100 object-fit-cover">
                             @else
-                                <div class="w-100 h-100 bg-[#FDF4F5] text-[#9F5261] d-flex align-items-center justify-content-center font-bold" style="font-size: 36px;">
-                                    {{ strtoupper(substr($guru->nama, 0, 2)) }}
-                                </div>
+                                <img src="https://ui-avatars.com/api/?name=Guru&background=eaeaea&color=666666" alt="Placeholder Guru" class="w-100 h-100 object-fit-cover">
                             @endif
                         </div>
                         <h4 class="tokoh-name fw-bold text-dark">{{ $guru->nama }}</h4>
@@ -1044,7 +1075,7 @@
                                 <span class="news-date">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d M Y') }}</span>
                             </div>
                             <div class="news-body text-start">
-                                <span class="badge bg-primary mb-2 text-uppercase tracking-wider text-[10px]">{{ $keg->kategori }}</span>
+                                <span class="badge {{ strtolower($keg->kategori) === 'organisasi' ? 'bg-success' : 'bg-primary' }} mb-2 text-uppercase tracking-wider text-[10px]">{{ strtolower($keg->kategori) === 'organisasi' ? 'KEGIATAN BELAJAR' : $keg->kategori }}</span>
                                 <h4 class="news-title">{{ $keg->nama_kegiatan }}</h4>
                                 <p class="news-desc">{{ \Illuminate\Support\Str::limit($keg->deskripsi, 100) }}</p>
                                 <button type="button" class="btn btn-link news-link p-0 text-decoration-none border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#modalKegiatan{{ $keg->id }}">
@@ -1119,7 +1150,7 @@
                     <div class="modal-content border-0 rounded-4 shadow">
                         <div class="modal-header border-0 pb-0 justify-content-between">
                             <div class="d-flex align-items-center">
-                                <span class="badge bg-primary text-uppercase tracking-wider text-[10px] me-2">{{ $keg->kategori }}</span>
+                                <span class="badge {{ strtolower($keg->kategori) === 'organisasi' ? 'bg-success' : 'bg-primary' }} text-uppercase tracking-wider text-[10px] me-2">{{ strtolower($keg->kategori) === 'organisasi' ? 'KEGIATAN BELAJAR' : $keg->kategori }}</span>
                                 <span class="text-secondary small">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d F Y') }}</span>
                             </div>
                             <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
