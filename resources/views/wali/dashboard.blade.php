@@ -90,6 +90,65 @@
             <canvas id="classAveragesChart"></canvas>
         </div>
     </div>
+
+    <!-- New Visualizations: Achievement Distribution and Top 3 Class Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Donut Chart: Kategori Prestasi Kelas -->
+        <div class="glass-panel p-6 rounded-3xl space-y-4">
+            <h4 class="text-lg font-bold text-white">Distribusi Kategori Prestasi Kelas</h4>
+            <p class="text-xs text-slate-400">Menampilkan perbandingan prestasi akademik vs non-akademik di kelas {{ $kelas->nama_kelas }}.</p>
+            
+            <div style="position: relative; height: 200px; width: 100%;" class="flex items-center justify-center">
+                <canvas id="classPrestasiChart"></canvas>
+            </div>
+            
+            <div class="flex justify-around text-xs font-semibold text-slate-450">
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
+            </div>
+        </div>
+
+        <!-- Leaderboard: Top 3 Siswa Berprestasi Kelas -->
+        <div class="glass-panel p-6 rounded-3xl flex flex-col justify-between space-y-4">
+            <div>
+                <h4 class="text-lg font-bold text-white">3 Besar Siswa Berprestasi Kelas</h4>
+                <p class="text-xs text-slate-400 mt-1">Papan peringkat siswa di kelas {{ $kelas->nama_kelas }} berdasarkan perolehan akumulasi poin piagam penghargaan.</p>
+            </div>
+            <div class="flex-1 divide-y divide-slate-800/60 mt-2">
+                @forelse($topPrestasiKelas as $index => $tp)
+                <div class="flex justify-between items-center py-3.5">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs
+                            @if($index == 0) bg-amber-500 text-slate-950
+                            @elseif($index == 1) bg-slate-350 text-slate-950
+                            @else bg-amber-700 text-white
+                            @endif">
+                            @if($index == 0) 🥇
+                            @elseif($index == 1) 🥈
+                            @elseif($index == 2) 🥉
+                            @else #{{ $index + 1 }}
+                            @endif
+                        </div>
+                        <div>
+                            <h6 class="font-bold text-white text-sm mb-0">{{ $tp->nama }}</h6>
+                            <span class="text-slate-450 text-xs font-mono">NISN: {{ $tp->nisn }}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            {{ $tp->total_poin }} Poin
+                        </span>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center py-8 text-slate-500 italic text-sm">
+                    <div class="fs-2 text-slate-400 mb-2"><i class="bi bi-trophy"></i></div>
+                    Belum ada rekaman prestasi siswa terdaftar untuk kelas ini.
+                </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
     @endif
 </div>
 
@@ -153,6 +212,37 @@
                         }
                     }
                 }
+            }
+        });
+
+        // Prestasi Donut Chart
+        const prestasiCtx = document.getElementById('classPrestasiChart').getContext('2d');
+        const akademikCount = {{ $prestasiAkademik }};
+        const nonAkademikCount = {{ $prestasiNonAkademik }};
+        
+        const donutData = (akademikCount === 0 && nonAkademikCount === 0) ? [1, 1] : [akademikCount, nonAkademikCount];
+        const displayLabels = (akademikCount === 0 && nonAkademikCount === 0) ? ['Belum Ada Data', 'Belum Ada Data'] : ['Akademik', 'Non-Akademik'];
+
+        new Chart(prestasiCtx, {
+            type: 'doughnut',
+            data: {
+                labels: displayLabels,
+                datasets: [{
+                    data: donutData,
+                    backgroundColor: ['#9F5261', '#3D8B6F'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                cutout: '70%'
             }
         });
     });

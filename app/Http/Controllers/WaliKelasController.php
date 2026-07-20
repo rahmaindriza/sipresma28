@@ -125,7 +125,29 @@ class WaliKelasController extends Controller
             ];
         }
 
-        return view('wali.dashboard', compact('kelas', 'activeTa', 'students', 'avgClassScore', 'totalAchievements', 'remedialCount', 'chartData'));
+        // Kategori Prestasi count for class chart
+        $prestasiAkademik = Prestasi::whereHas('siswa', function($q) use ($kelas) {
+            $q->where('kelas_id', $kelas->id);
+        })->where('kategori', 'Akademik')->count();
+
+        $prestasiNonAkademik = Prestasi::whereHas('siswa', function($q) use ($kelas) {
+            $q->where('kelas_id', $kelas->id);
+        })->where('kategori', 'Non-Akademik')->count();
+
+        // Top 3 Siswa Berprestasi di Kelas
+        $topPrestasiKelas = DB::table('prestasis')
+            ->join('siswas', 'prestasis.siswa_id', '=', 'siswas.id')
+            ->where('siswas.kelas_id', $kelas->id)
+            ->select('siswas.nama', 'siswas.nisn', DB::raw('SUM(prestasis.poin) as total_poin'))
+            ->groupBy('siswas.id', 'siswas.nama', 'siswas.nisn')
+            ->orderBy('total_poin', 'desc')
+            ->take(3)
+            ->get();
+
+        return view('wali.dashboard', compact(
+            'kelas', 'activeTa', 'students', 'avgClassScore', 'totalAchievements', 'remedialCount', 'chartData',
+            'prestasiAkademik', 'prestasiNonAkademik', 'topPrestasiKelas'
+        ));
     }
 
     public function siswa(Request $request)

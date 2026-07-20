@@ -147,12 +147,11 @@
         <thead>
             <tr>
                 <th style="width: 5%;">No</th>
-                <th style="width: 30%;">Nama Lomba / Bidang</th>
+                <th style="width: 38%;">Nama Lomba / Bidang</th>
                 <th style="width: 18%;">Kategori</th>
                 <th style="width: 15%;">Tingkat</th>
                 <th style="width: 12%;">Juara</th>
                 <th style="width: 12%;">Tanggal</th>
-                <th style="width: 8%;">Poin</th>
             </tr>
         </thead>
         <tbody>
@@ -164,33 +163,22 @@
                     <td class="text-center">{{ $p->tingkat }}</td>
                     <td class="text-center">{{ $p->juara }}</td>
                     <td class="text-center">{{ \Carbon\Carbon::parse($p->tanggal_penghargaan)->translatedFormat('d/m/Y') }}</td>
-                    <td class="text-center font-bold">{{ $p->poin }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center" style="font-style: italic; padding: 15px;">
+                    <td colspan="6" class="text-center" style="font-style: italic; padding: 15px;">
                         Belum ada rekaman prestasi akademik maupun non-akademik di semester ini.
                     </td>
                 </tr>
             @endforelse
             @if($achievements->isNotEmpty())
                 <tr>
-                    <td colspan="6" class="text-right font-bold" style="padding: 6px;">Total Akumulasi Poin Prestasi:</td>
-                    <td class="text-center font-bold" style="background-color: #f9f9f9;">{{ $totalPoin }}</td>
+                    <td colspan="5" class="text-right font-bold" style="padding: 6px;">Total Prestasi Terdaftar:</td>
+                    <td class="text-center font-bold" style="background-color: #f9f9f9;">{{ $achievements->count() }} Sertifikat/Piagam</td>
                 </tr>
             @endif
         </tbody>
     </table>
-
-    <!-- Keterangan Bobot Poin -->
-    <div style="margin-top: 15px; font-size: 9px; border: 1px solid #ddd; padding: 8px; background-color: #fcfcfc; border-radius: 4px;">
-        <strong>Keterangan Bobot Skor Poin Prestasi SDN 28 Kinali:</strong><br>
-        - Tingkat Kecamatan: Juara 1 = 15 poin | Juara 2 = 10 poin | Juara 3 = 5 poin<br>
-        - Tingkat Kabupaten: Juara 1 = 30 poin | Juara 2 = 25 poin | Juara 3 = 20 poin<br>
-        - Tingkat Provinsi: Juara 1 = 60 poin | Juara 2 = 50 poin | Juara 3 = 40 poin<br>
-        - Tingkat Nasional: Juara 1 = 100 poin | Juara 2 = 90 poin | Juara 3 = 80 poin<br>
-        - Juara Harapan / Lainnya: 2 poin
-    </div>
 
     <!-- Tanda Tangan -->
     <div class="signature-container">

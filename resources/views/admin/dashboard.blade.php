@@ -3,6 +3,7 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div class="space-y-8">
     <!-- Header Summary -->
     <div>
@@ -133,81 +134,117 @@
     <!-- Achievements Analytics & Leaderboard -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Leaderboard (Top 5 Siswa Berprestasi) -->
-        <div class="lg:col-span-2 glass-panel p-6 rounded-2xl shadow-sm">
-            <div class="flex items-center justify-between mb-4 border-b border-[var(--border-light)] pb-3">
-                <div>
-                    <h4 class="text-sm font-bold text-[var(--text-dark-main)]">Leaderboard - Top 5 Siswa Berprestasi</h4>
-                    <p class="text-[10px] text-[var(--text-muted)]">Peringkat siswa berdasarkan total akumulasi poin piagam penghargaan</p>
+        <div class="glass-panel p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4 border-b border-[var(--border-light)] pb-3">
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Leaderboard - Top 5 Siswa Berprestasi</h4>
+                        <p class="text-[10px] text-slate-400">Peringkat siswa berdasarkan total akumulasi jumlah sertifikat penghargaan</p>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-1 rounded bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.15)]">
+                        SDN 28 Kinali
+                    </span>
                 </div>
-                <span class="text-[10px] font-bold px-2 py-1 rounded bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.15)]">
-                    SDN 28 Kinali
-                </span>
-            </div>
-            
-            <div class="space-y-3">
-                @forelse($topPrestasi as $index => $tp)
-                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
-                                #{{ $index + 1 }}
+                
+                <div class="space-y-3">
+                    @forelse($topPrestasi as $index => $tp)
+                        <div class="p-3 rounded-xl border border-slate-800 bg-slate-950/40 flex items-center justify-between transition hover:shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                    {{ $index + 1 }}
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-white mb-0">{{ $tp->nama }}</p>
+                                    <p class="text-[10px] text-slate-400 mb-0">Kelas: {{ $tp->nama_kelas }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-xs font-bold text-[var(--text-dark-main)]">{{ $tp->nama }}</p>
-                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: {{ $tp->nama_kelas }}</p>
-                            </div>
+                            <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                                {{ $tp->total_sertifikat }} Sertifikat
+                            </span>
                         </div>
-                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
-                            {{ $tp->total_poin }} Poin
-                        </span>
-                    </div>
-                @empty
-                    <!-- Fallback Mock Leaderboard items if empty database -->
-                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
-                                #1
+                    @empty
+                        <!-- Fallback Mock Leaderboard items if empty database -->
+                        <div class="p-3 rounded-xl border border-slate-800 bg-slate-950/40 flex items-center justify-between transition hover:shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                    1
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-white mb-0">Rian Hidayat (Demo)</p>
+                                    <p class="text-[10px] text-slate-400 mb-0">Kelas: Kelas 6-A</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-xs font-bold text-[var(--text-dark-main)]">Rian Hidayat (Demo)</p>
-                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: Kelas 6-A</p>
-                            </div>
+                            <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                                3 Sertifikat
+                            </span>
                         </div>
-                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
-                            115 Poin
-                        </span>
-                    </div>
-                    <div class="p-3 rounded-xl border border-[var(--border-light)] bg-white flex items-center justify-between transition hover:shadow-sm">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
-                                #2
+                        <div class="p-3 rounded-xl border border-slate-800 bg-slate-950/40 flex items-center justify-between transition hover:shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-[#FDF4F5] text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                    2
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-white mb-0">Siti Rahma (Demo)</p>
+                                    <p class="text-[10px] text-slate-400 mb-0">Kelas: Kelas 5-B</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-xs font-bold text-[var(--text-dark-main)]">Siti Rahma (Demo)</p>
-                                <p class="text-[10px] text-[var(--text-muted)]">Kelas: Kelas 5-B</p>
-                            </div>
+                            <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
+                                2 Sertifikat
+                            </span>
                         </div>
-                        <span class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
-                            95 Poin
-                        </span>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
         </div>
 
         <!-- Donut Chart -->
-        <div class="lg:col-span-1 glass-panel p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+        <div class="glass-panel p-6 rounded-2xl shadow-sm flex flex-col justify-between">
             <div class="mb-4 border-b border-[var(--border-light)] pb-3">
-                <h4 class="text-sm font-bold text-[var(--text-dark-main)]">Kategori Prestasi</h4>
-                <p class="text-[10px] text-[var(--text-muted)]">Perbandingan persentase prestasi akademik & non-akademik</p>
+                <h4 class="text-sm font-bold text-white">Kategori Prestasi</h4>
+                <p class="text-[10px] text-slate-400">Perbandingan persentase prestasi akademik & non-akademik</p>
             </div>
             
             <div style="position: relative; height: 180px; width: 100%;">
                 <canvas id="prestasiDonutChart"></canvas>
             </div>
             
-            <div class="flex justify-around mt-4 text-[10px] font-bold text-[var(--text-dark-main)]">
+            <div class="flex justify-around mt-4 text-[10px] font-bold text-white">
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
+            </div>
+        </div>
+
+        <!-- Juara Umum Sekolah -->
+        <div class="glass-panel p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4 border-b border-[var(--border-light)] pb-3">
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Juara Umum Sekolah</h4>
+                        <p class="text-[10px] text-slate-400">3 Nilai Akademik Rerata Rapor Tertinggi Lintas Kelas 1-6</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    @forelse($juaraUmum as $index => $juara)
+                        <div class="p-3 rounded-xl border border-slate-800 bg-slate-950/40 flex items-center justify-between transition hover:shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-xl" 
+                                     style="color: @if($index == 0) #FFD700 @elseif($index == 1) #C0C0C0 @else #CD7F32 @endif;">
+                                    <i class="fa-solid fa-medal"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-white mb-0">Juara Umum {{ $index + 1 }}</p>
+                                    <p class="text-[10px] text-slate-300 mb-0">{{ $juara->nama }} ({{ $juara->nama_kelas }})</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded text-xs font-bold text-white border border-slate-700 bg-slate-900">
+                                Rerata: {{ number_format($juara->rata_rata, 1) }}
+                            </span>
+                        </div>
+                    @empty
+                        <p class="text-xs text-slate-500 italic text-center py-6">Belum ada data nilai akademik.</p>
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>

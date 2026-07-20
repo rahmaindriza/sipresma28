@@ -11,7 +11,7 @@
             <p class="text-xs text-[var(--text-muted)] mt-1">Pantau prestasi seluruh siswa lintas kelas secara real-time.</p>
         </div>
         <div class="mt-4 sm:mt-0 flex flex-wrap items-center gap-2">
-            <a href="{{ route('admin.prestasi.cetak_rekap', request()->all()) }}" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm border-0">
+            <a href="{{ route('kepsek.prestasi.cetak_rekap', request()->all()) }}" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm border-0">
                 <i class="bi bi-file-pdf me-1.5"></i> Cetak Rekapitulasi PDF
             </a>
             <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-55 text-emerald-800 border border-emerald-250">
@@ -21,8 +21,8 @@
     </div>
 
     <!-- Search Box and Filters -->
-    <div class="glass-panel p-4 rounded-2xl shadow-sm border border-[var(--border-light)]">
-        <form action="{{ route('admin.prestasi.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+    <div class="glass-panel p-4 rounded-2xl shadow-sm border border-[var(--border-light)] bg-white">
+        <form action="{{ route('kepsek.prestasi.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
             <div class="flex-1">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama lomba atau nama siswa..." 
                     class="w-full px-4 py-2 bg-white border border-[var(--border-light)] rounded-xl text-[var(--text-dark-main)] placeholder-slate-400 focus:outline-none focus:border-[var(--primary-burgundy)] transition text-sm">
@@ -51,7 +51,7 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none;">
                     Cari & Filter
                 </button>
-                <a href="{{ route('admin.prestasi.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
+                <a href="{{ route('kepsek.prestasi.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
                     Reset
                 </a>
             </div>
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Prestasi Table -->
-    <div class="glass-panel rounded-2xl overflow-hidden shadow-sm">
+    <div class="glass-panel rounded-2xl overflow-hidden shadow-sm bg-white border border-[var(--border-light)]">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
@@ -72,7 +72,7 @@
                         <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tingkat</th>
                         <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Juara</th>
                         <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tanggal</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Bukti</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Bukti</th>
                         <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Aksi</th>
                     </tr>
                 </thead>
@@ -80,8 +80,8 @@
                     @forelse($prestasis as $index => $p)
                     <tr class="hover:bg-[var(--accent-table-hover)] transition duration-150">
                         <td class="py-3.5 px-4 text-xs font-semibold text-slate-500">{{ $index + 1 }}</td>
-                        <td class="py-3.5 px-4 text-xs">
-                            <span class="font-bold text-[var(--text-dark-main)]">{{ $p->siswa->nama }}</span>
+                        <td class="py-3.5 px-4 text-xs font-bold text-[var(--text-dark-main)]">
+                            <span>{{ $p->siswa->nama }}</span>
                             <p class="text-[10px] text-slate-400 font-mono mt-0.5">NISN: {{ $p->siswa->nisn }}</p>
                         </td>
                         <td class="py-3.5 px-4 text-xs text-slate-500 font-semibold">{{ $p->siswa->kelas->nama_kelas ?? '-' }}</td>

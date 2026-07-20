@@ -32,21 +32,31 @@ class DashboardController extends Controller
             
             $activeTa = TahunAjaran::active();
 
-            // 1. Leaderboard - Top 5 Siswa Berprestasi
+            // 1. Leaderboard - Top 5 Siswa Berprestasi (Berdasarkan jumlah sertifikat)
             $topPrestasi = DB::table('prestasis')
                 ->join('siswas', 'prestasis.siswa_id', '=', 'siswas.id')
                 ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
-                ->select('siswas.nama', 'kelas.nama_kelas', DB::raw('SUM(prestasis.poin) as total_poin'))
+                ->select('siswas.nama', 'kelas.nama_kelas', DB::raw('COUNT(prestasis.id) as total_sertifikat'))
                 ->groupBy('siswas.id', 'siswas.nama', 'kelas.nama_kelas')
-                ->orderBy('total_poin', 'desc')
+                ->orderBy('total_sertifikat', 'desc')
                 ->take(5)
                 ->get();
 
             // 2. Kategori Prestasi count
             $akademikCount = DB::table('prestasis')->where('kategori', 'Akademik')->count();
             $nonAkademikCount = DB::table('prestasis')->where('kategori', 'Non-Akademik')->count();
+
+            // 3. Juara Umum Sekolah (Top 3 students by average final grade)
+            $juaraUmum = DB::table('nilais')
+                ->join('siswas', 'nilais.siswa_id', '=', 'siswas.id')
+                ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+                ->select('siswas.nama', 'kelas.nama_kelas', DB::raw('ROUND(AVG(nilais.nilai_akhir), 2) as rata_rata'))
+                ->groupBy('siswas.id', 'siswas.nama', 'kelas.nama_kelas')
+                ->orderBy('rata_rata', 'desc')
+                ->take(3)
+                ->get();
             
-            return view('admin.dashboard', compact('stats', 'activeTa', 'topPrestasi', 'akademikCount', 'nonAkademikCount'));
+            return view('admin.dashboard', compact('stats', 'activeTa', 'topPrestasi', 'akademikCount', 'nonAkademikCount', 'juaraUmum'));
         } elseif ($role === 'guru_mapel') {
             return redirect()->route('guru.index');
         } elseif ($role === 'wali_kelas') {

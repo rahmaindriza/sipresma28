@@ -222,6 +222,11 @@ Route::middleware(['auth', 'role:wali_kelas'])->group(function() {
 // ==========================================
 Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepsek')->name('kepsek.')->group(function() {
     Route::get('/', [KepalaSekolahController::class, 'index'])->name('index');
+    Route::get('/monitoring-nilai', [KepalaSekolahController::class, 'monitoringNilai'])->name('nilai.index');
+    Route::get('/monitoring-nilai/cetak-rekap', [KepalaSekolahController::class, 'cetakRekapNilaiPdf'])->name('nilai.cetak_rekap');
+    Route::get('/monitoring-nilai/print/{siswa_id}', [KepalaSekolahController::class, 'printSiswaPdf'])->name('nilai.print_siswa');
+    Route::get('/monitoring-prestasi', [KepalaSekolahController::class, 'monitoringPrestasi'])->name('prestasi.index');
+    Route::get('/prestasi/cetak-rekap', [KepalaSekolahController::class, 'cetakRekapPdf'])->name('prestasi.cetak_rekap');
 });
 
 require __DIR__.'/auth.php';

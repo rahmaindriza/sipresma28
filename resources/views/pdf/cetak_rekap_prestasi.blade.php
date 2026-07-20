@@ -137,14 +137,13 @@
         <thead>
             <tr>
                 <th style="width: 4%;">No</th>
-                <th style="width: 18%;">Nama Siswa</th>
-                <th style="width: 8%;">NISN</th>
+                <th style="width: 20%;">Nama Siswa</th>
+                <th style="width: 10%;">NISN</th>
                 <th style="width: 8%;">Kelas</th>
-                <th style="width: 22%;">Nama Perlombaan / Bidang</th>
+                <th style="width: 26%;">Nama Perlombaan / Bidang</th>
                 <th style="width: 10%;">Kategori</th>
                 <th style="width: 10%;">Tingkat</th>
-                <th style="width: 8%;">Juara</th>
-                <th style="width: 6%;">Poin</th>
+                <th style="width: 6%;">Juara</th>
                 <th style="width: 6%;">Tanggal</th>
             </tr>
         </thead>
@@ -159,21 +158,19 @@
                     <td class="text-center">{{ $p->kategori }}</td>
                     <td class="text-center">{{ $p->tingkat }}</td>
                     <td class="text-center">{{ $p->juara }}</td>
-                    <td class="text-center font-bold">{{ $p->poin }}</td>
                     <td class="text-center">{{ \Carbon\Carbon::parse($p->tanggal_penghargaan)->translatedFormat('d/m/Y') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center" style="font-style: italic; padding: 15px;">
+                    <td colspan="9" class="text-center" style="font-style: italic; padding: 15px;">
                         Tidak ada data prestasi siswa yang sesuai dengan filter pencarian laporan.
                     </td>
                 </tr>
             @endforelse
             @if($prestasis->isNotEmpty())
                 <tr>
-                    <td colspan="8" class="text-right font-bold">Total Akumulasi Poin Seluruh Siswa:</td>
-                    <td class="text-center font-bold" style="background-color: #f2f2f2;">{{ $prestasis->sum('poin') }}</td>
-                    <td style="background-color: #f2f2f2;"></td>
+                    <td colspan="8" class="text-right font-bold">Total Prestasi Terdaftar:</td>
+                    <td class="text-center font-bold" style="background-color: #f2f2f2;">{{ $prestasis->count() }} Sertifikat</td>
                 </tr>
             @endif
         </tbody>
