@@ -85,7 +85,15 @@ class PrestasiController extends Controller
             'tanggal_penghargaan' => 'required|date',
         ]);
 
+        $activeTa = TahunAjaran::active();
+        if (!$activeTa) {
+            return redirect()->back()->with('error', 'Gagal menyimpan: Tidak ada tahun ajaran aktif. Silakan aktifkan tahun ajaran terlebih dahulu.');
+        }
+
         $data = $request->all();
+        $siswa = Siswa::findOrFail($request->siswa_id);
+        $data['tahun_ajaran_id'] = $activeTa->id;
+        $data['kelas_id'] = $siswa->kelas_id;
 
         // 1. Calculate Poin automatically based on KKM/Tingkat/Juara
         $poin = $this->calculatePoints($request->tingkat, $request->juara);
@@ -118,6 +126,11 @@ class PrestasiController extends Controller
     {
         $prestasi = Prestasi::findOrFail($id);
 
+        $activeTa = TahunAjaran::active();
+        if (!$activeTa) {
+            return redirect()->back()->with('error', 'Gagal memperbarui: Tidak ada tahun ajaran aktif.');
+        }
+
         $request->validate([
             'siswa_id' => 'required|exists:siswas,id',
             'nama_lomba' => 'required|string|max:255',
@@ -130,6 +143,9 @@ class PrestasiController extends Controller
         ]);
 
         $data = $request->all();
+        $siswa = Siswa::findOrFail($request->siswa_id);
+        $data['kelas_id'] = $siswa->kelas_id;
+        $data['tahun_ajaran_id'] = $activeTa->id;
 
         // 1. Re-calculate Poin
         $poin = $this->calculatePoints($request->tingkat, $request->juara);
@@ -183,14 +199,17 @@ class PrestasiController extends Controller
     /**
      * Generate PDF "Lembar Lampiran Prestasi Rapor" for a specific student.
      */
-    public function cetakPdf($siswa_id)
+    public function cetakPdf(Request $request, $siswa_id)
     {
+        $activeTa = TahunAjaran::active();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
+
         $siswa = Siswa::with('kelas.waliKelas')->findOrFail($siswa_id);
         $achievements = Prestasi::where('siswa_id', $siswa_id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
             ->orderBy('tanggal_penghargaan', 'desc')
             ->get();
-
-        $activeTa = TahunAjaran::active();
 
         // Get Kepala Sekolah profile
         $kepsek = Guru::whereHas('user', function($q) {
@@ -207,7 +226,7 @@ class PrestasiController extends Controller
             'kelas' => $siswa->kelas,
             'achievements' => $achievements,
             'totalPoin' => $totalPoin,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'waliKelas' => $waliKelas,
             'kepsek' => $kepsek,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
@@ -250,5 +269,20 @@ class PrestasiController extends Controller
         }
 
         return 2; // Fallback
+    }
+
+    /**
+     * Download the certificate/proof of achievement.
+     */
+    public function downloadBukti($id)
+    {
+        $prestasi = Prestasi::findOrFail($id);
+        $filePath = public_path('uploads/sertifikat/' . $prestasi->sertifikat);
+        
+        if ($prestasi->sertifikat && file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+        
+        return back()->with('error', 'Berkas bukti sertifikat tidak ditemukan.');
     }
 }

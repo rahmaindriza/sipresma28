@@ -11,14 +11,17 @@
     </div>
     @else
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-slate-900/40 p-6 border border-slate-800 rounded-3xl">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-900/40 p-6 border border-slate-800 rounded-3xl gap-4">
         <div>
             <h3 class="text-xl font-bold text-white">Rekapitulasi Nilai & Ranking Kelas</h3>
             <p class="text-xs text-slate-400 mt-1">Rekap seluruh mata pelajaran (Umum & Khusus), rata-rata nilai akhir, prestasi, dan cetak dokumen resmi.</p>
         </div>
-        <div class="mt-4 sm:mt-0">
+        <div class="flex flex-wrap items-center gap-3">
             <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
                 Kelas: {{ $kelas->nama_kelas }}
+            </span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-green-900/40 text-green-300 border border-green-800">
+                Tahun Ajaran Aktif: {{ $activeTa->tahun }} ({{ $activeTa->semester }})
             </span>
         </div>
     </div>
@@ -94,7 +97,14 @@
                         <tr class="hover:bg-slate-900/20 transition duration-150">
                             <td class="py-4 px-4 text-center font-semibold text-slate-450">{{ $loop->iteration }}</td>
                             <td class="py-4 px-6">
-                                <p class="font-semibold text-white text-sm">{{ $siswa->nama }}</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold text-white text-sm">{{ $siswa->nama }}</p>
+                                    <button type="button" onclick="showHistoriSiswa({{ $siswa->id }})" title="Lihat Histori Rapor & Prestasi" class="p-1 hover:bg-slate-800 text-blue-400 rounded transition border-0 bg-transparent cursor-pointer">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                                 <p class="text-[10px] text-slate-500 mt-0.5 font-mono">NISN: {{ $siswa->nisn }}</p>
                                 
                                 <!-- Display Achievements directly under name if any -->
@@ -140,7 +150,7 @@
                             
                             <!-- Laporan Button -->
                             <td class="py-4 px-4 text-right">
-                                <a href="{{ route('wali.print', $siswa->id) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-900 hover:border-blue-500 font-bold rounded-lg transition">
+                                <a href="{{ route('wali.print', [$siswa->id, 'tahun_ajaran_id' => $selectedTa->id]) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-900 hover:border-blue-500 font-bold rounded-lg transition">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                                     </svg>

@@ -59,6 +59,23 @@
                 </div>
             </div>
 
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Hubungkan Akun Pengguna (Untuk Login)</label>
+                    <select name="user_id" class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm">
+                        <option value="">-- Belum Dihubungkan / Tanpa Akun --</option>
+                        @foreach($users as $usr)
+                            <option value="{{ $usr->id }}" {{ old('user_id', $guru->user_id) == $usr->id ? 'selected' : '' }}>
+                                {{ $usr->name }} (Username: {{ $usr->username }} - Role: {{ $usr->role }})
+                            </option>
+                        @endforeach
+                    </select>
+                    <p class="text-[10px] text-[#8E797D] mt-1.5">
+                        * Hubungkan guru ini dengan akun pengguna agar dapat login ke dalam sistem.
+                    </p>
+                </div>
+            </div>
+
             <div class="row g-4 align-items-end">
                 <div class="col-md-8">
                     <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Unggah Foto Baru (Opsional)</label>

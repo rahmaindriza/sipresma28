@@ -36,10 +36,15 @@ class WaliPrestasiController extends Controller
             return view('wali.prestasi.index', ['error' => 'Anda belum ditugaskan sebagai Wali Kelas untuk kelas manapun.', 'activeTa' => $activeTa]);
         }
 
+        // For Wali Kelas, lock to active year only
+        $selectedTa = $activeTa;
+        $tahunAjarans = collect([$activeTa]);
+
         $students = Siswa::where('kelas_id', $kelas->id)->orderBy('nama')->get();
         
         $query = Prestasi::with('siswa.kelas')
-            ->whereIn('siswa_id', $students->pluck('id'));
+            ->whereIn('siswa_id', $students->pluck('id'))
+            ->where('tahun_ajaran_id', $selectedTa->id);
 
         // Search & filter
         if ($request->filled('search')) {
@@ -61,7 +66,7 @@ class WaliPrestasiController extends Controller
         // Pass variables to view
         $siswas = $students; // for dropdown in add/edit modals
 
-        return view('wali.prestasi.index', compact('kelas', 'students', 'siswas', 'prestasis', 'activeTa'));
+        return view('wali.prestasi.index', compact('kelas', 'students', 'siswas', 'prestasis', 'activeTa', 'tahunAjarans', 'selectedTa'));
     }
 
     /**
@@ -90,6 +95,11 @@ class WaliPrestasiController extends Controller
             'tanggal_penghargaan' => 'required|date',
         ]);
 
+        $activeTa = TahunAjaran::active();
+        if (!$activeTa) {
+            return redirect()->back()->with('error', 'Gagal menyimpan: Tidak ada tahun ajaran aktif.');
+        }
+
         // Security check: ensure student belongs to homogenious class
         $siswa = Siswa::findOrFail($request->siswa_id);
         if ($siswa->kelas_id !== $kelas->id) {
@@ -97,6 +107,8 @@ class WaliPrestasiController extends Controller
         }
 
         $data = $request->all();
+        $data['tahun_ajaran_id'] = $activeTa->id;
+        $data['kelas_id'] = $siswa->kelas_id;
 
         // Calculate Poin
         $poin = $this->calculatePoints($request->tingkat, $request->juara);
@@ -136,6 +148,11 @@ class WaliPrestasiController extends Controller
             return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas.');
         }
 
+        $activeTa = TahunAjaran::active();
+        if (!$activeTa) {
+            return redirect()->back()->with('error', 'Gagal memperbarui: Tidak ada tahun ajaran aktif.');
+        }
+
         $prestasi = Prestasi::findOrFail($id);
         
         // Security check
@@ -161,6 +178,8 @@ class WaliPrestasiController extends Controller
         }
 
         $data = $request->all();
+        $data['kelas_id'] = $newSiswa->kelas_id;
+        $data['tahun_ajaran_id'] = $activeTa->id;
 
         // Calculate Poin
         $poin = $this->calculatePoints($request->tingkat, $request->juara);
@@ -228,7 +247,7 @@ class WaliPrestasiController extends Controller
     /**
      * Print PDF "Lembar Lampiran Prestasi Rapor" for a specific student in homeroom class.
      */
-    public function cetakPdf($siswa_id)
+    public function cetakPdf(Request $request, $siswa_id)
     {
         $user = Auth::user();
         $guru = $this->getGuruForUser($user);
@@ -240,12 +259,15 @@ class WaliPrestasiController extends Controller
             return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas.');
         }
 
+        $activeTa = TahunAjaran::active();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
+
         $siswa = Siswa::with('kelas.waliKelas')->where('kelas_id', $kelas->id)->findOrFail($siswa_id);
         $achievements = Prestasi::where('siswa_id', $siswa_id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
             ->orderBy('tanggal_penghargaan', 'desc')
             ->get();
-
-        $activeTa = TahunAjaran::active();
 
         // Get Kepala Sekolah profile
         $kepsek = Guru::whereHas('user', function($q) {
@@ -259,7 +281,7 @@ class WaliPrestasiController extends Controller
             'kelas' => $siswa->kelas,
             'achievements' => $achievements,
             'totalPoin' => $totalPoin,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'waliKelas' => $guru,
             'kepsek' => $kepsek,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
@@ -310,18 +332,6 @@ class WaliPrestasiController extends Controller
     private function getGuruForUser($user)
     {
         if (!$user) return null;
-        $guru = $user->guru;
-        if ($guru) return $guru;
-        $guru = Guru::where('user_id', $user->id)->first();
-        if ($guru) return $guru;
-        $guru = Guru::where('nip', $user->username)->first();
-        if ($guru) return $guru;
-        if (isset($user->nip)) {
-            $guru = Guru::where('nip', $user->nip)->first();
-            if ($guru) return $guru;
-        }
-        $guru = Guru::where('nama', $user->name)->first();
-        if ($guru) return $guru;
-        return null;
+        return $user->guru ?? Guru::where('user_id', $user->id)->first();
     }
 }

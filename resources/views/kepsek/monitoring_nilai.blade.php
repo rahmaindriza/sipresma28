@@ -12,7 +12,7 @@
         </div>
         <div class="mt-4 sm:mt-0 flex items-center gap-2">
             <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                Semester Aktif: {{ $activeTa ? $activeTa->tahun . ' (' . $activeTa->semester . ')' : '-' }}
+                Semester: {{ $selectedTa ? $selectedTa->tahun . ' (' . $selectedTa->semester . ')' : '-' }}
             </span>
         </div>
     </div>
@@ -31,6 +31,17 @@
                     <option value="">-- Semua Kelas --</option>
                     @foreach($listKelas as $kls)
                         <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}> {{ $kls->nama_kelas }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Tahun Ajaran Filter -->
+            <div class="w-full md:w-48">
+                <select name="tahun_ajaran_id" class="w-full px-4 py-2 bg-white border border-[var(--border-light)] rounded-xl text-[var(--text-dark-main)] focus:outline-none focus:border-[var(--primary-burgundy)] transition text-sm">
+                    @foreach($tahunAjarans as $ta)
+                        <option value="{{ $ta->id }}" {{ $selectedTa->id == $ta->id ? 'selected' : '' }}>
+                            {{ $ta->tahun }} ({{ $ta->semester }})
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -74,7 +85,14 @@
                         <tr class="hover:bg-[var(--accent-table-hover)] transition duration-150">
                             <td class="py-3.5 px-4 text-center font-semibold text-slate-500">{{ $loop->iteration }}</td>
                             <td class="py-3.5 px-4">
-                                <p class="font-bold text-[var(--text-dark-main)] text-sm mb-0">{{ $siswa->nama }}</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-bold text-[var(--text-dark-main)] text-sm mb-0">{{ $siswa->nama }}</p>
+                                    <button type="button" onclick="showHistoriSiswa({{ $siswa->id }})" title="Lihat Histori Rapor & Prestasi" class="p-1 hover:bg-slate-100 text-blue-600 rounded transition border-0 bg-transparent cursor-pointer">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                                 <div class="flex gap-2 items-center text-[10px] text-slate-400 mt-0.5">
                                     <span class="font-mono">NISN: {{ $siswa->nisn }}</span>
                                     <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">Kelas {{ $siswa->kelas->nama_kelas ?? '-' }}</span>
@@ -110,9 +128,9 @@
                                 </span>
                             </td>
                             
-                            <!-- Laporan Download Button -->
+                             <!-- Laporan Download Button -->
                             <td class="py-3.5 px-4 text-right">
-                                <a href="{{ route('kepsek.nilai.print_siswa', $siswa->id) }}" target="_blank" class="inline-flex items-center px-2.5 py-1.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-500 font-bold rounded-lg transition text-[10px]">
+                                <a href="{{ route('kepsek.nilai.print_siswa', [$siswa->id, 'tahun_ajaran_id' => $selectedTa->id]) }}" target="_blank" class="inline-flex items-center px-2.5 py-1.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-500 font-bold rounded-lg transition text-[10px]">
                                     <i class="bi bi-file-earmark-pdf me-1"></i> Cetak PDF
                                 </a>
                             </td>

@@ -109,4 +109,71 @@ class SiswaController extends Controller
 
         return redirect()->route('admin.siswas')->with('success', 'Data Siswa berhasil dihapus.');
     }
+
+    /**
+     * Get multi-semester history data for a student.
+     */
+    public function getHistoryData($id)
+    {
+        $siswa = Siswa::with('kelas')->findOrFail($id);
+        
+        // Fetch all grades for this student, grouped by academic year
+        $grades = \App\Models\Nilai::with(['mapel', 'tahunAjaran', 'kelas'])
+            ->where('siswa_id', $id)
+            ->get()
+            ->groupBy('tahun_ajaran_id');
+
+        // Fetch all achievements for this student, grouped by academic year
+        $prestasis = \App\Models\Prestasi::with(['tahunAjaran', 'kelas'])
+            ->where('siswa_id', $id)
+            ->get()
+            ->groupBy('tahun_ajaran_id');
+
+        // Fetch all academic years where the student has grades or achievements
+        $taIds = $grades->keys()->merge($prestasis->keys())->unique();
+        $tahunAjarans = \App\Models\TahunAjaran::whereIn('id', $taIds)
+            ->orderBy('tahun', 'desc')
+            ->orderBy('semester', 'desc')
+            ->get();
+
+        $history = [];
+        foreach ($tahunAjarans as $ta) {
+            $taGrades = $grades->get($ta->id) ?? collect();
+            $taPrestasis = $prestasis->get($ta->id) ?? collect();
+            
+            // Resolve class name for this semester (from first grade or fallback to current class)
+            $kelasObj = $taGrades->first()?->kelas ?? $taPrestasis->first()?->kelas ?? $siswa->kelas;
+            
+            $history[] = [
+                'tahun_ajaran' => $ta->tahun . ' (' . $ta->semester . ')',
+                'kelas' => $kelasObj ? $kelasObj->nama_kelas : '-',
+                'grades' => $taGrades->map(function($g) {
+                    return [
+                        'mapel' => $g->mapel->nama_mapel,
+                        'kkm' => $g->mapel->kkm,
+                        'nilai_akhir' => round($g->nilai_akhir, 0),
+                        'status' => $g->nilai_akhir >= $g->mapel->kkm ? 'Tuntas' : 'Remedial'
+                    ];
+                }),
+                'prestasis' => $taPrestasis->map(function($p) {
+                    return [
+                        'nama_lomba' => $p->nama_lomba,
+                        'kategori' => $p->kategori,
+                        'tingkat' => $p->tingkat,
+                        'juara' => $p->juara,
+                        'sertifikat' => $p->sertifikat ? asset('uploads/sertifikat/' . $p->sertifikat) : null
+                    ];
+                })
+            ];
+        }
+
+        return response()->json([
+            'siswa' => [
+                'nama' => $siswa->nama,
+                'nisn' => $siswa->nisn,
+                'kelas' => $siswa->kelas ? $siswa->kelas->nama_kelas : '-'
+            ],
+            'history' => $history
+        ]);
+    }
 }

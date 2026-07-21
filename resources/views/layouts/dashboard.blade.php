@@ -429,6 +429,10 @@
                     <svg class="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                     Monitoring Prestasi
                 </a>
+                <a href="{{ route('admin.kenaikan-kelas.index') }}" class="flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200 text-sm {{ request()->routeIs('admin.kenaikan-kelas.index') ? 'sidebar-active' : '' }}">
+                    <svg class="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                    Kenaikan Kelas
+                </a>
             @elseif(auth()->user()->isGuruMapel())
                 <!-- Guru Mapel Links -->
                 <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Guru Panel</div>
@@ -561,6 +565,185 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Histori Rapor & Prestasi Siswa (Multi-Semester) Modal -->
+    <div id="histori-rapor-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-slate-955/80 p-4">
+        <div class="bg-white border border-[#EAE1E3] rounded-3xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center bg-[#9F5261] px-6 py-4 border-b border-[#86414E]">
+                <h4 class="text-lg font-bold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Histori Rapor & Prestasi Siswa (Multi-Semester)
+                </h4>
+                <button onclick="closeHistoriModal()" class="text-white/80 hover:text-white transition text-2xl border-0 bg-transparent">&times;</button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-[#FAF7F7] text-[#3D2228]">
+                <!-- Student Header Profile Details -->
+                <div class="p-4 bg-white border border-[#EAE1E3] rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+                    <div>
+                        <h3 id="histori-siswa-nama" class="text-xl font-bold text-[#9F5261]">-</h3>
+                        <p id="histori-siswa-nisn" class="text-xs text-slate-500 font-mono mt-1">-</p>
+                    </div>
+                    <div>
+                        <span id="histori-siswa-kelas" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#FDF4F5] text-[#9F5261] border border-[#EAE1E3]">
+                            Kelas: -
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Timeline / Semester Blocks Container -->
+                <div id="histori-blocks" class="space-y-6">
+                    <!-- Dynamic Blocks Injected Here -->
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-end px-6 py-4 border-t border-[#EAE1E3] bg-[#FAFAF9]">
+                <button type="button" onclick="closeHistoriModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition border-0">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showHistoriSiswa(siswaId) {
+            const modal = document.getElementById('histori-rapor-modal');
+            const container = document.getElementById('histori-blocks');
+            
+            // Show loading placeholder
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-16 text-slate-400">
+                    <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#9F5261] border-t-transparent mb-3"></div>
+                    <p class="text-xs font-semibold text-slate-500">Memuat riwayat transkrip & prestasi...</p>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+
+            fetch(\`/siswa/\${siswaId}/history-data\`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to fetch');
+                    return res.json();
+                })
+                .then(data => {
+                    document.getElementById('histori-siswa-nama').innerText = data.siswa.nama;
+                    document.getElementById('histori-siswa-nisn').innerText = 'NISN: ' + data.siswa.nisn;
+                    document.getElementById('histori-siswa-kelas').innerText = 'Kelas: ' + data.siswa.kelas;
+
+                    if (data.history.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center py-12 text-slate-400 bg-white rounded-2xl border border-[#EAE1E3]">
+                                <p class="text-xs font-semibold">Belum ada rekaman nilai rapor atau prestasi untuk siswa ini.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let html = '';
+                    data.history.forEach(block => {
+                        // Grades
+                        let gradesHtml = '';
+                        if (block.grades.length === 0) {
+                            gradesHtml = \`<div class="p-4 text-center text-xs text-slate-400 italic">Belum ada nilai rapor terinput untuk semester ini.</div>\`;
+                        } else {
+                            gradesHtml = `
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-[#FDF4F5] text-[#9F5261] font-bold border-b border-[#EAE1E3]">
+                                            <th class="p-2.5 w-12 text-center">No</th>
+                                            <th class="p-2.5">Mata Pelajaran</th>
+                                            <th class="p-2.5 text-center w-16">KKM</th>
+                                            <th class="p-2.5 text-center w-20">Nilai Akhir</th>
+                                            <th class="p-2.5 text-center w-24">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                            `;
+                            block.grades.forEach((g, idx) => {
+                                const badgeClass = g.status === 'Tuntas' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200';
+                                gradesHtml += `
+                                    <tr>
+                                        <td class="p-2.5 text-center text-slate-400 font-medium">${idx + 1}</td>
+                                        <td class="p-2.5 font-bold text-[#3D2228]">${g.mapel}</td>
+                                        <td class="p-2.5 text-center font-mono">${g.kkm}</td>
+                                        <td class="p-2.5 text-center font-bold ${g.nilai_akhir < g.kkm ? 'text-red-650' : 'text-slate-800'}">${g.nilai_akhir}</td>
+                                        <td class="p-2.5 text-center">
+                                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase border ${badgeClass}">${g.status}</span>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                            gradesHtml += \`</tbody></table>\`;
+                        }
+
+                        // Achievements
+                        let prestasisHtml = '';
+                        if (block.prestasis.length === 0) {
+                            prestasisHtml = \`<div class="p-4 text-center text-xs text-slate-400 italic">Tidak ada prestasi dicatat pada semester ini.</div>\`;
+                        } else {
+                            prestasisHtml = \`<div class="space-y-3.5 p-3.5 bg-white border border-[#EAE1E3] rounded-xl shadow-sm">\`;
+                            block.prestasis.forEach(p => {
+                                const proofLink = p.sertifikat ? `
+                                    <a href="\${p.sertifikat}" target="_blank" class="inline-flex items-center gap-1.5 px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-lg text-[10px] font-bold transition mt-2 border-0">
+                                        <i class="bi bi-file-earmark-image"></i> Lihat Sertifikat
+                                    </a>
+                                ` : '';
+                                prestasisHtml += `
+                                    <div class="p-3 bg-amber-50/40 border border-amber-250/30 rounded-xl relative">
+                                        <div class="absolute right-2 top-2 px-2 py-0.2 bg-amber-100 text-amber-800 rounded-full text-[8px] font-extrabold uppercase">${p.kategori}</div>
+                                        <p class="text-xs font-bold text-amber-900 pr-12">🏆 \${p.nama_lomba}</p>
+                                        <p class="text-[10px] text-slate-500 mt-1 font-medium">\${p.tingkat} | \${p.juara}</p>
+                                        \${proofLink}
+                                    </div>
+                                `;
+                            });
+                            prestasisHtml += \`</div>\`;
+                        }
+
+                        html += `
+                            <div class="bg-white border border-[#EAE1E3] rounded-3xl p-5 shadow-md space-y-4">
+                                <div class="border-b border-[#EAE1E3] pb-2 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#9F5261] animate-pulse"></span>
+                                    <h4 class="text-sm font-extrabold text-[#9F5261] uppercase tracking-wider">
+                                        Kelas \${block.kelas} — TA \${block.tahun_ajaran}
+                                    </h4>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    <!-- Grades Table -->
+                                    <div class="lg:col-span-2 space-y-2">
+                                        <h5 class="text-xs font-bold text-[#7A6266] uppercase tracking-wider">Nilai Evaluasi Rapor</h5>
+                                        <div class="border border-[#EAE1E3] rounded-2xl overflow-hidden bg-white">
+                                            \${gradesHtml}
+                                        </div>
+                                    </div>
+
+                                    <!-- Achievements List -->
+                                    <div class="space-y-2">
+                                        <h5 class="text-xs font-bold text-[#7A6266] uppercase tracking-wider">Lampiran Prestasi</h5>
+                                        \${prestasisHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-red-500 bg-red-50 border border-red-200 rounded-2xl">
+                            <p class="text-xs font-semibold">Gagal memuat histori data siswa. Silakan coba kembali.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function closeHistoriModal() {
+            document.getElementById('histori-rapor-modal').classList.add('hidden');
+        }
+    </script>
 
     @stack('scripts')
 </body>

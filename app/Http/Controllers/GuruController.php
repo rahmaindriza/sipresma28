@@ -22,27 +22,10 @@ class GuruController extends Controller
     {
         $user = Auth::user();
         
-        // 1. Try by user_id
+        // 1. Get Guru by user_id (Strict relation)
         $guru = null;
         if ($user) {
-            $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-            
-            // 2. Fallback check: try by username as NIP
-            if (!$guru) {
-                $guru = DB::table('gurus')
-                    ->where('nip', $user->username)
-                    ->first();
-            }
-
-            // 3. Fallback check: try by NIP property if exists
-            if (!$guru && isset($user->nip)) {
-                $guru = DB::table('gurus')->where('nip', $user->nip)->first();
-            }
-            
-            // 4. Fallback check: try by matching nama with user name
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nama', $user->name)->first();
-            }
+            $guru = Guru::where('user_id', $user->id)->first();
         }
 
         $activeTa = TahunAjaran::active();
@@ -87,6 +70,7 @@ class GuruController extends Controller
         // Get existing grades for these students in this subject and academic year
         $grades = Nilai::where('mapel_id', $mapel->id)
             ->where('kelas_id', $kelas->id)
+            ->where('tahun_ajaran_id', $activeTa->id)
             ->get()
             ->keyBy('siswa_id');
 
@@ -106,6 +90,7 @@ class GuruController extends Controller
             ->where('tahun_ajaran_id', $activeTa->id)
             ->findOrFail($assignment_id);
 
+        $kelas_id = $assignment->kelas_id;
         $mapel_id = $assignment->mapel_id;
 
         $request->validate([
@@ -122,7 +107,8 @@ class GuruController extends Controller
                 [
                     'siswa_id' => $gradeData['siswa_id'],
                     'mapel_id' => $mapel_id,
-                    'kelas_id' => $kelas->id,
+                    'kelas_id' => $kelas_id,
+                    'tahun_ajaran_id' => $activeTa->id,
                 ],
                 [
                     'nilai_tugas' => $gradeData['tugas'],
@@ -166,7 +152,11 @@ class GuruController extends Controller
      */
     public function create()
     {
-        return view('admin.guru.create');
+        $users = \App\Models\User::whereNotIn('id', function($q) {
+            $q->select('user_id')->from('gurus')->whereNotNull('user_id');
+        })->whereIn('role', ['guru_mapel', 'wali_kelas'])->orderBy('name')->get();
+
+        return view('admin.guru.create', compact('users'));
     }
 
     /**
@@ -180,9 +170,11 @@ class GuruController extends Controller
             'jabatan' => 'required|string|max:255',
             'jk' => 'required|in:Laki-laki,Perempuan',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
         $data = $request->all();
+        $data['user_id'] = $request->user_id ?: null;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
@@ -208,7 +200,16 @@ class GuruController extends Controller
     public function edit($id)
     {
         $guru = Guru::findOrFail($id);
-        return view('admin.guru.edit', compact('guru'));
+        $users = \App\Models\User::where(function($q) use ($guru) {
+            $q->whereNotIn('id', function($sub) {
+                $sub->select('user_id')->from('gurus')->whereNotNull('user_id');
+            });
+            if ($guru->user_id) {
+                $q->orWhere('id', $guru->user_id);
+            }
+        })->whereIn('role', ['guru_mapel', 'wali_kelas'])->orderBy('name')->get();
+
+        return view('admin.guru.edit', compact('guru', 'users'));
     }
 
     /**
@@ -224,9 +225,11 @@ class GuruController extends Controller
             'jabatan' => 'required|string|max:255',
             'jk' => 'required|in:Laki-laki,Perempuan',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
         $data = $request->all();
+        $data['user_id'] = $request->user_id ?: null;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');

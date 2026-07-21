@@ -14,6 +14,8 @@ class Prestasi extends Model
 
     protected $fillable = [
         'siswa_id',
+        'tahun_ajaran_id',
+        'kelas_id',
         'jenis_prestasi',
         'keterangan',
         'tanggal',
@@ -33,6 +35,22 @@ class Prestasi extends Model
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
+
+    /**
+     * Get the academic year when this achievement was recorded.
+     */
+    public function tahunAjaran(): BelongsTo
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+    }
+
+    /**
+     * Get the class when this achievement was recorded.
+     */
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     /**

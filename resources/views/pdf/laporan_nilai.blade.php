@@ -278,8 +278,8 @@
             <p>Kinali, {{ $tanggal_cetak }}</p>
             <p>Wali Kelas {{ $kelas->nama_kelas }}</p>
             <div class="signature-space"></div>
-            <p class="font-bold" style="text-decoration: underline;">{{ $waliKelas->nama }}</p>
-            <p>NIP: {{ $waliKelas->nip ?? '-' }}</p>
+            <p class="font-bold" style="text-decoration: underline;">{{ $namaWaliKelas }}</p>
+            <p>NIP: {{ $nipWaliKelas }}</p>
         </div>
         <div class="clear"></div>
     </div>

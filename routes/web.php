@@ -176,6 +176,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/monitoring-nilai/print/{siswa_id}', [AdminController::class, 'printSiswaPdf'])->name('nilai.print_siswa');
     Route::get('/monitoring-prestasi', [AdminController::class, 'monitoringPrestasi'])->name('prestasi.index');
     Route::get('/prestasi/cetak-rekap', [AdminController::class, 'cetakRekapPdf'])->name('prestasi.cetak_rekap');
+
+    // Kenaikan Kelas
+    Route::get('/kenaikan-kelas', [\App\Http\Controllers\KenaikanKelasController::class, 'index'])->name('kenaikan-kelas.index');
+    Route::post('/kenaikan-kelas', [\App\Http\Controllers\KenaikanKelasController::class, 'store'])->name('kenaikan-kelas.store');
 });
 
 // ==========================================
@@ -227,6 +231,11 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepsek')->name('keps
     Route::get('/monitoring-nilai/print/{siswa_id}', [KepalaSekolahController::class, 'printSiswaPdf'])->name('nilai.print_siswa');
     Route::get('/monitoring-prestasi', [KepalaSekolahController::class, 'monitoringPrestasi'])->name('prestasi.index');
     Route::get('/prestasi/cetak-rekap', [KepalaSekolahController::class, 'cetakRekapPdf'])->name('prestasi.cetak_rekap');
+});
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/siswa/{id}/history-data', [SiswaController::class, 'getHistoryData'])->name('siswa.history_data');
+    Route::get('/prestasi/download/{id}', [\App\Http\Controllers\PrestasiController::class, 'downloadBukti'])->name('prestasi.download');
 });
 
 require __DIR__.'/auth.php';

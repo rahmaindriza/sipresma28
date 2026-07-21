@@ -15,6 +15,66 @@
         </button>
     </div>
 
+    <!-- Filter & Search Form -->
+    <div class="glass-panel p-6 rounded-3xl bg-slate-900/40 border border-slate-800 shadow-xl">
+        <form method="GET" action="{{ route('admin.assignments') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+            <!-- Search Guru -->
+            <div class="space-y-2">
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Cari Guru</label>
+                <input type="text" name="search_guru" value="{{ request('search_guru') }}" placeholder="Cari nama guru..." class="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-550 focus:outline-none focus:border-blue-500 text-xs transition">
+            </div>
+
+            <!-- Filter Tahun Ajaran -->
+            <div class="space-y-2">
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Tahun Ajaran</label>
+                <select name="tahun_ajaran_id" class="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 text-xs transition">
+                    <option value="">-- Semua Tahun Ajaran --</option>
+                    @foreach($tahunAjarans as $ta)
+                        <option value="{{ $ta->id }}" {{ $selectedTaId == $ta->id ? 'selected' : '' }}>
+                            {{ $ta->tahun }} ({{ $ta->semester }}) {{$ta->status === 'aktif' ? '[AKTIF]' : ''}}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Filter Kelas -->
+            <div class="space-y-2">
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Kelas</label>
+                <select name="kelas_id" class="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 text-xs transition">
+                    <option value="">-- Semua Kelas --</option>
+                    @foreach($kelas as $k)
+                        <option value="{{ $k->id }}" {{ request('kelas_id') == $k->id ? 'selected' : '' }}>
+                            {{ $k->nama_kelas }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Filter Mapel -->
+            <div class="space-y-2">
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Mata Pelajaran</label>
+                <select name="mapel_id" class="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 text-xs transition">
+                    <option value="">-- Semua Mapel --</option>
+                    @foreach($mapels as $m)
+                        <option value="{{ $m->id }}" {{ request('mapel_id') == $m->id ? 'selected' : '' }}>
+                            {{ $m->nama_mapel }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
+                    Cari & Filter
+                </button>
+                <a href="{{ route('admin.assignments') }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center border border-slate-700">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
     <!-- Assignments Table -->
     <div class="glass-panel rounded-3xl overflow-hidden shadow-xl">
         <div class="overflow-x-auto">
@@ -78,6 +138,7 @@
                 <label class="block text-xs font-semibold text-slate-350 uppercase tracking-wider mb-2">Pilih Kelas</label>
                 <select name="kelas_id" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
                     <option value="">-- Pilih Kelas --</option>
+                    <option value="all" style="color: #4ade80; font-weight: bold;">-- Semua Kelas (Kelas 1 - 6) --</option>
                     @foreach($kelas as $k)
                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                     @endforeach

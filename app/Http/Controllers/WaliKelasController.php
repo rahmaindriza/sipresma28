@@ -208,7 +208,7 @@ class WaliKelasController extends Controller
         return view('wali.nilai', compact('kelas', 'mapels', 'activeTa'));
     }
 
-    public function rekap()
+    public function rekap(Request $request)
     {
         $user = Auth::user();
         $guru = $this->getGuruForUser($user);
@@ -227,16 +227,21 @@ class WaliKelasController extends Controller
             return view('wali.rekap', ['error' => 'Anda belum ditugaskan sebagai Wali Kelas untuk kelas manapun.', 'activeTa' => $activeTa]);
         }
 
+        // For Wali Kelas, force selectedTa to be the active academic year only
+        $tahunAjarans = TahunAjaran::orderBy('tahun', 'desc')->orderBy('semester', 'desc')->get();
+        $selectedTa = $activeTa;
+
         $students = Siswa::where('kelas_id', $kelas->id)->orderBy('nama')->get();
         $mapels = Mapel::orderBy('jenis_mapel')->orderBy('nama_mapel')->get();
 
         // Calculate rankings
-        $ranks = $this->calculateRankings($kelas->id, $activeTa->id);
+        $ranks = $this->calculateRankings($kelas->id, $selectedTa->id);
 
         $umumGrades = DB::table('nilais')
             ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
             ->whereIn('nilais.siswa_id', $students->pluck('id'))
             ->where('nilais.kelas_id', $kelas->id)
+            ->where('nilais.tahun_ajaran_id', $selectedTa->id)
             ->where('mapels.jenis_mapel', 'umum')
             ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
@@ -244,6 +249,7 @@ class WaliKelasController extends Controller
         $khususGrades = DB::table('nilais')
             ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
             ->whereIn('nilais.siswa_id', $students->pluck('id'))
+            ->where('nilais.tahun_ajaran_id', $selectedTa->id)
             ->where('mapels.jenis_mapel', 'khusus')
             ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
@@ -266,6 +272,7 @@ class WaliKelasController extends Controller
         $grades = $mergedGrades->groupBy('siswa_id');
 
         $achievements = Prestasi::whereIn('siswa_id', $students->pluck('id'))
+            ->where('tahun_ajaran_id', $selectedTa->id)
             ->get()
             ->groupBy('siswa_id');
 
@@ -283,7 +290,7 @@ class WaliKelasController extends Controller
             }
         }
 
-        return view('wali.rekap', compact('kelas', 'students', 'mapels', 'ranks', 'grades', 'achievements', 'remedialAlerts', 'activeTa'));
+        return view('wali.rekap', compact('kelas', 'students', 'mapels', 'ranks', 'grades', 'achievements', 'remedialAlerts', 'activeTa', 'tahunAjarans', 'selectedTa'));
     }
 
     public function prestasi()
@@ -414,20 +421,36 @@ class WaliKelasController extends Controller
         return redirect()->back()->with('success', 'Prestasi siswa berhasil dihapus.');
     }
 
-    public function printPdf($siswa_id)
+    public function printPdf(Request $request, $siswa_id)
     {
         $user = Auth::user();
         $guru = $this->getGuruForUser($user);
         $activeTa = TahunAjaran::active();
 
-        $kelas = Kelas::where('wali_kelas_id', $guru->id)->firstOrFail();
-        $siswa = Siswa::where('kelas_id', $kelas->id)->findOrFail($siswa_id);
+        // 1. Get the current Wali Kelas's class (for authorization check)
+        $currentWaliKelas = Kelas::where('wali_kelas_id', $guru->id)->firstOrFail();
+        
+        // 2. Ensure student currently belongs to this homeroom teacher's class
+        $siswa = Siswa::where('kelas_id', $currentWaliKelas->id)->findOrFail($siswa_id);
 
-        // Fetch grades for this student from both tables
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
+
+        // 3. Resolve historical class of the student for the selected Year/Semester (from grades)
+        $nilaiKelas = DB::table('nilais')
+            ->where('siswa_id', $siswa->id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
+            ->first();
+
+        // If grades exist, use the class from the grade, otherwise fallback to student's current class
+        $kelas = $nilaiKelas ? Kelas::find($nilaiKelas->kelas_id) : $siswa->kelas;
+
+        // Fetch grades for this student from both tables using resolved historical class
         $umumGrades = DB::table('nilais')
             ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
             ->where('nilais.siswa_id', $siswa->id)
             ->where('nilais.kelas_id', $kelas->id)
+            ->where('nilais.tahun_ajaran_id', $selectedTa->id)
             ->where('mapels.jenis_mapel', 'umum')
             ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
             ->get();
@@ -438,6 +461,7 @@ class WaliKelasController extends Controller
 
         $khususGrades = Nilai::with('mapel')
             ->where('siswa_id', $siswa->id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
             ->whereHas('mapel', function($q) {
                 $q->where('jenis_mapel', 'khusus');
             })
@@ -445,12 +469,34 @@ class WaliKelasController extends Controller
 
         $grades = $umumGrades->concat($khususGrades);
 
-        // Calculate rank
-        $ranks = $this->calculateRankings($kelas->id, $activeTa->id);
+        // Calculate rank using resolved historical class
+        $ranks = $this->calculateRankings($kelas->id, $selectedTa->id);
         $studentRank = $ranks[$siswa->id] ?? ['rank' => '-', 'rata_rata' => 0];
 
         // Fetch achievements
-        $achievements = Prestasi::where('siswa_id', $siswa->id)->orderBy('tanggal', 'desc')->get();
+        $achievements = Prestasi::where('siswa_id', $siswa->id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
+            ->orderBy('tanggal_penghargaan', 'desc')
+            ->get();
+
+        // Resolve Wali Kelas penanggung jawab based on history of the selected academic year and resolved historical class
+        $namaWaliKelas = '-';
+        $nipWaliKelas = '-';
+        if ($kelas && $selectedTa) {
+            $waliKelasHistory = DB::table('wali_kelas_history')
+                ->where('kelas_id', $kelas->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->first();
+
+            if ($waliKelasHistory) {
+                $namaWaliKelas = $waliKelasHistory->guru_name ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nama) : null) ?? '-';
+                $nipWaliKelas = $waliKelasHistory->guru_nip ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nip) : null) ?? '-';
+            } else {
+                $classWali = $kelas->wali_kelas_id ? Guru::find($kelas->wali_kelas_id) : null;
+                $namaWaliKelas = $classWali ? $classWali->nama : '-';
+                $nipWaliKelas = $classWali ? $classWali->nip : '-';
+            }
+        }
 
         // Get Kepala Sekolah profile
         $kepsek = Guru::whereHas('user', function($q) {
@@ -460,12 +506,13 @@ class WaliKelasController extends Controller
         $data = [
             'siswa' => $siswa,
             'kelas' => $kelas,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'grades' => $grades,
             'rank' => $studentRank['rank'],
             'rata_rata' => $studentRank['rata_rata'],
             'achievements' => $achievements,
-            'waliKelas' => $guru,
+            'namaWaliKelas' => $namaWaliKelas,
+            'nipWaliKelas' => $nipWaliKelas,
             'kepsek' => $kepsek,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
         ];
@@ -487,6 +534,7 @@ class WaliKelasController extends Controller
                 ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
                 ->where('nilais.siswa_id', $siswa->id)
                 ->where('nilais.kelas_id', $kelas_id)
+                ->where('nilais.tahun_ajaran_id', $ta_id)
                 ->where('mapels.jenis_mapel', 'umum')
                 ->select('nilais.nilai_akhir')
                 ->get();
@@ -494,6 +542,7 @@ class WaliKelasController extends Controller
             $khususGrades = DB::table('nilais')
                 ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
                 ->where('nilais.siswa_id', $siswa->id)
+                ->where('nilais.tahun_ajaran_id', $ta_id)
                 ->where('mapels.jenis_mapel', 'khusus')
                 ->select('nilais.nilai_akhir')
                 ->get();
@@ -581,29 +630,6 @@ class WaliKelasController extends Controller
     private function getGuruForUser($user)
     {
         if (!$user) return null;
-        
-        // 1. Try relationship
-        $guru = $user->guru;
-        if ($guru) return $guru;
-
-        // 2. Try by user_id directly in DB
-        $guru = Guru::where('user_id', $user->id)->first();
-        if ($guru) return $guru;
-
-        // 3. Fallback: match NIP with username
-        $guru = Guru::where('nip', $user->username)->first();
-        if ($guru) return $guru;
-
-        // 4. Fallback: match NIP property
-        if (isset($user->nip)) {
-            $guru = Guru::where('nip', $user->nip)->first();
-            if ($guru) return $guru;
-        }
-
-        // 5. Fallback: match Name
-        $guru = Guru::where('nama', $user->name)->first();
-        if ($guru) return $guru;
-
-        return null;
+        return $user->guru ?? Guru::where('user_id', $user->id)->first();
     }
 }

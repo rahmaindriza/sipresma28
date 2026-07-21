@@ -87,13 +87,32 @@
                     @foreach($siswas as $s)
                     <tr class="hover:bg-[#FFF9FA] transition duration-150">
                         <td class="py-4 px-6 font-semibold text-[#8E797D]">{{ $loop->iteration }}</td>
-                        <td class="py-4 px-6 font-bold text-[#3D2228]">{{ $s->nama }}</td>
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-[#3D2228]">{{ $s->nama }}</span>
+                                <button type="button" onclick="showHistoriSiswa({{ $s->id }})" title="Lihat Histori Rapor & Prestasi" class="p-1 hover:bg-[#FDF4F5] text-blue-600 rounded transition border-0 bg-transparent cursor-pointer">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
                         <td class="py-4 px-6 font-semibold">{{ $s->nisn }}</td>
                         <td class="py-4 px-6">{{ $s->jk }}</td>
                         <td class="py-4 px-6">
-                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FDF4F5] text-[#9F5261] border border-[#EAE1E3]">
-                                {{ $s->kelas->nama_kelas ?? '-' }}
-                            </span>
+                            @if($s->status === 'Lulus')
+                                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
+                                    Alumni / Lulus
+                                </span>
+                            @elseif($s->status === 'Keluar')
+                                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
+                                    Keluar
+                                </span>
+                            @else
+                                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FDF4F5] text-[#9F5261] border border-[#EAE1E3]">
+                                    Kelas {{ $s->kelas->nama_kelas ?? '-' }}
+                                </span>
+                            @endif
                         </td>
                         <td class="py-4 px-6 text-right space-x-2 flex items-center justify-end">
                             <button onclick="showDetailSiswa({{ json_encode($s) }})" class="px-2.5 py-1.5 border border-[#9F5261] text-[#9F5261] hover:bg-[#9F5261] hover:text-white rounded-lg text-xs font-semibold transition flex items-center">

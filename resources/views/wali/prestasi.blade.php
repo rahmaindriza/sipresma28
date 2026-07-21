@@ -82,9 +82,9 @@
                         <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">{{ $p->juara }}</td>
                         <td class="py-3.5 px-4 text-center">
                             @if($p->sertifikat)
-                                <button onclick="previewSertifikat('{{ asset('uploads/sertifikat/' . $p->sertifikat) }}')" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition">
-                                    <i class="bi bi-file-earmark-image me-1"></i> Preview
-                                </button>
+                                <a href="{{ route('prestasi.download', $p->id) }}" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition inline-flex items-center">
+                                    <i class="bi bi-download me-1"></i> Unduh
+                                </a>
                             @else
                                 <span class="text-xs text-slate-400">-</span>
                             @endif

@@ -15,10 +15,16 @@
                 @endif
             </p>
         </div>
+        @if(!$activeTa)
+        <div class="px-4 py-2 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs font-semibold">
+            Tahun Ajaran Aktif belum diset
+        </div>
+        @else
         <button onclick="toggleModal('add-modal')" class="mt-4 sm:mt-0 px-4 py-2 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(159, 82, 97, 0.25);">
             <i class="bi bi-plus-lg me-1.5"></i>
             Tambah Prestasi
         </button>
+        @endif
     </div>
 
     <!-- Search & Filter Form -->
@@ -80,9 +86,9 @@
                         <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">{{ $p->juara }}</td>
                         <td class="py-3.5 px-4 text-center">
                             @if($p->sertifikat)
-                                <button onclick="previewSertifikat('{{ asset('uploads/sertifikat/' . $p->sertifikat) }}')" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition">
-                                    <i class="bi bi-file-earmark-image me-1"></i> Preview
-                                </button>
+                                <a href="{{ route('prestasi.download', $p->id) }}" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition inline-flex items-center">
+                                    <i class="bi bi-download me-1"></i> Unduh
+                                </a>
                             @else
                                 <span class="text-xs text-slate-400">-</span>
                             @endif

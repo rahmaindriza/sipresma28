@@ -237,7 +237,36 @@ class AdminController extends Controller
             'wali_kelas_id' => 'nullable|exists:gurus,id',
         ]);
 
-        Kelas::create($request->all());
+        DB::transaction(function() use ($request) {
+            $kelas = Kelas::create($request->all());
+
+            $activeTa = TahunAjaran::active();
+            if ($activeTa && $request->wali_kelas_id) {
+                $newWali = Guru::find($request->wali_kelas_id);
+                // Record in history table
+                DB::table('wali_kelas_history')->updateOrInsert(
+                    [
+                        'kelas_id' => $kelas->id,
+                        'tahun_ajaran_id' => $activeTa->id,
+                    ],
+                    [
+                        'guru_id' => $request->wali_kelas_id,
+                        'guru_name' => $newWali ? $newWali->nama : null,
+                        'guru_nip' => $newWali ? $newWali->nip : null,
+                        'updated_at' => now(),
+                        'created_at' => now()
+                    ]
+                );
+
+                // Update User role
+                if ($newWali && $newWali->user_id) {
+                    $newUser = User::find($newWali->user_id);
+                    if ($newUser) {
+                        $newUser->update(['role' => 'wali_kelas']);
+                    }
+                }
+            }
+        });
 
         return redirect()->back()->with('success', 'Data Kelas berhasil ditambahkan.');
     }
@@ -251,7 +280,70 @@ class AdminController extends Controller
             'wali_kelas_id' => 'nullable|exists:gurus,id',
         ]);
 
-        $kelas->update($request->all());
+        $oldWaliKelasId = $kelas->wali_kelas_id;
+        $newWaliKelasId = $request->wali_kelas_id;
+
+        DB::transaction(function() use ($kelas, $request, $oldWaliKelasId, $newWaliKelasId) {
+            $kelas->update($request->all());
+
+            $activeTa = TahunAjaran::active();
+            if ($activeTa) {
+                if ($newWaliKelasId) {
+                    $newWali = Guru::find($newWaliKelasId);
+                    DB::table('wali_kelas_history')->updateOrInsert(
+                        [
+                            'kelas_id' => $kelas->id,
+                            'tahun_ajaran_id' => $activeTa->id,
+                        ],
+                        [
+                            'guru_id' => $newWaliKelasId,
+                            'guru_name' => $newWali ? $newWali->nama : null,
+                            'guru_nip' => $newWali ? $newWali->nip : null,
+                            'updated_at' => now(),
+                            'created_at' => now()
+                        ]
+                    );
+
+                    // Update new Wali Kelas role to 'wali_kelas'
+                    if ($newWali && $newWali->user_id) {
+                        $newUser = User::find($newWali->user_id);
+                        if ($newUser) {
+                            $newUser->update(['role' => 'wali_kelas']);
+                        }
+                    }
+                } else {
+                    // If wali_kelas_id is unassigned, set to null in history
+                    DB::table('wali_kelas_history')
+                        ->where('kelas_id', $kelas->id)
+                        ->where('tahun_ajaran_id', $activeTa->id)
+                        ->update([
+                            'guru_id' => null,
+                            'guru_name' => null,
+                            'guru_nip' => null,
+                            'updated_at' => now()
+                        ]);
+                }
+
+                if ($oldWaliKelasId != $newWaliKelasId) {
+                    // Update old Wali Kelas role to guru_mapel if not assigned to other classes
+                    if ($oldWaliKelasId) {
+                        $otherClassCount = Kelas::where('wali_kelas_id', $oldWaliKelasId)
+                            ->where('id', '!=', $kelas->id)
+                            ->count();
+
+                        if ($otherClassCount === 0) {
+                            $oldWali = Guru::find($oldWaliKelasId);
+                            if ($oldWali && $oldWali->user_id) {
+                                $oldUser = User::find($oldWali->user_id);
+                                if ($oldUser && $oldUser->role === 'wali_kelas') {
+                                    $oldUser->update(['role' => 'guru_mapel']);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         return redirect()->back()->with('success', 'Data Kelas berhasil diperbarui.');
     }
@@ -405,7 +497,10 @@ class AdminController extends Controller
             if ($request->status === 'aktif') {
                 TahunAjaran::where('status', 'aktif')->update(['status' => 'nonaktif']);
             }
-            TahunAjaran::create($request->all());
+            $ta = TahunAjaran::create($request->all());
+            if ($ta->status === 'aktif') {
+                $this->snapshotWaliKelas($ta->id);
+            }
         });
 
         return redirect()->back()->with('success', 'Tahun Ajaran berhasil ditambahkan.');
@@ -426,9 +521,38 @@ class AdminController extends Controller
                 TahunAjaran::where('status', 'aktif')->update(['status' => 'nonaktif']);
             }
             $ta->update($request->all());
+            if ($ta->status === 'aktif') {
+                $this->snapshotWaliKelas($ta->id);
+            }
         });
 
         return redirect()->back()->with('success', 'Tahun Ajaran berhasil diperbarui.');
+    }
+
+    /**
+     * Snapshot current class homeroom teachers for the specified active academic year.
+     */
+    private function snapshotWaliKelas($taId)
+    {
+        $kelasList = Kelas::whereNotNull('wali_kelas_id')->get();
+        foreach ($kelasList as $kls) {
+            $guru = Guru::find($kls->wali_kelas_id);
+            if ($guru) {
+                DB::table('wali_kelas_history')->updateOrInsert(
+                    [
+                        'kelas_id' => $kls->id,
+                        'tahun_ajaran_id' => $taId,
+                    ],
+                    [
+                        'guru_id' => $kls->wali_kelas_id,
+                        'guru_name' => $guru->nama,
+                        'guru_nip' => $guru->nip,
+                        'updated_at' => now(),
+                        'created_at' => now()
+                    ]
+                );
+            }
+        }
     }
 
     public function tahunAjaranDestroy($id)
@@ -444,40 +568,93 @@ class AdminController extends Controller
     // ==========================================
     // TEACHER ASSIGNMENT (GURU MAPEL KELAS)
     // ==========================================
-    public function assignments()
+    public function assignments(Request $request)
     {
-        $assignments = GuruMapelKelas::with(['guru', 'kelas', 'mapel', 'tahunAjaran'])->get();
+        $activeTa = TahunAjaran::active();
+        $activeTaId = $activeTa ? $activeTa->id : null;
+        
+        // If tahun_ajaran_id is not specified in request, default to active Year/Semester
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTaId);
+
+        $query = GuruMapelKelas::with(['guru', 'kelas', 'mapel', 'tahunAjaran']);
+
+        // Filter by Tahun Ajaran (defaults to active TA if not filtered otherwise)
+        if ($selectedTaId) {
+            $query->where('tahun_ajaran_id', $selectedTaId);
+        }
+
+        // Filter by Guru Name search
+        if ($request->filled('search_guru')) {
+            $search = $request->search_guru;
+            $query->whereHas('guru', function($q) use ($search) {
+                $q->where('nama', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Filter by Kelas
+        if ($request->filled('kelas_id')) {
+            $query->where('kelas_id', $request->kelas_id);
+        }
+
+        // Filter by Mapel
+        if ($request->filled('mapel_id')) {
+            $query->where('mapel_id', $request->mapel_id);
+        }
+
+        $assignments = $query->get();
+
         $gurus = Guru::orderBy('nama')->get();
         $kelas = Kelas::orderBy('nama_kelas')->get();
         $mapels = Mapel::orderBy('nama_mapel')->get();
-        $tahunAjarans = TahunAjaran::orderBy('tahun', 'desc')->get();
+        $tahunAjarans = TahunAjaran::orderBy('tahun', 'desc')->orderBy('semester', 'desc')->get();
         
-        return view('admin.assignments', compact('assignments', 'gurus', 'kelas', 'mapels', 'tahunAjarans'));
+        return view('admin.assignments', compact('assignments', 'gurus', 'kelas', 'mapels', 'tahunAjarans', 'activeTa', 'selectedTaId'));
     }
 
     public function assignmentStore(Request $request)
     {
-        $request->validate([
+        $rules = [
             'guru_id' => 'required|exists:gurus,id',
-            'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mapels,id',
             'tahun_ajaran_id' => 'required|exists:tahun_ajarans,id',
-        ]);
+        ];
 
-        $exists = GuruMapelKelas::where([
-            'guru_id' => $request->guru_id,
-            'kelas_id' => $request->kelas_id,
-            'mapel_id' => $request->mapel_id,
-            'tahun_ajaran_id' => $request->tahun_ajaran_id,
-        ])->exists();
-
-        if ($exists) {
-            return redirect()->back()->with('error', 'Guru sudah ditugaskan untuk mapel dan kelas tersebut di tahun ajaran ini.');
+        if ($request->kelas_id !== 'all') {
+            $rules['kelas_id'] = 'required|exists:kelas,id';
+        } else {
+            $rules['kelas_id'] = 'required';
         }
 
-        GuruMapelKelas::create($request->all());
+        $request->validate($rules);
 
-        return redirect()->back()->with('success', 'Penugasan Guru berhasil ditambahkan.');
+        if ($request->kelas_id === 'all') {
+            $allKelas = Kelas::all();
+            foreach ($allKelas as $kls) {
+                GuruMapelKelas::firstOrCreate([
+                    'guru_id' => $request->guru_id,
+                    'kelas_id' => $kls->id,
+                    'mapel_id' => $request->mapel_id,
+                    'tahun_ajaran_id' => $request->tahun_ajaran_id,
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Berhasil menambahkan penugasan guru ke seluruh kelas!');
+        } else {
+            $exists = GuruMapelKelas::where([
+                'guru_id' => $request->guru_id,
+                'kelas_id' => $request->kelas_id,
+                'mapel_id' => $request->mapel_id,
+                'tahun_ajaran_id' => $request->tahun_ajaran_id,
+            ])->exists();
+
+            if ($exists) {
+                return redirect()->back()->with('error', 'Guru sudah ditugaskan untuk mapel dan kelas tersebut di tahun ajaran ini.');
+            }
+
+            GuruMapelKelas::create($request->all());
+
+            return redirect()->back()->with('success', 'Penugasan Guru berhasil ditambahkan.');
+        }
     }
 
     public function assignmentDestroy($id)
@@ -610,6 +787,9 @@ class AdminController extends Controller
     public function monitoringNilai(Request $request)
     {
         $activeTa = TahunAjaran::active();
+        $tahunAjarans = TahunAjaran::orderBy('tahun', 'desc')->orderBy('semester', 'desc')->get();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
 
         // Query students based on class filter and search query
         $studentsQuery = Siswa::with(['kelas']);
@@ -630,19 +810,25 @@ class AdminController extends Controller
         $mapels = Mapel::orderBy('jenis_mapel')->orderBy('nama_mapel')->get();
 
         // Get grades for the active students
-        $umumGrades = DB::table('nilais')
-            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-            ->whereIn('nilais.siswa_id', $students->pluck('id'))
-            ->where('mapels.jenis_mapel', 'umum')
-            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
-            ->get();
+        $umumGrades = collect();
+        $khususGrades = collect();
+        if ($selectedTa) {
+            $umumGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->whereIn('nilais.siswa_id', $students->pluck('id'))
+                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
+                ->where('mapels.jenis_mapel', 'umum')
+                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
+                ->get();
 
-        $khususGrades = DB::table('nilais')
-            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-            ->whereIn('nilais.siswa_id', $students->pluck('id'))
-            ->where('mapels.jenis_mapel', 'khusus')
-            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
-            ->get();
+            $khususGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->whereIn('nilais.siswa_id', $students->pluck('id'))
+                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
+                ->where('mapels.jenis_mapel', 'khusus')
+                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
+                ->get();
+        }
 
         $mergedGrades = $umumGrades->concat($khususGrades);
         $grades = $mergedGrades->groupBy('siswa_id');
@@ -650,21 +836,25 @@ class AdminController extends Controller
         // Precalculate all classes rankings
         $classes = Kelas::all();
         $ranks = [];
-        foreach ($classes as $cls) {
-            $classRanks = $this->calculateClassRankings($cls->id);
-            foreach ($classRanks as $sId => $rData) {
-                $ranks[$sId] = $rData;
+        if ($selectedTa) {
+            foreach ($classes as $cls) {
+                $classRanks = $this->calculateClassRankings($cls->id, $selectedTa->id);
+                foreach ($classRanks as $sId => $rData) {
+                    $ranks[$sId] = $rData;
+                }
             }
         }
 
         $listKelas = Kelas::orderBy('nama_kelas')->get();
 
-        return view('admin.monitoring_nilai', compact('students', 'mapels', 'ranks', 'grades', 'listKelas', 'activeTa'));
+        return view('admin.monitoring_nilai', compact('students', 'mapels', 'ranks', 'grades', 'listKelas', 'activeTa', 'tahunAjarans', 'selectedTa'));
     }
 
     public function cetakRekapNilaiPdf(Request $request)
     {
         $activeTa = TahunAjaran::active();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
 
         // Query students based on class filter and search query
         $studentsQuery = Siswa::with(['kelas']);
@@ -685,19 +875,25 @@ class AdminController extends Controller
         $mapels = Mapel::orderBy('jenis_mapel')->orderBy('nama_mapel')->get();
 
         // Get grades for the active students
-        $umumGrades = DB::table('nilais')
-            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-            ->whereIn('nilais.siswa_id', $students->pluck('id'))
-            ->where('mapels.jenis_mapel', 'umum')
-            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
-            ->get();
+        $umumGrades = collect();
+        $khususGrades = collect();
+        if ($selectedTa) {
+            $umumGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->whereIn('nilais.siswa_id', $students->pluck('id'))
+                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
+                ->where('mapels.jenis_mapel', 'umum')
+                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
+                ->get();
 
-        $khususGrades = DB::table('nilais')
-            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-            ->whereIn('nilais.siswa_id', $students->pluck('id'))
-            ->where('mapels.jenis_mapel', 'khusus')
-            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
-            ->get();
+            $khususGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->whereIn('nilais.siswa_id', $students->pluck('id'))
+                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
+                ->where('mapels.jenis_mapel', 'khusus')
+                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_akhir')
+                ->get();
+        }
 
         $mergedGrades = $umumGrades->concat($khususGrades);
         $grades = $mergedGrades->groupBy('siswa_id');
@@ -705,10 +901,12 @@ class AdminController extends Controller
         // Precalculate all classes rankings
         $classes = Kelas::all();
         $ranks = [];
-        foreach ($classes as $cls) {
-            $classRanks = $this->calculateClassRankings($cls->id);
-            foreach ($classRanks as $sId => $rData) {
-                $ranks[$sId] = $rData;
+        if ($selectedTa) {
+            foreach ($classes as $cls) {
+                $classRanks = $this->calculateClassRankings($cls->id, $selectedTa->id);
+                foreach ($classRanks as $sId => $rData) {
+                    $ranks[$sId] = $rData;
+                }
             }
         }
 
@@ -726,7 +924,7 @@ class AdminController extends Controller
             'mapels' => $mapels,
             'ranks' => $ranks,
             'grades' => $grades,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'kepsek' => $kepsek,
             'kelasText' => $kelasText,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
@@ -736,43 +934,86 @@ class AdminController extends Controller
         return $pdf->stream('Rekap_Nilai_Siswa_' . time() . '.pdf');
     }
 
-    public function printSiswaPdf($siswa_id)
+    public function printSiswaPdf(Request $request, $siswa_id)
     {
         $siswa = Siswa::with('kelas')->findOrFail($siswa_id);
-        $kelas = $siswa->kelas;
         $activeTa = TahunAjaran::active();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
 
-        // Get Wali Kelas profile
-        $waliKelas = $kelas ? Guru::find($kelas->wali_kelas_id) : null;
+        // Resolve historical class of the student for the selected Year/Semester (from grades)
+        $nilaiKelas = DB::table('nilais')
+            ->where('siswa_id', $siswa->id)
+            ->where('tahun_ajaran_id', $selectedTa->id)
+            ->first();
+
+        // If grades exist, use the class from the grade, otherwise fallback to student's current class
+        $kelas = $nilaiKelas ? Kelas::find($nilaiKelas->kelas_id) : $siswa->kelas;
+
+        // Get Wali Kelas profile (historical)
+        $namaWaliKelas = '-';
+        $nipWaliKelas = '-';
+        if ($kelas && $selectedTa) {
+            $waliKelasHistory = DB::table('wali_kelas_history')
+                ->where('kelas_id', $kelas->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->first();
+
+            if ($waliKelasHistory) {
+                $namaWaliKelas = $waliKelasHistory->guru_name ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nama) : null) ?? '-';
+                $nipWaliKelas = $waliKelasHistory->guru_nip ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nip) : null) ?? '-';
+            } else {
+                $currentWali = $kelas->wali_kelas_id ? Guru::find($kelas->wali_kelas_id) : null;
+                $namaWaliKelas = $currentWali ? $currentWali->nama : '-';
+                $nipWaliKelas = $currentWali ? $currentWali->nip : '-';
+            }
+        }
 
         // Fetch grades for this student from both tables
-        $umumGrades = DB::table('nilais')
-            ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-            ->where('nilais.siswa_id', $siswa->id)
-            ->where('nilais.kelas_id', $kelas->id)
-            ->where('mapels.jenis_mapel', 'umum')
-            ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
-            ->get();
+        $umumGrades = collect();
+        if ($selectedTa) {
+            $umumGrades = DB::table('nilais')
+                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
+                ->where('nilais.siswa_id', $siswa->id)
+                ->where('nilais.kelas_id', $kelas->id)
+                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
+                ->where('mapels.jenis_mapel', 'umum')
+                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
+                ->get();
+        }
 
         foreach ($umumGrades as $ug) {
             $ug->mapel = Mapel::find($ug->mapel_id);
         }
 
-        $khususGrades = Nilai::with('mapel')
-            ->where('siswa_id', $siswa->id)
-            ->whereHas('mapel', function($q) {
-                $q->where('jenis_mapel', 'khusus');
-            })
-            ->get();
+        $khususGrades = collect();
+        if ($selectedTa) {
+            $khususGrades = Nilai::with('mapel')
+                ->where('siswa_id', $siswa->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->whereHas('mapel', function($q) {
+                    $q->where('jenis_mapel', 'khusus');
+                })
+                ->get();
+        }
 
         $grades = $umumGrades->concat($khususGrades);
 
         // Calculate rank
-        $ranks = $this->calculateClassRankings($kelas->id);
-        $studentRank = $ranks[$siswa->id] ?? ['rank' => '-', 'rata_rata' => 0];
+        $studentRank = ['rank' => '-', 'rata_rata' => 0];
+        if ($selectedTa) {
+            $ranks = $this->calculateClassRankings($kelas->id, $selectedTa->id);
+            $studentRank = $ranks[$siswa->id] ?? ['rank' => '-', 'rata_rata' => 0];
+        }
 
         // Fetch achievements
-        $achievements = Prestasi::where('siswa_id', $siswa->id)->orderBy('tanggal', 'desc')->get();
+        $achievements = collect();
+        if ($selectedTa) {
+            $achievements = Prestasi::where('siswa_id', $siswa->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->orderBy('tanggal_penghargaan', 'desc')
+                ->get();
+        }
 
         // Get Kepala Sekolah profile
         $kepsek = Guru::whereHas('user', function($q) {
@@ -782,12 +1023,13 @@ class AdminController extends Controller
         $data = [
             'siswa' => $siswa,
             'kelas' => $kelas,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'grades' => $grades,
             'rank' => $studentRank['rank'],
             'rata_rata' => $studentRank['rata_rata'],
             'achievements' => $achievements,
-            'waliKelas' => $waliKelas,
+            'namaWaliKelas' => $namaWaliKelas,
+            'nipWaliKelas' => $nipWaliKelas,
             'kepsek' => $kepsek,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
         ];
@@ -796,7 +1038,7 @@ class AdminController extends Controller
         return $pdf->stream('Laporan_Nilai_' . str_replace(' ', '_', $siswa->nama) . '.pdf');
     }
 
-    private function calculateClassRankings($kelas_id)
+    private function calculateClassRankings($kelas_id, $ta_id)
     {
         $siswas = Siswa::where('kelas_id', $kelas_id)->get();
         $studentAverages = [];
@@ -806,6 +1048,7 @@ class AdminController extends Controller
                 ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
                 ->where('nilais.siswa_id', $siswa->id)
                 ->where('nilais.kelas_id', $kelas_id)
+                ->where('nilais.tahun_ajaran_id', $ta_id)
                 ->where('mapels.jenis_mapel', 'umum')
                 ->select('nilais.nilai_akhir')
                 ->get();
@@ -813,6 +1056,7 @@ class AdminController extends Controller
             $khususGrades = DB::table('nilais')
                 ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
                 ->where('nilais.siswa_id', $siswa->id)
+                ->where('nilais.tahun_ajaran_id', $ta_id)
                 ->where('mapels.jenis_mapel', 'khusus')
                 ->select('nilais.nilai_akhir')
                 ->get();
@@ -854,7 +1098,16 @@ class AdminController extends Controller
      */
     public function monitoringPrestasi(Request $request)
     {
+        $activeTa = TahunAjaran::active();
+        $tahunAjarans = TahunAjaran::orderBy('tahun', 'desc')->orderBy('semester', 'desc')->get();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
+
         $query = Prestasi::with('siswa.kelas')->latest();
+
+        if ($selectedTa) {
+            $query->where('tahun_ajaran_id', $selectedTa->id);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -878,9 +1131,8 @@ class AdminController extends Controller
 
         $prestasis = $query->get();
         $listKelas = Kelas::orderBy('nama_kelas')->get();
-        $activeTa = TahunAjaran::active();
 
-        return view('admin.monitoring_prestasi', compact('prestasis', 'listKelas', 'activeTa'));
+        return view('admin.monitoring_prestasi', compact('prestasis', 'listKelas', 'activeTa', 'tahunAjarans', 'selectedTa'));
     }
 
     /**
@@ -888,7 +1140,15 @@ class AdminController extends Controller
      */
     public function cetakRekapPdf(Request $request)
     {
+        $activeTa = TahunAjaran::active();
+        $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);
+        $selectedTa = TahunAjaran::find($selectedTaId) ?? $activeTa;
+
         $query = Prestasi::with(['siswa.kelas'])->latest();
+
+        if ($selectedTa) {
+            $query->where('tahun_ajaran_id', $selectedTa->id);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -911,7 +1171,6 @@ class AdminController extends Controller
         }
 
         $prestasis = $query->get();
-        $activeTa = TahunAjaran::active();
 
         // Get Kepala Sekolah profile
         $kepsek = Guru::whereHas('user', function($q) {
@@ -924,7 +1183,7 @@ class AdminController extends Controller
 
         $data = [
             'prestasis' => $prestasis,
-            'activeTa' => $activeTa,
+            'activeTa' => $selectedTa,
             'kepsek' => $kepsek,
             'kelasText' => $kelasText,
             'kategori' => $request->kategori ?? 'Semua Kategori',

@@ -15,7 +15,7 @@
                 <i class="bi bi-file-pdf me-1.5"></i> Cetak Rekapitulasi PDF
             </a>
             <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-55 text-emerald-800 border border-emerald-250">
-                Semester Aktif: {{ $activeTa ? $activeTa->tahun . ' (' . $activeTa->semester . ')' : '-' }}
+                Semester: {{ $selectedTa ? $selectedTa->tahun . ' (' . $selectedTa->semester . ')' : '-' }}
             </span>
         </div>
     </div>
@@ -44,6 +44,17 @@
                     <option value="">-- Semua Kategori --</option>
                     <option value="Akademik" {{ request('kategori') === 'Akademik' ? 'selected' : '' }}>Akademik</option>
                     <option value="Non-Akademik" {{ request('kategori') === 'Non-Akademik' ? 'selected' : '' }}>Non-Akademik</option>
+                </select>
+            </div>
+
+            <!-- Tahun Ajaran Filter -->
+            <div class="w-full md:w-48">
+                <select name="tahun_ajaran_id" class="w-full px-4 py-2 bg-white border border-[var(--border-light)] rounded-xl text-[var(--text-dark-main)] focus:outline-none focus:border-[var(--primary-burgundy)] transition text-sm">
+                    @foreach($tahunAjarans as $ta)
+                        <option value="{{ $ta->id }}" {{ $selectedTa->id == $ta->id ? 'selected' : '' }}>
+                            {{ $ta->tahun }} ({{ $ta->semester }})
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -99,9 +110,9 @@
                         </td>
                         <td class="py-3.5 px-4 text-center">
                             @if($p->sertifikat)
-                                <button onclick="previewSertifikat('{{ asset('uploads/sertifikat/' . $p->sertifikat) }}')" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition">
-                                    <i class="bi bi-file-earmark-image me-1"></i> Preview
-                                </button>
+                                <a href="{{ route('prestasi.download', $p->id) }}" class="btn btn-sm px-2 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-[10px] font-bold transition inline-flex items-center">
+                                    <i class="bi bi-download me-1"></i> Unduh
+                                </a>
                             @else
                                 <span class="text-xs text-slate-400">-</span>
                             @endif

@@ -16,6 +16,7 @@ class Nilai extends Model
         'siswa_id',
         'mapel_id',
         'kelas_id',
+        'tahun_ajaran_id',
         'nilai_tugas',
         'nilai_uh',
         'nilai_uts',

@@ -18,27 +18,10 @@ class NilaiController extends Controller
     {
         $user = Auth::user();
         
-        // 1. Try to find Guru by user_id
+        // 1. Get Guru by user_id (Strict relation)
         $guru = null;
         if ($user) {
             $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-            
-            // 2. Fallback check: try by username as NIP
-            if (!$guru) {
-                $guru = DB::table('gurus')
-                    ->where('nip', $user->username)
-                    ->first();
-            }
-
-            // 3. Fallback check: try by NIP property if exists
-            if (!$guru && isset($user->nip)) {
-                $guru = DB::table('gurus')->where('nip', $user->nip)->first();
-            }
-            
-            // 4. Fallback check: try by matching nama with user name
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nama', $user->name)->first();
-            }
         }
 
         $activeTa = TahunAjaran::active();
@@ -75,12 +58,14 @@ class NilaiController extends Controller
 
         $siswas = [];
         if ($kelasId && $mapelId) {
+            $activeTaId = $activeTa ? $activeTa->id : null;
             // Using DB::table with a Left Join to pull students and their respective scores
             $siswas = DB::table('siswas')
-                ->leftJoin('nilais', function($join) use ($mapelId, $kelasId) {
+                ->leftJoin('nilais', function($join) use ($mapelId, $kelasId, $activeTaId) {
                     $join->on('siswas.id', '=', 'nilais.siswa_id')
                          ->where('nilais.mapel_id', '=', $mapelId)
-                         ->where('nilais.kelas_id', '=', $kelasId);
+                         ->where('nilais.kelas_id', '=', $kelasId)
+                         ->where('nilais.tahun_ajaran_id', '=', $activeTaId);
                 })
                 ->where('siswas.kelas_id', '=', $kelasId)
                 ->select(
@@ -116,19 +101,10 @@ class NilaiController extends Controller
     {
         $user = Auth::user();
         
-        // Find Guru by user_id or fallbacks
+        // Find Guru by user_id (Strict relation)
         $guru = null;
         if ($user) {
             $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nip', $user->username)->first();
-            }
-            if (!$guru && isset($user->nip)) {
-                $guru = DB::table('gurus')->where('nip', $user->nip)->first();
-            }
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nama', $user->name)->first();
-            }
         }
 
         $kelasId = null;
@@ -146,6 +122,11 @@ class NilaiController extends Controller
 
         if (!$kelasId) {
             return redirect()->back()->with('error', 'Kelas tidak diidentifikasi.');
+        }
+
+        $activeTa = TahunAjaran::active();
+        if (!$activeTa) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
         $request->validate([
@@ -185,12 +166,13 @@ class NilaiController extends Controller
             // Status KKM threshold: >= 75 is 'Lulus', otherwise 'Remedial'
             $statusKkm = ($nilaiAkhir >= 75) ? 'Lulus' : 'Remedial';
 
-            // Smart insert or update based on (siswa_id, mapel_id, kelas_id)
+            // Smart insert or update based on (siswa_id, mapel_id, kelas_id, tahun_ajaran_id)
             DB::table('nilais')->updateOrInsert(
                 [
                     'siswa_id' => $siswaId,
                     'mapel_id' => $mapelId,
                     'kelas_id' => $kelasId,
+                    'tahun_ajaran_id' => $activeTa->id,
                 ],
                 [
                     'nilai_tugas' => $tugas,
@@ -236,13 +218,15 @@ class NilaiController extends Controller
 
         $activeTa = TahunAjaran::active();
         $kelasId = $kelas->id;
+        $activeTaId = $activeTa ? $activeTa->id : null;
 
         // Query students and their grades for this class and subject
         $siswas = DB::table('siswas')
-            ->leftJoin('nilais', function($join) use ($mapelId, $kelasId) {
+            ->leftJoin('nilais', function($join) use ($mapelId, $kelasId, $activeTaId) {
                 $join->on('siswas.id', '=', 'nilais.siswa_id')
                      ->where('nilais.mapel_id', '=', $mapelId)
-                     ->where('nilais.kelas_id', '=', $kelasId);
+                     ->where('nilais.kelas_id', '=', $kelasId)
+                     ->where('nilais.tahun_ajaran_id', '=', $activeTaId);
             })
             ->where('siswas.kelas_id', '=', $kelasId)
             ->select(

@@ -18,27 +18,10 @@ class GuruGradeController extends Controller
     {
         $user = Auth::user();
         
-        // 1. Try to find Guru by user_id
+        // 1. Get Guru by user_id (Strict relation)
         $guru = null;
         if ($user) {
             $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-            
-            // 2. Fallback check: try by username as NIP
-            if (!$guru) {
-                $guru = DB::table('gurus')
-                    ->where('nip', $user->username)
-                    ->first();
-            }
-
-            // 3. Fallback check: try by NIP property if exists
-            if (!$guru && isset($user->nip)) {
-                $guru = DB::table('gurus')->where('nip', $user->nip)->first();
-            }
-            
-            // 4. Fallback check: try by matching nama with user name
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nama', $user->name)->first();
-            }
         }
 
         $activeTa = TahunAjaran::active();
@@ -114,6 +97,7 @@ class GuruGradeController extends Controller
                 $all_grades = DB::table('nilais')
                     ->where('kelas_id', $kelas_id)
                     ->where('mapel_id', $mapel_id)
+                    ->where('tahun_ajaran_id', $activeTaId)
                     ->get()
                     ->keyBy('siswa_id');
             } else {
@@ -143,19 +127,10 @@ class GuruGradeController extends Controller
 
         $user = Auth::user();
         
-        // Find Guru by user_id or fallbacks
+        // Find Guru by user_id (Strict relation)
         $guru = null;
         if ($user) {
             $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nip', $user->username)->first();
-            }
-            if (!$guru && isset($user->nip)) {
-                $guru = DB::table('gurus')->where('nip', $user->nip)->first();
-            }
-            if (!$guru) {
-                $guru = DB::table('gurus')->where('nama', $user->name)->first();
-            }
         }
 
         $activeTa = TahunAjaran::active();
@@ -204,6 +179,7 @@ class GuruGradeController extends Controller
                     'siswa_id' => $siswa_id,
                     'mapel_id' => $mapel_id,
                     'kelas_id' => $kelas_id,
+                    'tahun_ajaran_id' => $activeTaId,
                 ],
                 [
                     'nilai_tugas' => $tugas,
