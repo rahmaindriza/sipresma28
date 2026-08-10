@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Tahun Ajaran Default
-        TahunAjaran::create([
+        $tahunAjaran = TahunAjaran::create([
             'tahun' => '2025/2026',
             'semester' => 'Ganjil',
             'status' => 'aktif',
@@ -38,14 +38,61 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 3. Data Master Mata Pelajaran Awal (KKM 75)
-        Mapel::create(['nama_mapel' => 'Matematika', 'kode_mapel' => 'MTK', 'jenis_mapel' => 'umum', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Bahasa Indonesia', 'kode_mapel' => 'BINDO', 'jenis_mapel' => 'umum', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Ilmu Pengetahuan Alam', 'kode_mapel' => 'IPA', 'jenis_mapel' => 'umum', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Ilmu Pengetahuan Sosial', 'kode_mapel' => 'IPS', 'jenis_mapel' => 'umum', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Pendidikan Pancasila dan Kewarganegaraan', 'kode_mapel' => 'PKN', 'jenis_mapel' => 'umum', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 'kode_mapel' => 'PJOK', 'jenis_mapel' => 'khusus', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Pendidikan Agama Islam', 'kode_mapel' => 'PAI', 'jenis_mapel' => 'khusus', 'kkm' => 75]);
-        Mapel::create(['nama_mapel' => 'Seni Budaya dan Prakarya', 'kode_mapel' => 'SBDP', 'jenis_mapel' => 'khusus', 'kkm' => 75]);
+        Mapel::create([
+            'nama_mapel' => 'Matematika',
+            'kode_mapel' => 'MTK',
+            'jenis_mapel' => 'umum',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Bahasa Indonesia',
+            'kode_mapel' => 'BINDO',
+            'jenis_mapel' => 'umum',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Ilmu Pengetahuan Alam',
+            'kode_mapel' => 'IPA',
+            'jenis_mapel' => 'umum',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Ilmu Pengetahuan Sosial',
+            'kode_mapel' => 'IPS',
+            'jenis_mapel' => 'umum',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Pendidikan Pancasila dan Kewarganegaraan',
+            'kode_mapel' => 'PKN',
+            'jenis_mapel' => 'umum',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Pendidikan Jasmani, Olahraga, dan Kesehatan',
+            'kode_mapel' => 'PJOK',
+            'jenis_mapel' => 'khusus',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Pendidikan Agama Islam',
+            'kode_mapel' => 'PAI',
+            'jenis_mapel' => 'khusus',
+            'kkm' => 75
+        ]);
+
+        Mapel::create([
+            'nama_mapel' => 'Seni Budaya dan Prakarya',
+            'kode_mapel' => 'SBDP',
+            'jenis_mapel' => 'khusus',
+            'kkm' => 75
+        ]);
 
         // 4. Seed Wali Kelas Zukira
         $userWali = User::create([
@@ -98,8 +145,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 7. Seed Achievements (Prestasi)
+
+        // Prestasi Siswa 1
         Prestasi::create([
             'siswa_id' => $siswa1->id,
+            'tahun_ajaran_id' => $tahunAjaran->id,
             'nama_lomba' => 'Lomba OSN Matematika Kabupaten',
             'kategori' => 'Akademik',
             'jenis_pelaksanaan' => 'Luar Sekolah',
@@ -108,8 +158,10 @@ class DatabaseSeeder extends Seeder
             'tanggal_penghargaan' => '2026-02-15',
         ]);
 
+        // Prestasi Siswa 2
         Prestasi::create([
             'siswa_id' => $siswa2->id,
+            'tahun_ajaran_id' => $tahunAjaran->id,
             'nama_lomba' => 'FLS2N Seni Tari Provinsi',
             'kategori' => 'Non-Akademik',
             'jenis_pelaksanaan' => 'Luar Sekolah',
