@@ -26,7 +26,7 @@
     </div>
 
     <!-- Input Form -->
-    <form action="{{ route('guru.grades.store', $assignment->id) }}" method="POST" class="space-y-6">
+    <form action="{{ route('guru.grades.store.form', $assignment->id) }}" method="POST" class="space-y-6">
         @csrf
         <div class="glass-panel rounded-3xl overflow-hidden shadow-xl">
             <div class="overflow-x-auto">

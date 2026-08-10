@@ -190,7 +190,7 @@ Route::middleware(['auth', 'role:guru_mapel'])->prefix('guru')->name('guru.')->g
     Route::get('/grades', [GuruGradeController::class, 'index'])->name('grades.index');
     Route::post('/grades', [GuruGradeController::class, 'store'])->name('grades.store');
     Route::get('/grades/{assignment_id}', [GuruController::class, 'showGradeForm'])->name('grades');
-    Route::post('/grades/{assignment_id}', [GuruController::class, 'storeGrades'])->name('grades.store');
+    Route::post('/grades/{assignment_id}', [GuruController::class, 'storeGrades'])->name('grades.store.form');
 });
 
 // ==========================================
