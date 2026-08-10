@@ -150,6 +150,7 @@ class DatabaseSeeder extends Seeder
         Prestasi::create([
             'siswa_id' => $siswa1->id,
             'tahun_ajaran_id' => $tahunAjaran->id,
+            'kelas_id' => $siswa1->kelas_id,
             'nama_lomba' => 'Lomba OSN Matematika Kabupaten',
             'kategori' => 'Akademik',
             'jenis_pelaksanaan' => 'Luar Sekolah',
@@ -162,6 +163,7 @@ class DatabaseSeeder extends Seeder
         Prestasi::create([
             'siswa_id' => $siswa2->id,
             'tahun_ajaran_id' => $tahunAjaran->id,
+            'kelas_id' => $siswa2->kelas_id,
             'nama_lomba' => 'FLS2N Seni Tari Provinsi',
             'kategori' => 'Non-Akademik',
             'jenis_pelaksanaan' => 'Luar Sekolah',

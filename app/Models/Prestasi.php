@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -91,6 +93,20 @@ class Prestasi extends Model
             }
             if (!$model->juara) {
                 $model->juara = 'Harapan';
+            }
+
+            // Ensure required foreign keys are populated for legacy or partial creates.
+            if (!$model->tahun_ajaran_id) {
+                $activeTa = TahunAjaran::active();
+                if ($activeTa) {
+                    $model->tahun_ajaran_id = $activeTa->id;
+                }
+            }
+            if (!$model->kelas_id && $model->siswa_id) {
+                $siswa = Siswa::find($model->siswa_id);
+                if ($siswa) {
+                    $model->kelas_id = $siswa->kelas_id;
+                }
             }
         });
     }
