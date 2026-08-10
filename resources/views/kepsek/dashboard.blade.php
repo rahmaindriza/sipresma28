@@ -7,7 +7,7 @@
 <!-- Custom Styles to enforce KEPSEK light theme & color palette overrides -->
 <style>
     main {
-        background-color: #FAF7F7 !important; /* krem lembut terang */
+        background-color: #F2EFE7 !important; /* krem lembut terang */
     }
     
     .kepsek-dashboard-container {
@@ -31,7 +31,7 @@
 
     /* Leaderboard items light bg */
     .kepsek-leaderboard-item {
-        background-color: #FAF7F7 !important;
+        background-color: #F2EFE7 !important;
         border: 1px solid var(--border-light) !important;
     }
     
@@ -87,7 +87,7 @@
             <p class="text-xs text-[var(--text-muted)] mt-1">Ringkasan grafik capaian nilai akademik dan perkembangan prestasi siswa SDN 28 Kinali</p>
         </div>
         <div>
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#9F5261]/10 text-[#9F5261] border border-[#9F5261]/30">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#3D5A80]/10 text-[#3D5A80] border border-[#3D5A80]/30">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 TA Aktif: {{ $activeTa->tahun }} ({{ $activeTa->semester }})
             </span>
@@ -102,7 +102,7 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Total Siswa Aktif</p>
                 <p class="text-3xl font-bold text-[var(--text-dark-main)] mt-1">{{ $totalSiswa }} Siswa</p>
             </div>
-            <div class="p-3 bg-[#9F5261]/15 text-[#9F5261] rounded-xl">
+            <div class="p-3 bg-[#3D5A80]/15 text-[#3D5A80] rounded-xl">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Rata-Rata Nilai Akademik</p>
                 <p class="text-3xl font-bold text-[var(--primary-burgundy)] mt-1">{{ number_format($rataRataNilai, 1) }}</p>
             </div>
-            <div class="p-3 bg-[#9F5261]/15 text-[#9F5261] rounded-xl">
+            <div class="p-3 bg-[#3D5A80]/15 text-[#3D5A80] rounded-xl">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
             </div>
         </div>
@@ -166,9 +166,9 @@
                 
                 <div class="space-y-3">
                     @forelse($topPrestasi as $index => $tp)
-                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#FAF7F7] flex items-center justify-between transition hover:shadow-sm">
+                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#F2EFE7] flex items-center justify-between transition hover:shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-full bg-[#9F5261]/10 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                <div class="w-8 h-8 rounded-full bg-[#3D5A80]/10 text-[#3D5A80] flex items-center justify-center font-bold text-xs">
                                     {{ $index + 1 }}
                                 </div>
                                 <div>
@@ -182,9 +182,9 @@
                         </div>
                     @empty
                         <!-- Fallback Mock Leaderboard items if empty database -->
-                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#FAF7F7] flex items-center justify-between">
+                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#F2EFE7] flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-full bg-[#9F5261]/10 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                <div class="w-8 h-8 rounded-full bg-[#3D5A80]/10 text-[#3D5A80] flex items-center justify-center font-bold text-xs">
                                     1
                                 </div>
                                 <div>
@@ -196,9 +196,9 @@
                                 3 Sertifikat
                             </span>
                         </div>
-                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#FAF7F7] flex items-center justify-between">
+                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#F2EFE7] flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-full bg-[#9F5261]/10 text-[#9F5261] flex items-center justify-center font-bold text-xs">
+                                <div class="w-8 h-8 rounded-full bg-[#3D5A80]/10 text-[#3D5A80] flex items-center justify-center font-bold text-xs">
                                     2
                                 </div>
                                 <div>
@@ -227,7 +227,7 @@
             </div>
             
             <div class="flex justify-around mt-4 text-xs font-semibold text-[var(--text-muted)]">
-                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D5A80] me-1.5 inline-block"></span> Akademik</span>
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
             </div>
         </div>
@@ -244,7 +244,7 @@
                 
                 <div class="space-y-3">
                     @forelse($juaraUmum as $index => $juara)
-                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#FAF7F7] flex items-center justify-between transition hover:shadow-sm">
+                        <div class="kepsek-leaderboard-item p-3 rounded-xl border border-[var(--border-light)] bg-[#F2EFE7] flex items-center justify-between transition hover:shadow-sm">
                             <div class="flex items-center space-x-3">
                                 <div class="w-8 h-8 flex items-center justify-center text-xl" 
                                      style="color: @if($index == 0) #FFD700 @elseif($index == 1) #C0C0C0 @else #CD7F32 @endif;">
@@ -275,7 +275,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-[var(--text-dark-main)] bg-white rounded-xl">
                 <thead>
-                    <tr class="bg-[#FDF4F5] border-b border-[var(--border-light)] text-xs font-semibold text-[#9F5261] uppercase tracking-wider">
+                    <tr class="bg-[#EBF3FC] border-b border-[var(--border-light)] text-xs font-semibold text-[#3D5A80] uppercase tracking-wider">
                         <th class="py-4 px-6 w-16">No</th>
                         <th class="py-4 px-6">Nama Kelas</th>
                         <th class="py-4 px-6">Wali Kelas</th>
@@ -300,7 +300,7 @@
                             <div class="flex items-center gap-3">
                                 <span class="font-bold text-[var(--text-dark-main)] w-12">{{ $summary['persentase'] }}%</span>
                                 <div class="w-full bg-slate-100 rounded-full h-1.5 border border-slate-200">
-                                    <div class="bg-[#9F5261] h-1.5 rounded-full" style="width: {{ $summary['persentase'] }}%"></div>
+                                    <div class="bg-[#3D5A80] h-1.5 rounded-full" style="width: {{ $summary['persentase'] }}%"></div>
                                 </div>
                             </div>
                         </td>
@@ -353,9 +353,9 @@
                     },
                     tooltip: {
                         backgroundColor: '#FFFFFF',
-                        titleColor: '#3D2228',
-                        bodyColor: '#9F5261',
-                        borderColor: '#EAE1E3',
+                        titleColor: '#2D3748',
+                        bodyColor: '#3D5A80',
+                        borderColor: '#D8E6F2',
                         borderWidth: 1,
                         padding: 12,
                         displayColors: false,
@@ -411,7 +411,7 @@
                 labels: ['Akademik', 'Non-Akademik'],
                 datasets: [{
                     data: donutData,
-                    backgroundColor: ['#9F5261', '#3D8B6F'],
+                    backgroundColor: ['#3D5A80', '#3D8B6F'],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]

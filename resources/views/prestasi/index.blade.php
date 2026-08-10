@@ -20,7 +20,7 @@
             Tahun Ajaran Aktif belum diset
         </div>
         @else
-        <button onclick="toggleModal('add-modal')" class="mt-4 sm:mt-0 px-4 py-2 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(159, 82, 97, 0.25);">
+        <button onclick="toggleModal('add-modal')" class="mt-4 sm:mt-0 px-4 py-2 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.25);">
             <i class="bi bi-plus-lg me-1.5"></i>
             Tambah Prestasi
         </button>
@@ -58,15 +58,15 @@
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
                     <tr>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">No</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Siswa</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Kelas</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Lomba</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Kategori</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Tingkat</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Juara</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Bukti</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Aksi</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">No</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Siswa</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Kelas</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Lomba</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Kategori</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Tingkat</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Juara</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Bukti</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border-light)]">
@@ -213,7 +213,7 @@
             </div>
             <div class="flex justify-end space-x-3 pt-4 border-t">
                 <button type="button" onclick="toggleModal('add-modal')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition border-0">Batal</button>
-                <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(159, 82, 97, 0.25);">
+                <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.25);">
                     <i class="bi bi-save me-1"></i> Simpan Prestasi
                 </button>
             </div>
@@ -290,7 +290,7 @@
             </div>
             <div class="flex justify-end space-x-3 pt-4 border-t">
                 <button type="button" onclick="toggleModal('edit-modal')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition border-0">Batal</button>
-                <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(159, 82, 97, 0.25);">
+                <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.25);">
                     <i class="bi bi-save me-1"></i> Perbarui Prestasi
                 </button>
             </div>

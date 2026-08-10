@@ -20,6 +20,7 @@ class SiswaController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', '%' . $search . '%')
                   ->orWhere('nisn', 'like', '%' . $search . '%')
+                  ->orWhere('nis', 'like', '%' . $search . '%')
                   ->orWhere('nik', 'like', '%' . $search . '%');
             });
         }
@@ -52,6 +53,7 @@ class SiswaController extends Controller
             'nama' => 'required|string|max:255',
             'jk' => 'required|in:Laki-laki,Perempuan',
             'nisn' => 'required|string|size:10|unique:siswas,nisn',
+            'nis' => 'nullable|string|max:50|unique:siswas,nis',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'nik' => 'required|string|size:16|unique:siswas,nik',
@@ -86,6 +88,7 @@ class SiswaController extends Controller
             'nama' => 'required|string|max:255',
             'jk' => 'required|in:Laki-laki,Perempuan',
             'nisn' => 'required|string|size:10|unique:siswas,nisn,' . $id,
+            'nis' => 'nullable|string|max:50|unique:siswas,nis,' . $id,
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'nik' => 'required|string|size:16|unique:siswas,nik,' . $id,

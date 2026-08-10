@@ -10,7 +10,7 @@
         border-bottom: 1px solid var(--border-dark-burgundy) !important;
     }
     table.table-dark-custom tbody tr:hover {
-        background-color: rgba(159, 82, 97, 0.08) !important;
+        background-color: rgba(61, 90, 128, 0.08) !important;
     }
     table.table-dark-custom thead tr {
         border-bottom: 2px solid var(--border-dark-burgundy) !important;
@@ -79,7 +79,7 @@
             </div>
             
             <div class="shrink-0 w-full lg:w-auto">
-                <button type="submit" form="gradeForm" class="w-full lg:w-auto px-5 py-2.5 bg-[#9F5261] hover:bg-[#86414E] text-white text-sm font-semibold rounded-xl transition duration-200 flex items-center justify-center shadow-lg shadow-[#9F5261]/20">
+                <button type="submit" form="gradeForm" class="w-full lg:w-auto px-5 py-2.5 bg-[#3D5A80] hover:bg-[#293E59] text-white text-sm font-semibold rounded-xl transition duration-200 flex items-center justify-center shadow-lg shadow-[#3D5A80]/20">
                     <svg class="w-4 h-4 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                     </svg>
@@ -107,6 +107,7 @@
                             <th class="py-4 px-4 text-center w-36">Nilai UH (20%)</th>
                             <th class="py-4 px-4 text-center w-36">Nilai UTS (30%)</th>
                             <th class="py-4 px-4 text-center w-36">Nilai UAS (30%)</th>
+                            <th class="py-4 px-6 text-center w-80">Capaian Kompetensi</th>
                             <th class="py-4 px-6 text-center w-40">Nilai Akhir</th>
                             <th class="py-4 px-6 text-center w-32">Status KKM</th>
                         </tr>
@@ -143,6 +144,19 @@
                                            value="{{ $grade ? $grade->nilai_uas : 0 }}" 
                                            class="w-24 px-3 py-2 bg-slate-900 border border-slate-800/80 rounded-xl text-center text-white focus:outline-none focus:border-blue-500 transition text-sm uas-input">
                                 </td>
+                                 <!-- Capaian Kompetensi -->
+                                 <td class="py-3 px-2">
+                                     <div class="space-y-2">
+                                         <div>
+                                             <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Tertinggi</label>
+                                             <textarea name="grades[{{ $idx }}][capaian_tertinggi]" rows="2" placeholder="Capaian Tertinggi..." class="w-full px-2 py-1 bg-slate-900 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? $grade->capaian_tertinggi : '' }}</textarea>
+                                         </div>
+                                         <div>
+                                             <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Perlu Peningkatan</label>
+                                             <textarea name="grades[{{ $idx }}][capaian_perlu_peningkatan]" rows="2" placeholder="Perlu Peningkatan..." class="w-full px-2 py-1 bg-slate-900 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? $grade->capaian_perlu_peningkatan : '' }}</textarea>
+                                         </div>
+                                     </div>
+                                 </td>
                                 <td class="py-4 px-6 text-center font-extrabold text-sm estimation-cell">
                                     0.00
                                 </td>

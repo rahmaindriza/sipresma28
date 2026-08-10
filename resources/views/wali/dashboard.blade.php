@@ -14,7 +14,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-slate-900/40 p-6 border border-slate-800 rounded-3xl">
         <div>
             <h3 class="text-2xl font-bold text-white">{{ $kelas->nama_kelas }}</h3>
-            <p class="text-xs text-slate-400 mt-1">Wali Kelas: <span class="text-white font-semibold">{{ auth()->user()->name }}</span></p>
+            <p class="text-xs text-slate-400 mt-1">Wali Kelas: <span class="text-white font-semibold">{{ auth()->user()->nama_tampil }}</span></p>
         </div>
         <div class="mt-4 sm:mt-0">
             <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
@@ -103,7 +103,7 @@
             </div>
             
             <div class="flex justify-around text-xs font-semibold text-slate-450">
-                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9F5261] me-1.5 inline-block"></span> Akademik</span>
+                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D5A80] me-1.5 inline-block"></span> Akademik</span>
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#3D8B6F] me-1.5 inline-block"></span> Non-Akademik</span>
             </div>
         </div>
@@ -112,7 +112,7 @@
         <div class="glass-panel p-6 rounded-3xl flex flex-col justify-between space-y-4">
             <div>
                 <h4 class="text-lg font-bold text-white">3 Besar Siswa Berprestasi Kelas</h4>
-                <p class="text-xs text-slate-400 mt-1">Papan peringkat siswa di kelas {{ $kelas->nama_kelas }} berdasarkan perolehan akumulasi poin piagam penghargaan.</p>
+                <p class="text-xs text-slate-400 mt-1">Papan peringkat siswa di kelas {{ $kelas->nama_kelas }} berdasarkan perolehan akumulasi sertifikat penghargaan.</p>
             </div>
             <div class="flex-1 divide-y divide-slate-800/60 mt-2">
                 @forelse($topPrestasiKelas as $index => $tp)
@@ -133,11 +133,6 @@
                             <h6 class="font-bold text-white text-sm mb-0">{{ $tp->nama }}</h6>
                             <span class="text-slate-450 text-xs font-mono">NISN: {{ $tp->nisn }}</span>
                         </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            {{ $tp->total_poin }} Poin
-                        </span>
                     </div>
                 </div>
                 @empty
@@ -171,11 +166,11 @@
                 datasets: [{
                     label: 'Rata-rata Nilai Akhir',
                     data: dataValues,
-                    backgroundColor: 'rgba(159, 82, 97, 0.45)',
-                    borderColor: 'rgba(159, 82, 97, 1)',
+                    backgroundColor: 'rgba(61, 90, 128, 0.45)',
+                    borderColor: 'rgba(61, 90, 128, 1)',
                     borderWidth: 2,
                     borderRadius: 8,
-                    hoverBackgroundColor: 'rgba(159, 82, 97, 0.7)'
+                    hoverBackgroundColor: 'rgba(61, 90, 128, 0.7)'
                 }]
             },
             options: {
@@ -229,7 +224,7 @@
                 labels: displayLabels,
                 datasets: [{
                     data: donutData,
-                    backgroundColor: ['#9F5261', '#3D8B6F'],
+                    backgroundColor: ['#3D5A80', '#3D8B6F'],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]

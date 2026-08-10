@@ -138,7 +138,7 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-[var(--border-light)] pb-4">
         <div>
             <h3 class="text-xl font-bold text-[var(--text-dark-main)]">Panel Akademik Guru Mata Pelajaran</h3>
-            <p class="text-xs text-[var(--text-muted)] mt-1">Selamat datang kembali, <span class="font-bold text-[var(--primary-burgundy)]">{{ auth()->user()->name }}</span>. Rekap nilai dan monitoring kemajuan belajar siswa Anda.</p>
+            <p class="text-xs text-[var(--text-muted)] mt-1">Selamat datang kembali, <span class="font-bold text-[var(--primary-burgundy)]">{{ auth()->user()->nama_tampil }}</span>. Rekap nilai dan monitoring kemajuan belajar siswa Anda.</p>
         </div>
     </div>
 
@@ -150,7 +150,7 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Mata Pelajaran</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $mapelsList ?: 'PJOK' }}</h4>
             </div>
-            <div class="p-3 bg-[#FDF4F5] text-[#9F5261] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                 <i class="bi bi-dribbble fs-4" style="color: var(--primary-burgundy);"></i>
             </div>
         </div>
@@ -161,7 +161,7 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Total Kelas Diajar</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $totalKelasText }}</h4>
             </div>
-            <div class="p-3 bg-[#FDF4F5] text-[#9F5261] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                 <i class="bi bi-door-closed fs-4" style="color: var(--primary-burgundy);"></i>
             </div>
         </div>
@@ -172,7 +172,7 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Total Siswa</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $totalSiswaText }}</h4>
             </div>
-            <div class="p-3 bg-[#FDF4F5] text-[#9F5261] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                 <i class="bi bi-people fs-4" style="color: var(--primary-burgundy);"></i>
             </div>
         </div>
@@ -187,7 +187,7 @@
                     </span>
                 </div>
             </div>
-            <div class="p-3 bg-[#FDF4F5] text-[#9F5261] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                 <i class="bi bi-journal-check fs-4" style="color: var(--primary-burgundy);"></i>
             </div>
         </div>
@@ -202,7 +202,7 @@
                     <h4 class="text-sm font-bold text-[var(--text-dark-main)]">Rata-Rata Nilai Mapel Per Kelas</h4>
                     <p class="text-[10px] text-[var(--text-muted)]">Visualisasi rata-rata nilai akhir siswa per kelas di bawah bimbingan Anda</p>
                 </div>
-                <span class="text-[10px] font-bold px-2.5 py-1 rounded bg-[#FDF4F5] text-[#9F5261]">
+                <span class="text-[10px] font-bold px-2.5 py-1 rounded bg-[#EBF3FC] text-[#3D5A80]">
                     Tahun Ajaran Aktif
                 </span>
             </div>
@@ -285,12 +285,12 @@
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
                     <tr>
-                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">No</th>
-                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Mata Pelajaran</th>
-                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Kelas</th>
-                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Jumlah Siswa</th>
-                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Progres Input</th>
-                        <th class="py-3 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Aksi</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">No</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Mata Pelajaran</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Kelas</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Jumlah Siswa</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Progres Input</th>
+                        <th class="py-3 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border-light)]">
@@ -309,7 +309,7 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <a href="{{ route('guru.grades', $assign->id) }}" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#9F5261] hover:bg-[#86414E] transition rounded-lg" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(159, 82, 97, 0.2);">
+                            <a href="{{ route('guru.grades', $assign->id) }}" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.2);">
                                 <i class="bi bi-plus-lg me-1"></i> Input Nilai
                             </a>
                         </td>
@@ -330,7 +330,7 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#9F5261] hover:bg-[#86414E] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
                                 <i class="bi bi-plus-lg me-1"></i> Input Nilai
                             </button>
                         </td>
@@ -349,7 +349,7 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#9F5261] hover:bg-[#86414E] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
                                 <i class="bi bi-plus-lg me-1"></i> Input Nilai
                             </button>
                         </td>
@@ -368,7 +368,7 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#9F5261] hover:bg-[#86414E] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
                                 <i class="bi bi-plus-lg me-1"></i> Input Nilai
                             </button>
                         </td>
@@ -394,8 +394,8 @@
                 datasets: [{
                     label: 'Rata-Rata Nilai',
                     data: {!! json_encode($chartData) !!},
-                    backgroundColor: '#9F5261', // Burgundy accent
-                    hoverBackgroundColor: '#86414E',
+                    backgroundColor: '#3D5A80', // Burgundy accent
+                    hoverBackgroundColor: '#293E59',
                     borderRadius: 8,
                     borderSkipped: false,
                     barPercentage: 0.5

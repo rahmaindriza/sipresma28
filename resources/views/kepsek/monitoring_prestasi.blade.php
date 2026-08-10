@@ -75,16 +75,16 @@
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
                     <tr>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 60px;">No</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Siswa</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Kelas</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Lomba</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Kategori</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tingkat</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Juara</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tanggal</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Bukti</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Aksi</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 60px;">No</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Siswa</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Kelas</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Lomba</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Kategori</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Tingkat</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Juara</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Tanggal</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Bukti</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border-light)]">

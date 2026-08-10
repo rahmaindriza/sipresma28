@@ -27,7 +27,7 @@
     <div class="glass-panel p-4 rounded-3xl shadow-lg">
         <form action="{{ route('wali.siswa') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
             <div class="flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau NISN siswa..." 
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, NIS, atau NISN siswa..." 
                     class="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition text-sm">
             </div>
             <div class="flex gap-2 shrink-0 flex-wrap">
@@ -54,7 +54,7 @@
                 <thead>
                     <tr class="bg-slate-900/60 border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                         <th class="py-4 px-6 w-16 text-center">No</th>
-                        <th class="py-4 px-6">NISN</th>
+                        <th class="py-4 px-6">NIS / NISN</th>
                         <th class="py-4 px-6">Nama Lengkap</th>
                         <th class="py-4 px-6 text-center">Jenis Kelamin</th>
                     </tr>
@@ -70,12 +70,12 @@
                         @foreach($students as $siswa)
                         <tr class="hover:bg-slate-900/20 transition duration-150">
                             <td class="py-4 px-6 text-center font-semibold text-slate-450">{{ $loop->iteration }}</td>
-                            <td class="py-4 px-6 font-mono text-xs text-blue-400">{{ $siswa->nisn }}</td>
+                            <td class="py-4 px-6 font-mono text-xs text-blue-400">{{ $siswa->nis ?? '-' }} / {{ $siswa->nisn }}</td>
                             <td class="py-4 px-6 font-medium text-white">{{ $siswa->nama }}</td>
                             <td class="py-4 px-6 text-center">
                                 <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium border
-                                    {{ $siswa->jenis_kelamin === 'L' ? 'bg-blue-900/20 text-blue-400 border-blue-800' : 'bg-pink-900/20 text-pink-400 border-pink-850' }}">
-                                    {{ $siswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                    {{ in_array(strtoupper($siswa->jk ?? ''), ['L', 'LAKI-LAKI']) ? 'bg-blue-900/20 text-blue-400 border-blue-800' : 'bg-pink-900/20 text-pink-400 border-pink-850' }}">
+                                    {{ in_array(strtoupper($siswa->jk ?? ''), ['L', 'LAKI-LAKI']) ? 'Laki-laki' : 'Perempuan' }}
                                 </span>
                             </td>
                         </tr>

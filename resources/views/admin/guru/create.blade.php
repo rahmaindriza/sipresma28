@@ -6,17 +6,17 @@
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h3 class="text-xl font-bold text-[#3D2228]">Tambah Guru Baru</h3>
+            <h3 class="text-xl font-bold text-[#2D3748]">Tambah Guru Baru</h3>
             <p class="text-xs text-[#8E797D] mt-1">Daftarkan profil guru baru dengan lengkap ke dalam sistem.</p>
         </div>
-        <a href="{{ route('admin.gurus') }}" class="px-4 py-2 border border-[#9F5261] text-[#9F5261] hover:bg-[#9F5261] hover:text-white font-semibold rounded-xl text-xs transition flex items-center">
+        <a href="{{ route('admin.gurus') }}" class="px-4 py-2 border border-[#3D5A80] text-[#3D5A80] hover:bg-[#3D5A80] hover:text-white font-semibold rounded-xl text-xs transition flex items-center">
             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Kembali ke Daftar
         </a>
     </div>
 
     <!-- Form Container Card -->
-    <div class="bg-white border border-[#EAE1E3] rounded-3xl p-6 shadow-sm">
+    <div class="bg-white border border-[#D8E6F2] rounded-3xl p-6 shadow-sm">
         @if ($errors->any())
         <div class="mb-5 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 shadow-sm space-y-1">
             <div class="flex items-center space-x-2 font-semibold text-red-900">
@@ -35,12 +35,12 @@
             @csrf
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Nama Lengkap</label>
-                    <input type="text" name="nama" value="{{ old('nama') }}" required class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm" placeholder="Contoh: Budi Santoso, S.Pd.">
+                    <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">Nama Lengkap</label>
+                    <input type="text" name="nama" value="{{ old('nama') }}" required class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm" placeholder="Contoh: Budi Santoso, S.Pd.">
                 </div>
                 <div class="col-md-6">
-                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Jenis Kelamin</label>
-                    <select name="jk" required class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm">
+                    <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">Jenis Kelamin</label>
+                    <select name="jk" required class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm">
                         <option value="">-- Pilih Jenis Kelamin --</option>
                         <option value="Laki-laki" {{ old('jk') === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="Perempuan" {{ old('jk') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -50,19 +50,19 @@
 
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">NIP (Nomor Induk Pegawai)</label>
-                    <input type="text" name="nip" value="{{ old('nip') }}" required class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm" placeholder="Contoh: 198503112010011002">
+                    <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">NIP (Nomor Induk Pegawai)</label>
+                    <input type="text" name="nip" value="{{ old('nip') }}" required class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm" placeholder="Contoh: 198503112010011002">
                 </div>
                 <div class="col-md-6">
-                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Jabatan / Peran</label>
-                    <input type="text" name="jabatan" value="{{ old('jabatan') }}" required class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm" placeholder="Contoh: Guru PJOK, Wali Kelas">
+                    <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">Jabatan / Peran</label>
+                    <input type="text" name="jabatan" value="{{ old('jabatan') }}" required class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm" placeholder="Contoh: Guru PJOK, Wali Kelas">
                 </div>
             </div>
 
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Hubungkan Akun Pengguna (Untuk Login)</label>
-                    <select name="user_id" class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm">
+                    <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">Hubungkan Akun Pengguna (Untuk Login)</label>
+                    <select name="user_id" class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm">
                         <option value="">-- Belum Dihubungkan / Tanpa Akun --</option>
                         @foreach($users as $usr)
                             <option value="{{ $usr->id }}" {{ old('user_id') == $usr->id ? 'selected' : '' }}>
@@ -77,22 +77,22 @@
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-[#3D2228] uppercase tracking-wider mb-2">Unggah Foto Profil</label>
-                <input type="file" name="foto" accept="image/*" onchange="previewImage(event)" class="w-full px-4 py-2.5 border border-[#EAE1E3] bg-white rounded-xl text-[#3D2228] focus:outline-none focus:border-[#9F5261] transition text-sm">
+                <label class="block text-xs font-semibold text-[#2D3748] uppercase tracking-wider mb-2">Unggah Foto Profil</label>
+                <input type="file" name="foto" accept="image/*" onchange="previewImage(event)" class="w-full px-4 py-2.5 border border-[#D8E6F2] bg-white rounded-xl text-[#2D3748] focus:outline-none focus:border-[#3D5A80] transition text-sm">
                 <p class="text-xs text-[#8E797D] mt-1.5">Format file yang diperbolehkan: JPG, JPEG, PNG, WEBP. Ukuran file maksimal: 2MB.</p>
                 
                 <!-- Live Image Preview -->
                 <div id="preview-container" class="mt-4" style="display: none;">
                     <span class="block text-xs font-semibold text-[#8E797D] uppercase tracking-wider mb-2">Pratinjau Foto</span>
-                    <div class="rounded-circle overflow-hidden border border-[#EAE1E3] shadow-sm" style="width: 120px; height: 120px;">
+                    <div class="rounded-circle overflow-hidden border border-[#D8E6F2] shadow-sm" style="width: 120px; height: 120px;">
                         <img id="image-preview" src="" alt="Image Preview" class="w-100 h-100 object-fit-cover">
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-end space-x-3 pt-4 border-t border-[#EAE1E3]">
+            <div class="flex justify-end space-x-3 pt-4 border-t border-[#D8E6F2]">
                 <a href="{{ route('admin.gurus') }}" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">Batal</a>
-                <button type="submit" class="px-5 py-2.5 bg-[#9F5261] hover:bg-[#86414E] text-white font-semibold rounded-xl text-xs transition shadow-sm">Simpan Data</button>
+                <button type="submit" class="px-5 py-2.5 bg-[#3D5A80] hover:bg-[#293E59] text-white font-semibold rounded-xl text-xs transition shadow-sm">Simpan Data</button>
             </div>
         </form>
     </div>

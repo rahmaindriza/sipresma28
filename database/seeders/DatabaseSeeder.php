@@ -105,7 +105,6 @@ class DatabaseSeeder extends Seeder
             'jenis_pelaksanaan' => 'Luar Sekolah',
             'tingkat' => 'Kabupaten',
             'juara' => 'Juara 1',
-            'poin' => 30,
             'tanggal_penghargaan' => '2026-02-15',
         ]);
 
@@ -116,7 +115,6 @@ class DatabaseSeeder extends Seeder
             'jenis_pelaksanaan' => 'Luar Sekolah',
             'tingkat' => 'Provinsi',
             'juara' => 'Juara 2',
-            'poin' => 50,
             'tanggal_penghargaan' => '2026-03-10',
         ]);
     }

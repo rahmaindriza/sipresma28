@@ -35,6 +35,7 @@
                     @foreach($listKelas as $kls)
                         <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}>Kelas {{ $kls->nama_kelas }}</option>
                     @endforeach
+                    <option value="alumni" {{ request('kelas_id') === 'alumni' ? 'selected' : '' }}>Alumni / Lulus</option>
                 </select>
             </div>
 
@@ -69,22 +70,70 @@
         </form>
     </div>
 
+    <!-- Search Results / History Selector -->
+    @if(request()->filled('search') && isset($searchStudents) && count($searchStudents) > 0)
+    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-[var(--border-light)] bg-white space-y-4">
+        <h4 class="text-xs font-bold text-[var(--primary-burgundy)] uppercase tracking-wider mb-0">Hasil Pencarian Riwayat Prestasi Siswa</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach($searchStudents as $siswa)
+            <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-col justify-between gap-3 shadow-xs">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h5 class="font-bold text-slate-800 text-sm mb-0">{{ $siswa->nama }}</h5>
+                        <p class="text-[11px] text-slate-400 font-mono mt-0.5 mb-0">NISN: {{ $siswa->nisn }}</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider
+                        {{ strtolower($siswa->status) == 'alumni' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200' }}">
+                        {{ $siswa->status ?? 'Aktif' }}
+                    </span>
+                </div>
+                
+                @if(isset($siswa->achievements_history) && count($siswa->achievements_history) > 0)
+                <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    <p class="text-[10px] uppercase font-bold text-slate-400">Riwayat Prestasi:</p>
+                    @foreach($siswa->achievements_history as $ach)
+                    <div class="p-2.5 border border-slate-200 bg-white rounded-lg text-xs space-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">{{ $ach->nama_lomba }}</span>
+                            <span class="inline-flex px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wider
+                                {{ $ach->kategori === 'Akademik' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-blue-100 text-blue-800 border border-blue-200' }}">
+                                {{ $ach->kategori }}
+                            </span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mb-0.5">
+                            Kelas: {{ $ach->siswa->kelas->nama_kelas ?? '-' }} (Tahun: {{ $ach->tahunAjaran->tahun }} - {{ $ach->tahunAjaran->semester }})
+                        </p>
+                        <p class="text-[10px] text-slate-500 mb-0">
+                            Tingkat: {{ $ach->tingkat }} | Juara: {{ $ach->juara }}
+                        </p>
+                    </div>
+                    @endforeach
+                </div>
+                @else
+                <p class="text-[11px] text-slate-400 italic mb-0">Belum ada riwayat prestasi terdaftar untuk siswa ini.</p>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Prestasi Table -->
     <div class="glass-panel rounded-2xl overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
                     <tr>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 60px;">No</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Siswa</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Kelas</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5;">Nama Lomba</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Kategori</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tingkat</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Juara</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 120px;">Tanggal</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Bukti</th>
-                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #FDF4F5; width: 100px;">Aksi</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 60px;">No</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Siswa</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Kelas</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC;">Nama Lomba</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Kategori</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Tingkat</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Juara</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 120px;">Tanggal</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-center" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Bukti</th>
+                        <th class="py-3.5 px-4 text-xs font-bold uppercase text-right" style="color: var(--primary-burgundy) !important; background-color: #EBF3FC; width: 100px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border-light)]">

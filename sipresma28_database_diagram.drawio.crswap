@@ -1,0 +1,175 @@
+<mxfile host="app.diagrams.net" agent="5.0" pages="2">
+  <diagram id="erd_page" name="Entity Relationship Diagram (ERD)">
+    <mxGraphModel dx="1201" dy="644" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- ERD Vertices -->
+        <mxCell id="erd_users" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;users&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ name : string&lt;br/&gt;+ email : string [UQ]&lt;br/&gt;+ username : string [UQ]&lt;br/&gt;+ password : string&lt;br/&gt;+ password_plain : string&lt;br/&gt;+ role : enum&lt;br/&gt;+ status_akun : enum&lt;br/&gt;+ remember_token : string&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="200" x="50" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_gurus" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;gurus&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;&lt;b&gt;# user_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ nama : string&lt;br/&gt;+ nip : string [UQ]&lt;br/&gt;+ foto : string&lt;br/&gt;+ jabatan : string&lt;br/&gt;+ jk : enum&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="200" x="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_kelas" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;kelas&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ nama_kelas : string [UQ]&lt;br/&gt;&lt;b&gt;# wali_kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="550" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_siswas" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;siswas&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ nama : string&lt;br/&gt;+ jk : enum&lt;br/&gt;+ nisn : string [UQ]&lt;br/&gt;+ tempat_lahir : string&lt;br/&gt;+ tanggal_lahir : date&lt;br/&gt;+ nik : string [UQ]&lt;br/&gt;+ agama : enum&lt;br/&gt;+ alamat : text&lt;br/&gt;&lt;b&gt;# kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ status : enum&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="200" x="800" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_mapels" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;mapels&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ nama_mapel : string [UQ]&lt;br/&gt;+ kode_mapel : string [UQ]&lt;br/&gt;+ jenis_mapel : enum&lt;br/&gt;+ kkm : integer&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="200" x="50" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_tahun_ajarans" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;tahun_ajarans&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ tahun : string&lt;br/&gt;+ semester : enum&lt;br/&gt;+ status : enum&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="300" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_guru_mapel_kelas" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;guru_mapel_kelas&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;&lt;b&gt;# guru_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# mapel_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# tahun_ajaran_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="220" x="550" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_wali_kelas_history" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;wali_kelas_history&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;&lt;b&gt;# kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# tahun_ajaran_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# guru_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ guru_name : string&lt;br/&gt;+ guru_nip : string&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="220" x="800" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_nilais" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;nilais&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;&lt;b&gt;# siswa_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# mapel_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# tahun_ajaran_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ nilai_tugas : integer&lt;br/&gt;+ nilai_uh : integer&lt;br/&gt;+ nilai_uts : integer&lt;br/&gt;+ nilai_uas : integer&lt;br/&gt;+ nilai_akhir : decimal&lt;br/&gt;+ status_kkm : enum&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="250" width="220" x="180" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_prestasis" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;prestasis&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;&lt;b&gt;# siswa_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# tahun_ajaran_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;&lt;b&gt;# kelas_id&lt;/b&gt; : bigint [FK]&lt;br/&gt;+ jenis_prestasi : string&lt;br/&gt;+ keterangan : text&lt;br/&gt;+ tanggal : date&lt;br/&gt;+ nama_lomba : string&lt;br/&gt;+ kategori : enum&lt;br/&gt;+ jenis_pelaksanaan : enum&lt;br/&gt;+ tingkat : enum&lt;br/&gt;+ juara : enum&lt;br/&gt;+ poin : integer&lt;br/&gt;+ sertifikat : string&lt;br/&gt;+ tanggal_penghargaan : date&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="300" width="220" x="500" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_kegiatans" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;kegiatans&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;&lt;b&gt;+ id&lt;/b&gt; : bigint [PK]&lt;br/&gt;+ nama_kegiatan : string&lt;br/&gt;+ jenis_kegiatan : enum&lt;br/&gt;+ kategori : enum&lt;br/&gt;+ deskripsi : text&lt;br/&gt;+ gambar : string&lt;br/&gt;+ tanggal_kegiatan : date&lt;br/&gt;+ semester_aktif : string&lt;br/&gt;+ created_at : timestamp&lt;br/&gt;+ updated_at : timestamp&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="200" x="800" y="600" as="geometry" />
+        </mxCell>
+        <!-- ERD Edges (Crow's Foot style with correct draw.io identifiers: ERmandOne and ERmandMany) -->
+        <mxCell id="erd_edge_1" edge="1" parent="1" source="erd_users" style="fontSize=10;html=1;endArrow=ERmandOne;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_gurus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_2" edge="1" parent="1" source="erd_gurus" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_3" edge="1" parent="1" source="erd_kelas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_siswas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_4" edge="1" parent="1" source="erd_gurus" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_guru_mapel_kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_5" edge="1" parent="1" source="erd_kelas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_guru_mapel_kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_6" edge="1" parent="1" source="erd_mapels" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_guru_mapel_kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_7" edge="1" parent="1" source="erd_tahun_ajarans" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_guru_mapel_kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_8" edge="1" parent="1" source="erd_siswas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_nilais">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_9" edge="1" parent="1" source="erd_mapels" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_nilais">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_10" edge="1" parent="1" source="erd_kelas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_nilais">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_11" edge="1" parent="1" source="erd_tahun_ajarans" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_nilais">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_12" edge="1" parent="1" source="erd_siswas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_prestasis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_13" edge="1" parent="1" source="erd_tahun_ajarans" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_prestasis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_14" edge="1" parent="1" source="erd_kelas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_prestasis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_15" edge="1" parent="1" source="erd_kelas" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_wali_kelas_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_16" edge="1" parent="1" source="erd_tahun_ajarans" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_wali_kelas_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_edge_17" edge="1" parent="1" source="erd_gurus" style="fontSize=10;html=1;endArrow=ERmandMany;startArrow=ERmandOne;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="erd_wali_kelas_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="class_diagram_page" name="UML Class Diagram">
+    <mxGraphModel dx="2220" dy="1564" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="class_user" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;User&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ name : string&lt;br/&gt;+ email : string&lt;br/&gt;+ username : string&lt;br/&gt;+ password : string&lt;br/&gt;+ password_plain : string&lt;br/&gt;+ role : string&lt;br/&gt;+ status_akun : string&lt;br/&gt;+ remember_token : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ login() : void&lt;br/&gt;+ buatAkun() : void&lt;br/&gt;+ ubahPassword() : void&lt;br/&gt;+ nonaktifkanAkun() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="290" width="200" x="-780" y="-910" as="geometry" />
+        </mxCell>
+        <mxCell id="class_guru" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Guru&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ user_id : int&lt;br/&gt;+ nama : string&lt;br/&gt;+ nip : string&lt;br/&gt;+ foto : string&lt;br/&gt;+ jabatan : string&lt;br/&gt;+ jk : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ tambahGuru() : void&lt;br/&gt;+ editGuru() : void&lt;br/&gt;+ hapusGuru() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="240" width="200" x="-270" y="-885" as="geometry" />
+        </mxCell>
+        <mxCell id="class_kelas" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Kelas&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ nama_kelas : string&lt;br/&gt;+ wali_kelas_id : int&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ tambahKelas() : void&lt;br/&gt;+ editKelas() : void&lt;br/&gt;+ hapusKelas() : void&lt;br/&gt;+ tentukanWaliKelas() : void&lt;/div&amp;%" vertex="1">
+          <mxGeometry height="260" width="200" x="480" y="-790" as="geometry" />
+        </mxCell>
+        <mxCell id="class_siswa" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Siswa&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ nama : string&lt;br/&gt;+ jk : string&lt;br/&gt;+ nisn : string&lt;br/&gt;+ tempat_lahir : string&lt;br/&gt;+ tanggal_lahir : date&lt;br/&gt;+ nik : string&lt;br/&gt;+ agama : string&lt;br/&gt;+ alamat : text&lt;br/&gt;+ kelas_id : int&lt;br/&gt;+ status : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ registrasiSiswa() : void&lt;br/&gt;+ editSiswa() : void&lt;br/&gt;+ hapusSiswa() : void&lt;br/&gt;+ dapatkanRiwayatKelas() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="320" width="200" x="890" y="-640" as="geometry" />
+        </mxCell>
+        <mxCell id="class_mapel" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Mapel&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ nama_mapel : string&lt;br/&gt;+ kode_mapel : string&lt;br/&gt;+ jenis_mapel : string&lt;br/&gt;+ kkm : int&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ tambahMapel() : void&lt;br/&gt;+ editMapel() : void&lt;br/&gt;+ hapusMapel() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="200" x="-260" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="class_tahun_ajaran" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;TahunAjaran&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ tahun : string&lt;br/&gt;+ semester : string&lt;br/&gt;+ status : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ buatTahunAjaran() : void&lt;br/&gt;+ setAktif() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="200" x="190" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="class_guru_mapel_kelas" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;GuruMapelKelas&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ guru_id : int&lt;br/&gt;+ kelas_id : int&lt;br/&gt;+ mapel_id : int&lt;br/&gt;+ tahun_ajaran_id : int&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ aturPenugasanGuru() : void&lt;br/&gt;+ hapusPenugasanGuru() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="220" x="820" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="class_nilai" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Nilai&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ siswa_id : int&lt;br/&gt;+ mapel_id : int&lt;br/&gt;+ kelas_id : int&lt;br/&gt;+ tahun_ajaran_id : int&lt;br/&gt;+ nilai_tugas : int&lt;br/&gt;+ nilai_uh : int&lt;br/&gt;+ nilai_uts : int&lt;br/&gt;+ nilai_uas : int&lt;br/&gt;+ nilai_akhir : decimal&lt;br/&gt;+ status_kkm : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ inputNilai() : void&lt;br/&gt;+ hitungNilaiAkhir() : void&lt;br/&gt;+ tentukanStatusKkm() : void&lt;br/&gt;+ cetakRaporSiswa() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="320" width="220" x="20" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="class_prestasi" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Prestasi&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ siswa_id : int&lt;br/&gt;+ tahun_ajaran_id : int&lt;br/&gt;+ kelas_id : int&lt;br/&gt;+ jenis_prestasi : string&lt;br/&gt;+ keterangan : text&lt;br/&gt;+ tanggal : date&lt;br/&gt;+ nama_lomba : string&lt;br/&gt;+ kategori : string&lt;br/&gt;+ jenis_pelaksanaan : string&lt;br/&gt;+ tingkat : string&lt;br/&gt;+ juara : string&lt;br/&gt;+ poin : int&lt;br/&gt;+ sertifikat : string&lt;br/&gt;+ tanggal_penghargaan : date&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ inputPrestasi() : void&lt;br/&gt;+ editPrestasi() : void&lt;br/&gt;+ hapusPrestasi() : void&lt;br/&gt;+ cetakSertifikat() : void&lt;br/&gt;+ downloadBukti() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="390" width="220" x="560" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="class_kegiatan" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;rounded=0;strokeColor=#AE8C76;fillColor=#FFF9F2;shadow=1;" value="&lt;div style=&quot;background-color:#FFF5EB;padding:8px;font-weight:bold;text-align:center;border-bottom:1px solid #AE8C76;font-size:12px;color:#4A3525;&quot;&gt;Kegiatan&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;border-bottom:1px solid #AE8C76;color:#5C4636;&quot;&gt;+ id : int&lt;br/&gt;+ nama_kegiatan : string&lt;br/&gt;+ jenis_kegiatan : string&lt;br/&gt;+ kategori : string&lt;br/&gt;+ deskripsi : text&lt;br/&gt;+ gambar : string&lt;br/&gt;+ tanggal_kegiatan : date&lt;br/&gt;+ semester_aktif : string&lt;br/&gt;+ created_at : datetime&lt;br/&gt;+ updated_at : datetime&lt;/div&gt;&lt;div style=&quot;padding:6px;font-size:11px;line-height:1.4;color:#5C4636;&quot;&gt;+ tambahKegiatan() : void&lt;br/&gt;+ editKegiatan() : void&lt;br/&gt;+ hapusKegiatan() : void&lt;/div&gt;" vertex="1">
+          <mxGeometry height="250" width="200" x="930" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_1" edge="1" parent="1" source="class_user" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_guru" value="memiliki profil">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="class_assoc_2" edge="1" parent="1" source="class_guru" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_kelas" value="wali kelas dari">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_3" edge="1" parent="1" source="class_kelas" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_siswa" value="memiliki siswa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_4" edge="1" parent="1" source="class_guru" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_guru_mapel_kelas" value="mengajar">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_5" edge="1" parent="1" source="class_kelas" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_guru_mapel_kelas" value="diajar di kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_6" edge="1" parent="1" source="class_mapel" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_guru_mapel_kelas" value="mengampu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_7" edge="1" parent="1" source="class_tahun_ajaran" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_guru_mapel_kelas" value="penugasan periode">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_8" edge="1" parent="1" source="class_siswa" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_nilai" value="memiliki nilai">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_9" edge="1" parent="1" source="class_mapel" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_nilai" value="nilai mata pelajaran">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_10" edge="1" parent="1" source="class_kelas" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_nilai" value="nilai di kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_11" edge="1" parent="1" source="class_siswa" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_prestasi" value="meraih">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_12" edge="1" parent="1" source="class_tahun_ajaran" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_prestasi" value="prestasi di tahun ajaran">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="class_assoc_13" edge="1" parent="1" source="class_kelas" style="fontSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#AE8C76;endArrow=none;startArrow=none;strokeWidth=1.5;labelBackgroundColor=#FFFFFF;" target="class_prestasi" value="prestasi di kelas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

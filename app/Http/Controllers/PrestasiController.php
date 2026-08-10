@@ -95,9 +95,7 @@ class PrestasiController extends Controller
         $data['tahun_ajaran_id'] = $activeTa->id;
         $data['kelas_id'] = $siswa->kelas_id;
 
-        // 1. Calculate Poin automatically based on KKM/Tingkat/Juara
-        $poin = $this->calculatePoints($request->tingkat, $request->juara);
-        $data['poin'] = $poin;
+
 
         // 2. Handle certificate upload
         if ($request->hasFile('sertifikat')) {
@@ -147,9 +145,7 @@ class PrestasiController extends Controller
         $data['kelas_id'] = $siswa->kelas_id;
         $data['tahun_ajaran_id'] = $activeTa->id;
 
-        // 1. Re-calculate Poin
-        $poin = $this->calculatePoints($request->tingkat, $request->juara);
-        $data['poin'] = $poin;
+
 
         // 2. Handle certificate update
         if ($request->hasFile('sertifikat')) {
@@ -236,40 +232,7 @@ class PrestasiController extends Controller
         return $pdf->stream('Lembar_Prestasi_Rapor_' . str_replace(' ', '_', $siswa->nama) . '.pdf');
     }
 
-    /**
-     * Helper logic to calculate points automatically.
-     */
-    private function calculatePoints($tingkat, $juara)
-    {
-        if ($juara === 'Harapan') {
-            return 2;
-        }
 
-        switch ($tingkat) {
-            case 'Kecamatan':
-                if ($juara === 'Juara 1') return 15;
-                if ($juara === 'Juara 2') return 10;
-                if ($juara === 'Juara 3') return 5;
-                break;
-            case 'Kabupaten':
-                if ($juara === 'Juara 1') return 30;
-                if ($juara === 'Juara 2') return 25;
-                if ($juara === 'Juara 3') return 20;
-                break;
-            case 'Provinsi':
-                if ($juara === 'Juara 1') return 60;
-                if ($juara === 'Juara 2') return 50;
-                if ($juara === 'Juara 3') return 40;
-                break;
-            case 'Nasional':
-                if ($juara === 'Juara 1') return 100;
-                if ($juara === 'Juara 2') return 90;
-                if ($juara === 'Juara 3') return 80;
-                break;
-        }
-
-        return 2; // Fallback
-    }
 
     /**
      * Download the certificate/proof of achievement.

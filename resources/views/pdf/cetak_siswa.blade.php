@@ -102,12 +102,25 @@
 <body>
 
     <!-- Kop Surat -->
-    <div class="header">
-        <h2>Pemerintah Kabupaten Pasaman Barat</h2>
-        <h2>Dinas Pendidikan dan Kebudayaan</h2>
-        <h1>SD Negeri 28 Kinali</h1>
-        <p>Alamat: Kinali, Kec. Kinali, Kab. Pasaman Barat, Sumatera Barat, Kode Pos: 26367</p>
-    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 5px; border: none !important;">
+        <tr style="border: none !important;">
+            <td style="width: 90px; text-align: left; vertical-align: middle; border: none !important; padding: 0;">
+                <img src="{{ public_path('images/logo-pasbar.png') }}" style="height: 70px; width: auto;" alt="Logo Pasbar">
+            </td>
+            <td style="text-align: center; vertical-align: middle; border: none !important; padding: 0;">
+                <div style="font-family: Arial, sans-serif; line-height: 1.25; color: #000; text-align: center;">
+                    <div style="font-size: 13px; font-weight: bold; text-transform: uppercase;">Pemerintah Kabupaten Pasaman Barat</div>
+                    <div style="font-size: 13px; font-weight: bold; text-transform: uppercase; margin-top: 1px;">Dinas Pendidikan dan Kebudayaan</div>
+                    <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin-top: 2px; letter-spacing: 0.3px;">SD Negeri 28 Kinali</div>
+                    <div style="font-size: 8px; font-style: italic; margin-top: 3px; color: #111;">Alamat: Kinali, Kec. Kinali, Kab. Pasaman Barat, Sumatera Barat, Kode Pos: 26367</div>
+                </div>
+            </td>
+            <td style="width: 90px; text-align: right; vertical-align: middle; border: none !important; padding: 0;">
+                <img src="{{ public_path('images/tutwuri.png') }}" style="height: 70px; width: auto;" alt="Logo Tutwuri">
+            </td>
+        </tr>
+    </table>
+    <div style="border-bottom: 3px double #000; margin-top: 4px; margin-bottom: 12px; clear: both;"></div>
 
     <!-- Title -->
     <div class="title">
@@ -153,7 +166,7 @@
                     <td class="text-center font-bold">{{ $siswa->nisn }}</td>
                     <td>{{ $siswa->nama }}</td>
                     <td class="text-center">
-                        {{ $siswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                        {{ in_array(strtoupper($siswa->jk ?? ''), ['L', 'LAKI-LAKI']) ? 'Laki-laki' : 'Perempuan' }}
                     </td>
                 </tr>
             @empty

@@ -17,19 +17,20 @@ class NilaiController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        
-        // 1. Get Guru by user_id (Strict relation)
-        $guru = null;
-        if ($user) {
-            $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-        }
-
         $activeTa = TahunAjaran::active();
-
-        // Get the class managed by this Wali Kelas
+        
         $kelas = null;
-        if ($guru) {
-            $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
+        if ($user && in_array(strtolower($user->role), ['wali_kelas', 'wali kelas'])) {
+            $kelas = $user->kelas;
+        } else {
+            // Get Guru by user_id (Strict relation)
+            $guru = null;
+            if ($user) {
+                $guru = DB::table('gurus')->where('user_id', $user->id)->first();
+            }
+            if ($guru) {
+                $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
+            }
         }
 
         if ($kelas) {
@@ -77,7 +78,9 @@ class NilaiController extends Controller
                     'nilais.nilai_uts',
                     'nilais.nilai_uas',
                     'nilais.nilai_akhir',
-                    'nilais.status_kkm'
+                    'nilais.status_kkm',
+                    'nilais.capaian_tertinggi',
+                    'nilais.capaian_perlu_peningkatan'
                 )
                 ->orderBy('siswas.nama')
                 ->get();
@@ -101,17 +104,20 @@ class NilaiController extends Controller
     {
         $user = Auth::user();
         
-        // Find Guru by user_id (Strict relation)
-        $guru = null;
-        if ($user) {
-            $guru = DB::table('gurus')->where('user_id', $user->id)->first();
-        }
-
         $kelasId = null;
-        if ($guru) {
-            $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
-            if ($kelas) {
-                $kelasId = $kelas->id;
+        if ($user && in_array(strtolower($user->role), ['wali_kelas', 'wali kelas'])) {
+            $kelasId = $user->kelas_id;
+        } else {
+            // Find Guru by user_id (Strict relation)
+            $guru = null;
+            if ($user) {
+                $guru = DB::table('gurus')->where('user_id', $user->id)->first();
+            }
+            if ($guru) {
+                $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
+                if ($kelas) {
+                    $kelasId = $kelas->id;
+                }
             }
         }
 
@@ -137,6 +143,8 @@ class NilaiController extends Controller
             'grades.*.uh' => 'nullable|numeric|min:0|max:100',
             'grades.*.uts' => 'nullable|numeric|min:0|max:100',
             'grades.*.uas' => 'nullable|numeric|min:0|max:100',
+            'grades.*.capaian_tertinggi' => 'nullable|string',
+            'grades.*.capaian_perlu_peningkatan' => 'nullable|string',
         ]);
 
         $mapelId = $request->input('mapel_id');
@@ -181,6 +189,8 @@ class NilaiController extends Controller
                     'nilai_uas' => $uas,
                     'nilai_akhir' => $nilaiAkhir,
                     'status_kkm' => $statusKkm,
+                    'capaian_tertinggi' => $gradeData['capaian_tertinggi'] ?? null,
+                    'capaian_perlu_peningkatan' => $gradeData['capaian_perlu_peningkatan'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -196,17 +206,33 @@ class NilaiController extends Controller
     public function cetakPdf(Request $request)
     {
         $user = Auth::user();
-        $guru = $user ? $user->guru : null;
+        $kelas = null;
+        $guru = null;
 
-        if (!$guru) {
-            return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
+        if ($user && in_array(strtolower($user->role), ['wali_kelas', 'wali kelas'])) {
+            $kelas = $user->kelas;
+            if ($kelas) {
+                $guru = $kelas->waliKelas;
+            }
+        } else {
+            if ($user) {
+                $guru = DB::table('gurus')->where('user_id', $user->id)->first();
+            }
+            if ($guru) {
+                $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
+            }
         }
 
-        // Get class managed by this Wali Kelas
-        $kelas = DB::table('kelas')->where('wali_kelas_id', $guru->id)->first();
-
         if (!$kelas) {
-            return redirect()->route('dashboard')->with('error', 'Anda belum ditugaskan sebagai Wali Kelas untuk kelas manapun.');
+            return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas untuk kelas manapun.');
+        }
+
+        if (!$guru) {
+            $guru = (object)[
+                'id' => null,
+                'nama' => $user->name,
+                'nip' => '-'
+            ];
         }
 
         $mapelId = $request->input('mapel_id');
@@ -219,6 +245,17 @@ class NilaiController extends Controller
         $activeTa = TahunAjaran::active();
         $kelasId = $kelas->id;
         $activeTaId = $activeTa ? $activeTa->id : null;
+
+        // Check if any grade exists for this class, subject, and active academic year
+        $hasGrades = DB::table('nilais')
+            ->where('kelas_id', $kelasId)
+            ->where('mapel_id', $mapelId)
+            ->where('tahun_ajaran_id', $activeTaId)
+            ->exists();
+
+        if (!$hasGrades) {
+            return redirect()->back()->with('error', 'Data nilai belum diisi.');
+        }
 
         // Query students and their grades for this class and subject
         $siswas = DB::table('siswas')

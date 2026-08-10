@@ -25,6 +25,14 @@ class Kelas extends Model
     }
 
     /**
+     * Get the Wali Kelas (Guru) of this class (alias).
+     */
+    public function guru(): BelongsTo
+    {
+        return $this->belongsTo(Guru::class, 'wali_kelas_id');
+    }
+
+    /**
      * Get the students in this class.
      */
     public function siswas(): HasMany

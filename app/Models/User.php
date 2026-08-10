@@ -21,6 +21,7 @@ class User extends Authenticatable
         'password_plain',
         'role',
         'status_akun',
+        'kelas_id',
     ];
 
     protected $hidden = [
@@ -46,6 +47,69 @@ class User extends Authenticatable
     public function guru()
     {
         return $this->hasOne(Guru::class, 'user_id');
+    }
+
+    /**
+     * Helper to resolve the Guru profile linked to this User with fallbacks.
+     */
+    public function getGuruProfileAttribute()
+    {
+        if ($this->role === 'wali_kelas') {
+            return $this->kelas?->guru;
+        }
+        $guru = $this->guru;
+        if (!$guru) {
+            $guru = Guru::where('nip', $this->username)->first();
+        }
+        if (!$guru) {
+            $guru = Guru::where('nama', $this->name)->first();
+        }
+        return $guru;
+    }
+
+    /**
+     * Accessor for Kelas dynamic relation.
+     */
+    public function getKelasAttribute()
+    {
+        if ($this->role === 'wali_kelas') {
+            return $this->kelas_id ? Kelas::find($this->kelas_id) : null;
+        }
+        $guru = $this->guru_profile;
+        if ($guru) {
+            return Kelas::where('wali_kelas_id', $guru->id)->first();
+        }
+        return null;
+    }
+
+    /**
+     * Accessor for Kelas ID.
+     */
+    public function getKelasIdAttribute()
+    {
+        if ($this->role === 'wali_kelas') {
+            return $this->attributes['kelas_id'] ?? null;
+        }
+        return $this->kelas?->id;
+    }
+
+    /**
+     * Accessor for dynamic display name (nama_tampil).
+     */
+    public function getNamaTampilAttribute()
+    {
+        if (in_array(strtolower($this->role), ['wali_kelas', 'wali kelas']) && $this->kelas) {
+            return $this->kelas->guru->nama_lengkap ?? 'Wali Kelas ' . $this->kelas->nama_kelas;
+        }
+        return $this->guru_profile->nama_lengkap ?? $this->name;
+    }
+
+    /**
+     * Accessor for display_name (alias for nama_tampil).
+     */
+    public function getDisplayNameAttribute()
+    {
+        return $this->nama_tampil;
     }
 
     /**

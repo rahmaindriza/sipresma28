@@ -26,7 +26,7 @@ return new class extends Migration
             $table->enum('jenis_pelaksanaan', ['Dalam Sekolah', 'Luar Sekolah'])->nullable();
             $table->enum('tingkat', ['Kecamatan', 'Kabupaten', 'Provinsi', 'Nasional'])->nullable();
             $table->enum('juara', ['Juara 1', 'Juara 2', 'Juara 3', 'Harapan'])->nullable();
-            $table->integer('poin')->nullable();
+            // $table->integer('poin')->nullable();
             $table->string('sertifikat')->nullable();
             $table->date('tanggal_penghargaan')->nullable();
 

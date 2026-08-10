@@ -21,7 +21,7 @@
     }
     .btn-electric-blue:hover {
         background-color: var(--primary-hover) !important;
-        box-shadow: 0 4px 15px rgba(159, 82, 97, 0.35) !important;
+        box-shadow: 0 4px 15px rgba(61, 90, 128, 0.35) !important;
     }
     /* Table body styling overrides */
     table.table-dark-custom tbody tr {
@@ -29,7 +29,7 @@
         border-bottom: 1px solid var(--border-dark-burgundy) !important;
     }
     table.table-dark-custom tbody tr:hover {
-        background-color: rgba(159, 82, 97, 0.08) !important;
+        background-color: rgba(61, 90, 128, 0.08) !important;
     }
     table.table-dark-custom thead tr {
         border-bottom: 2px solid var(--border-dark-burgundy) !important;
@@ -42,7 +42,7 @@
         <div>
             <h3 class="text-xl font-bold text-white">Input Nilai Mata Pelajaran Umum (Wali Kelas)</h3>
             <p class="text-xs text-slate-400 mt-1">
-                Wali Kelas: <span class="text-white font-semibold">{{ auth()->user()->name }}</span> 
+                Wali Kelas: <span class="text-white font-semibold">{{ auth()->user()->nama_tampil }}</span> 
                 @if($kelas)
                     | Kelas Diampu: <span class="text-accent-blue font-semibold">{{ $kelas->nama_kelas }}</span>
                 @endif
@@ -125,6 +125,7 @@
                             <th class="py-4 px-4 text-center w-28">UH (20%)</th>
                             <th class="py-4 px-4 text-center w-28">UTS (30%)</th>
                             <th class="py-4 px-4 text-center w-28">UAS (30%)</th>
+                            <th class="py-4 px-6 text-center w-80">Capaian Kompetensi</th>
                             <th class="py-4 px-6 text-center w-36">Nilai Akhir</th>
                             <th class="py-4 px-6 text-center w-36">Status KKM</th>
                         </tr>
@@ -185,6 +186,20 @@
                                            value="{{ $grade ? $grade->uas : 0 }}" 
                                            min="0" max="100" 
                                            class="w-20 px-2 py-1.5 bg-slate-950 border border-slate-800/90 rounded-lg text-center text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/25 transition text-sm uas-input">
+                                </td>
+
+                                <!-- Capaian Kompetensi -->
+                                <td class="py-3 px-2">
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Tertinggi</label>
+                                            <textarea name="grades[{{ $index }}][capaian_tertinggi]" rows="2" placeholder="Capaian Tertinggi..." class="w-full px-2 py-1 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $siswa->capaian_tertinggi ?? '' }}</textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Perlu Peningkatan</label>
+                                            <textarea name="grades[{{ $index }}][capaian_perlu_peningkatan]" rows="2" placeholder="Perlu Peningkatan..." class="w-full px-2 py-1 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $siswa->capaian_perlu_peningkatan ?? '' }}</textarea>
+                                        </div>
+                                    </div>
                                 </td>
 
                                 <!-- Readonly Nilai Akhir -->

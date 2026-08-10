@@ -68,7 +68,7 @@
                 <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
                     Cari & Filter
                 </button>
-                <a href="{{ route('admin.assignments') }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center border border-slate-700">
+                <a href="{{ route('admin.assignments') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
                     Reset
                 </a>
             </div>

@@ -206,6 +206,7 @@ Route::middleware(['auth', 'role:wali_kelas'])->prefix('wali')->name('wali.')->g
     Route::get('/nilai', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/rekap', [WaliKelasController::class, 'rekap'])->name('rekap');
     Route::get('/print/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('print');
+    Route::post('/rapor/{siswa_id}', [WaliKelasController::class, 'storeOrUpdateRaporSiswa'])->name('rapor.store');
     Route::get('/prestasi', [WaliPrestasiController::class, 'index'])->name('prestasi');
     Route::post('/prestasi', [WaliPrestasiController::class, 'store'])->name('prestasi.store');
     Route::put('/prestasi/{id}', [WaliPrestasiController::class, 'update'])->name('prestasi.update');

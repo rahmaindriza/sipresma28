@@ -49,7 +49,7 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition">
                     Cari & Filter
                 </button>
-                <a href="{{ route('admin.users') }}" class="w-full md:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
+                <a href="{{ route('admin.users') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
                     Reset
                 </a>
             </div>
@@ -76,7 +76,12 @@
                     @foreach($users as $u)
                     <tr class="hover:bg-slate-900/40 transition duration-150">
                         <td class="py-4 px-6 font-semibold text-slate-400">{{ $loop->iteration }}</td>
-                        <td class="py-4 px-6 font-medium text-white">{{ $u->name }}</td>
+                         <td class="py-4 px-6 font-medium text-white">
+                            {{ $u->name }}
+                            @if($u->role === 'wali_kelas' && $u->kelas)
+                                <div class="text-xs text-blue-400 font-semibold">({{ $u->kelas->nama_kelas }})</div>
+                            @endif
+                        </td>
                         <td class="py-4 px-6 text-slate-300">{{ $u->email }}</td>
                         <td class="py-4 px-6">{{ $u->username }}</td>
                         <td class="py-4 px-6 font-mono text-xs text-slate-300">{{ $u->password_plain ?? 'N/A (Lama)' }}</td>
@@ -146,11 +151,20 @@
             </div>
             <div>
                 <label class="block text-xs font-semibold text-slate-350 uppercase tracking-wider mb-2">Role Akses</label>
-                <select name="role" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
+                 <select name="role" id="add-role" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
                     <option value="admin">Admin</option>
                     <option value="guru_mapel">Guru Mata Pelajaran</option>
                     <option value="wali_kelas">Wali Kelas</option>
                     <option value="kepala_sekolah">Kepala Sekolah</option>
+                </select>
+            </div>
+            <div id="add-kelas-select-container" style="display: none;">
+                <label class="block text-xs font-semibold text-slate-350 uppercase tracking-wider mb-2">Kelas Diampu</label>
+                <select name="kelas_id" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach($kelas as $k)
+                        <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
+                    @endforeach
                 </select>
             </div>
             <div>
@@ -196,11 +210,20 @@
             </div>
             <div>
                 <label class="block text-xs font-semibold text-slate-350 uppercase tracking-wider mb-2">Role Akses</label>
-                <select name="role" id="edit-role" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
+                 <select name="role" id="edit-role" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
                     <option value="admin">Admin</option>
                     <option value="guru_mapel">Guru Mata Pelajaran</option>
                     <option value="wali_kelas">Wali Kelas</option>
                     <option value="kepala_sekolah">Kepala Sekolah</option>
+                </select>
+            </div>
+            <div id="edit-kelas-select-container" style="display: none;">
+                <label class="block text-xs font-semibold text-slate-350 uppercase tracking-wider mb-2">Kelas Diampu</label>
+                <select name="kelas_id" id="edit-kelas-id" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 transition text-sm">
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach($kelas as $k)
+                        <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
+                    @endforeach
                 </select>
             </div>
             <div>
@@ -234,7 +257,52 @@
         document.getElementById('edit-username').value = user.username;
         document.getElementById('edit-role').value = user.role;
         document.getElementById('edit-status').value = user.status_akun;
+        
+        const container = document.getElementById('edit-kelas-select-container');
+        const select = document.getElementById('edit-kelas-id');
+        if (user.role === 'wali_kelas') {
+            container.style.display = 'block';
+            select.setAttribute('required', 'required');
+            select.value = user.kelas_id || '';
+        } else {
+            container.style.display = 'none';
+            select.removeAttribute('required');
+            select.value = '';
+        }
+        
         toggleModal('edit-modal');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const addRoleSelect = document.getElementById('add-role');
+        const addContainer = document.getElementById('add-kelas-select-container');
+        const addKelasSelect = addContainer.querySelector('select');
+        
+        addRoleSelect.addEventListener('change', function() {
+            if (this.value === 'wali_kelas') {
+                addContainer.style.display = 'block';
+                addKelasSelect.setAttribute('required', 'required');
+            } else {
+                addContainer.style.display = 'none';
+                addKelasSelect.removeAttribute('required');
+                addKelasSelect.value = '';
+            }
+        });
+
+        const editRoleSelect = document.getElementById('edit-role');
+        const editContainer = document.getElementById('edit-kelas-select-container');
+        const editKelasSelect = document.getElementById('edit-kelas-id');
+        
+        editRoleSelect.addEventListener('change', function() {
+            if (this.value === 'wali_kelas') {
+                editContainer.style.display = 'block';
+                editKelasSelect.setAttribute('required', 'required');
+            } else {
+                editContainer.style.display = 'none';
+                editKelasSelect.removeAttribute('required');
+                editKelasSelect.value = '';
+            }
+        });
+    });
 </script>
 @endsection

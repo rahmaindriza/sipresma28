@@ -16,27 +16,27 @@
     
     <style>
         :root {
-            /* 1. Komponen Navigasi Utama Gelap */
-            --bg-sidebar-dark: #1F1215;      /* Warna dasar sidebar merah-cokelat gelap pekat */
-            --bg-topbar-dark: #2D1B1F;       /* Warna header/topbar atas gelap tegas */
-            --border-dark: #3D262A;          /* Batas garis komponen gelap */
+            /* 1. Komponen Navigasi Utama Gelap (Slate-steel blue) */
+            --bg-sidebar-dark: #25354F;      /* Warna dasar sidebar steel blue */
+            --bg-topbar-dark: #293E59;       /* Warna header/topbar atas */
+            --border-dark: #334C6E;          /* Batas garis komponen gelap */
             
             /* 2. Komponen Halaman Konten Cerah Beraksen */
-            --bg-content-soft: #FAF7F7;      /* Latar belakang dasar halaman kanan: krem/rose sangat lembut */
+            --bg-content-soft: #F2EFE7;      /* Latar belakang dasar halaman kanan: krem/rose sangat lembut */
             --card-white: #FFFFFF;           /* Latar kotak card/tabel utama: putih bersih */
-            --border-light: #EAE1E3;         /* Garis batas/border di area cerah */
+            --border-light: #D8E6F2;         /* Garis batas/border di area cerah */
             
             /* 3. Aksen Warna & Teks */
-            --primary-burgundy: #9F5261;     /* Warna tombol utama (seperti '+ Tambah Kelas') dan teks header tabel */
-            --primary-hover: #86414E;         /* Burgundy lebih gelap saat di-hover */
-            --text-dark-main: #3D2228;       /* Warna teks judul dan isi data agar tajam dan mudah dibaca */
-            --text-muted: #7A6266;           /* Sub-judul kecil atau keterangan teks */
-            --accent-table-hover: #FFF9FA;   /* Efek sorotan (hover) baris tabel agar tidak monoton putih */
+            --primary-burgundy: #3D5A80;     /* Warna tombol utama (seperti '+ Tambah Kelas') dan teks header tabel */
+            --primary-hover: #293E59;         /* Burgundy lebih gelap saat di-hover */
+            --text-dark-main: #2D3748;       /* Warna teks judul dan isi data agar tajam dan mudah dibaca */
+            --text-muted: #64748B;           /* Sub-judul kecil atau keterangan teks */
+            --accent-table-hover: #FAF9F6;   /* Efek sorotan (hover) baris tabel agar tidak monoton putih */
 
             /* Map legacy variables for maximum compatibility */
             --primary-sekolah: var(--primary-burgundy);
-            --remedial-sekolah: #A82E43;       /* Remedial menggunakan merah rose gelap */
-            --lulus-sekolah: #245E49;          /* Lulus menggunakan hijau emerald gelap */
+            --remedial-sekolah: #D6455D;       /* Remedial menggunakan merah rose gelap */
+            --lulus-sekolah: #3D8B6F;          /* Lulus menggunakan hijau emerald gelap */
             --bg-dark-panel: var(--bg-content-soft);
             --card-dark-panel: var(--card-white);
         }
@@ -57,6 +57,10 @@
         aside div.bg-slate-950, aside div.h-16 {
             background-color: var(--bg-sidebar-dark) !important;
             border-bottom: 1px solid var(--border-dark) !important;
+            border-radius: 0 !important;
+        }
+        aside div.h-16 img {
+            border-radius: 0 !important;
         }
         aside div.h-16 h1 {
             color: #FFFFFF !important;
@@ -79,13 +83,13 @@
             font-weight: 600 !important;
         }
 
-        /* Active tab in Sidebar Navigation (Rose/Burgundy accent) */
+        /* Active tab in Sidebar Navigation (Steel Blue accent) */
         aside a.sidebar-active, aside a.sidebar-active * {
             background-color: var(--primary-burgundy) !important;
             background-image: none !important;
             color: #FFFFFF !important;
             border-left: 4px solid var(--primary-burgundy) !important;
-            box-shadow: 0 4px 12px rgba(159, 82, 97, 0.4) !important;
+            box-shadow: 0 4px 12px rgba(61, 90, 128, 0.4) !important;
         }
         aside a.sidebar-active svg {
             color: #FFFFFF !important;
@@ -169,14 +173,14 @@
             border-radius: 16px !important;
         }
 
-        /* Icons in stats boxes (Soft rose circular highlight with burgundy icons) */
+        /* Icons in stats boxes (Soft sky blue circular highlight with steel blue icons) */
         .glass-panel div[style*="background-color: rgba"], 
         .glass-panel .p-3, 
         .bg-[#2D1B1F] .p-3 {
-            background-color: #FDF4F5 !important;
+            background-color: #EBF3FC !important;
             color: var(--primary-burgundy) !important;
             border-radius: 9999px !important;
-            border: 1px solid rgba(159, 82, 97, 0.1) !important;
+            border: 1px solid rgba(61, 90, 128, 0.1) !important;
         }
         .glass-panel .p-3 svg, .bg-[#2D1B1F] .p-3 svg {
             color: var(--primary-burgundy) !important;
@@ -190,7 +194,7 @@
         }
         a.group:hover {
             border-color: var(--primary-burgundy) !important;
-            background-color: #FFF9FA !important;
+            background-color: #F9FBFE !important;
         }
 
         /* Table custom styling overrides */
@@ -199,7 +203,7 @@
             border: 1px solid var(--border-light) !important;
         }
         thead, thead tr, thead th {
-            background-color: #FDF4F5 !important;
+            background-color: #EBF3FC !important;
             color: var(--primary-burgundy) !important;
             font-weight: 700 !important;
             border-bottom: 2px solid var(--border-light) !important;
@@ -241,7 +245,7 @@
         }
         input[type="text"]:focus, select:focus, textarea:focus {
             border-color: var(--primary-burgundy) !important;
-            box-shadow: 0 0 0 3px rgba(159, 82, 97, 0.15) !important;
+            box-shadow: 0 0 0 3px rgba(61, 90, 128, 0.15) !important;
             outline: none !important;
         }
 
@@ -290,18 +294,48 @@
         }
 
         /* Primary Action Buttons */
-        button[type="submit"], .btn-primary, .btn-electric-blue, .bg-blue-600, button.bg-blue-600, .btn-electric {
+        button[type="submit"], .btn-primary, .btn-electric-blue, 
+        .bg-blue-600, button.bg-blue-600, 
+        .bg-indigo-600, button.bg-indigo-600,
+        .bg-emerald-600, button.bg-emerald-600,
+        .bg-teal-600, button.bg-teal-600,
+        .bg-sky-600, button.bg-sky-600,
+        .btn-electric, button[onclick*="toggleModal"] {
             background-color: var(--primary-burgundy) !important;
             border-color: var(--primary-burgundy) !important;
             color: #FFFFFF !important;
             font-weight: 600 !important;
             border-radius: 10px !important;
             transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 4px 10px rgba(61, 90, 128, 0.15) !important;
         }
-        button[type="submit"]:hover, .btn-primary:hover, .btn-electric-blue:hover, .bg-blue-600:hover, button.bg-blue-600:hover, .btn-electric:hover {
+        button[type="submit"]:hover, .btn-primary:hover, .btn-electric-blue:hover, 
+        .bg-blue-600:hover, button.bg-blue-600:hover, 
+        .bg-indigo-600:hover, button.bg-indigo-600:hover,
+        .bg-emerald-600:hover, button.bg-emerald-600:hover,
+        .bg-teal-600:hover, button.bg-teal-600:hover,
+        .bg-sky-600:hover, button.bg-sky-600:hover,
+        .btn-electric:hover, button[onclick*="toggleModal"]:hover {
             background-color: var(--primary-hover) !important;
             border-color: var(--primary-hover) !important;
-            box-shadow: 0 4px 15px rgba(159, 82, 97, 0.3) !important;
+            box-shadow: 0 4px 15px rgba(61, 90, 128, 0.3) !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        /* Force text color to white inside primary buttons to bypass global body styling overrides */
+        main a[class*="bg-[#3D5A80]"], main a[class*="bg-[#3d5a80]"],
+        main a[class*="bg-[#293E59]"], main a[class*="bg-[#293e59]"],
+        main a[class*="bg-primary"], main a.btn-primary,
+        a[class*="bg-emerald-"], button[class*="bg-emerald-"],
+        a[class*="bg-green-"], button[class*="bg-green-"],
+        a[class*="bg-teal-"], button[class*="bg-teal-"],
+        button[type="submit"] *, .btn-primary *, .bg-blue-600 *, .bg-indigo-600 *, .bg-emerald-600 *, .bg-teal-600 *, .bg-sky-600 *, button[onclick*="toggleModal"] *,
+        main a[class*="bg-[#3D5A80]"] *, main a[class*="bg-[#3d5a80]"] *,
+        main a[class*="bg-[#293E59]"] *, main a[class*="bg-[#293e59]"] *,
+        a[class*="bg-emerald-"] *, button[class*="bg-emerald-"] *,
+        a[class*="bg-green-"] *, button[class*="bg-green-"] *,
+        a[class*="bg-teal-"] *, button[class*="bg-teal-"] * {
+            color: #FFFFFF !important;
         }
 
         /* Status & KKM Badges overrides */
@@ -491,10 +525,10 @@
         <div class="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
             <div class="flex items-center min-w-0">
                 <div class="w-10 h-10 rounded-full bg-slate-800 border border-blue-600 flex items-center justify-center font-bold text-blue-400 shrink-0 uppercase">
-                    {{ substr(auth()->user()->name, 0, 2) }}
+                    {{ substr(auth()->user()->nama_tampil, 0, 2) }}
                 </div>
                 <div class="ml-3 min-w-0">
-                    <p class="text-xs font-semibold text-white truncate">{{ auth()->user()->name }}</p>
+                    <p class="text-xs font-semibold text-white truncate">{{ auth()->user()->nama_tampil }}</p>
                     <p class="text-[10px] text-slate-400 uppercase truncate">
                         @if(auth()->user()->isAdmin()) Admin
                         @elseif(auth()->user()->isGuruMapel()) Guru Mapel
@@ -534,11 +568,11 @@
             <!-- Academic Term Info -->
             <div class="flex items-center space-x-3">
                 @if(isset($activeTa))
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
+                <span class="inline-flex items-center px-3 py-1 rounded-none text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
                     TA Aktif: {{ $activeTa->tahun }} ({{ $activeTa->semester }})
                 </span>
                 @else
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-950 text-red-400 border border-red-900">
+                <span class="inline-flex items-center px-3 py-1 rounded-none text-xs font-semibold bg-red-950 text-red-400 border border-red-900">
                     TA Aktif: Belum Ada
                 </span>
                 @endif
@@ -547,20 +581,7 @@
 
         <!-- Page View Body -->
         <main class="flex-1 overflow-y-auto p-6 md:p-8">
-            <!-- Alert Messages -->
-            @if(session('success'))
-                <div class="mb-6 p-4 rounded-lg bg-green-900/30 border border-green-800 text-green-300 flex items-center space-x-3">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ session('success') }}</span>
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="mb-6 p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 flex items-center space-x-3">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ session('error') }}</span>
-                </div>
-            @endif
+            <!-- Alert Messages handled globally via SweetAlert2 -->
 
             @yield('content')
         </main>
@@ -568,9 +589,9 @@
 
     <!-- Histori Rapor & Prestasi Siswa (Multi-Semester) Modal -->
     <div id="histori-rapor-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-slate-955/80 p-4">
-        <div class="bg-white border border-[#EAE1E3] rounded-3xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="bg-white border border-[#D8E6F2] rounded-3xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <!-- Modal Header -->
-            <div class="flex justify-between items-center bg-[#9F5261] px-6 py-4 border-b border-[#86414E]">
+            <div class="flex justify-between items-center bg-[#3D5A80] px-6 py-4 border-b border-[#293E59]">
                 <h4 class="text-lg font-bold text-white flex items-center gap-2">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -581,15 +602,15 @@
             </div>
             
             <!-- Modal Body -->
-            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-[#FAF7F7] text-[#3D2228]">
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-[#F2EFE7] text-[#2D3748]">
                 <!-- Student Header Profile Details -->
-                <div class="p-4 bg-white border border-[#EAE1E3] rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+                <div class="p-4 bg-white border border-[#D8E6F2] rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
                     <div>
-                        <h3 id="histori-siswa-nama" class="text-xl font-bold text-[#9F5261]">-</h3>
+                        <h3 id="histori-siswa-nama" class="text-xl font-bold text-[#3D5A80]">-</h3>
                         <p id="histori-siswa-nisn" class="text-xs text-slate-500 font-mono mt-1">-</p>
                     </div>
                     <div>
-                        <span id="histori-siswa-kelas" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#FDF4F5] text-[#9F5261] border border-[#EAE1E3]">
+                        <span id="histori-siswa-kelas" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#EBF3FC] text-[#3D5A80] border border-[#D8E6F2]">
                             Kelas: -
                         </span>
                     </div>
@@ -602,7 +623,7 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="flex justify-end px-6 py-4 border-t border-[#EAE1E3] bg-[#FAFAF9]">
+            <div class="flex justify-end px-6 py-4 border-t border-[#D8E6F2] bg-[#FAFAF9]">
                 <button type="button" onclick="closeHistoriModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition border-0">Tutup</button>
             </div>
         </div>
@@ -616,7 +637,7 @@
             // Show loading placeholder
             container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-16 text-slate-400">
-                    <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#9F5261] border-t-transparent mb-3"></div>
+                    <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#3D5A80] border-t-transparent mb-3"></div>
                     <p class="text-xs font-semibold text-slate-500">Memuat riwayat transkrip & prestasi...</p>
                 </div>
             `;
@@ -634,7 +655,7 @@
 
                     if (data.history.length === 0) {
                         container.innerHTML = `
-                            <div class="text-center py-12 text-slate-400 bg-white rounded-2xl border border-[#EAE1E3]">
+                            <div class="text-center py-12 text-slate-400 bg-white rounded-2xl border border-[#D8E6F2]">
                                 <p class="text-xs font-semibold">Belum ada rekaman nilai rapor atau prestasi untuk siswa ini.</p>
                             </div>
                         `;
@@ -651,7 +672,7 @@
                             gradesHtml = `
                                 <table class="w-full text-left border-collapse text-xs">
                                     <thead>
-                                        <tr class="bg-[#FDF4F5] text-[#9F5261] font-bold border-b border-[#EAE1E3]">
+                                        <tr class="bg-[#EBF3FC] text-[#3D5A80] font-bold border-b border-[#D8E6F2]">
                                             <th class="p-2.5 w-12 text-center">No</th>
                                             <th class="p-2.5">Mata Pelajaran</th>
                                             <th class="p-2.5 text-center w-16">KKM</th>
@@ -666,7 +687,7 @@
                                 gradesHtml += `
                                     <tr>
                                         <td class="p-2.5 text-center text-slate-400 font-medium">${idx + 1}</td>
-                                        <td class="p-2.5 font-bold text-[#3D2228]">${g.mapel}</td>
+                                        <td class="p-2.5 font-bold text-[#2D3748]">${g.mapel}</td>
                                         <td class="p-2.5 text-center font-mono">${g.kkm}</td>
                                         <td class="p-2.5 text-center font-bold ${g.nilai_akhir < g.kkm ? 'text-red-650' : 'text-slate-800'}">${g.nilai_akhir}</td>
                                         <td class="p-2.5 text-center">
@@ -683,7 +704,7 @@
                         if (block.prestasis.length === 0) {
                             prestasisHtml = \`<div class="p-4 text-center text-xs text-slate-400 italic">Tidak ada prestasi dicatat pada semester ini.</div>\`;
                         } else {
-                            prestasisHtml = \`<div class="space-y-3.5 p-3.5 bg-white border border-[#EAE1E3] rounded-xl shadow-sm">\`;
+                            prestasisHtml = \`<div class="space-y-3.5 p-3.5 bg-white border border-[#D8E6F2] rounded-xl shadow-sm">\`;
                             block.prestasis.forEach(p => {
                                 const proofLink = p.sertifikat ? `
                                     <a href="\${p.sertifikat}" target="_blank" class="inline-flex items-center gap-1.5 px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-lg text-[10px] font-bold transition mt-2 border-0">
@@ -703,10 +724,10 @@
                         }
 
                         html += `
-                            <div class="bg-white border border-[#EAE1E3] rounded-3xl p-5 shadow-md space-y-4">
-                                <div class="border-b border-[#EAE1E3] pb-2 flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-[#9F5261] animate-pulse"></span>
-                                    <h4 class="text-sm font-extrabold text-[#9F5261] uppercase tracking-wider">
+                            <div class="bg-white border border-[#D8E6F2] rounded-3xl p-5 shadow-md space-y-4">
+                                <div class="border-b border-[#D8E6F2] pb-2 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#3D5A80] animate-pulse"></span>
+                                    <h4 class="text-sm font-extrabold text-[#3D5A80] uppercase tracking-wider">
                                         Kelas \${block.kelas} — TA \${block.tahun_ajaran}
                                     </h4>
                                 </div>
@@ -715,7 +736,7 @@
                                     <!-- Grades Table -->
                                     <div class="lg:col-span-2 space-y-2">
                                         <h5 class="text-xs font-bold text-[#7A6266] uppercase tracking-wider">Nilai Evaluasi Rapor</h5>
-                                        <div class="border border-[#EAE1E3] rounded-2xl overflow-hidden bg-white">
+                                        <div class="border border-[#D8E6F2] rounded-2xl overflow-hidden bg-white">
                                             \${gradesHtml}
                                         </div>
                                     </div>
@@ -743,6 +764,45 @@
         function closeHistoriModal() {
             document.getElementById('histori-rapor-modal').classList.add('hidden');
         }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    confirmButtonColor: '#3D5A80',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: "{{ session('error') }}",
+                    confirmButtonColor: '#3D5A80',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    html: '<ul style="text-align: left; list-style-type: disc; padding-left: 20px; font-size: 13px; color: #333; line-height: 1.5;">' +
+                          '@foreach($errors->all() as $error)' +
+                          '<li>{{ $error }}</li>' +
+                          '@endforeach' +
+                          '</ul>',
+                    confirmButtonColor: '#3D5A80',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
     </script>
 
     @stack('scripts')

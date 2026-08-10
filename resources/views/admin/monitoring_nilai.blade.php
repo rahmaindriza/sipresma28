@@ -32,6 +32,7 @@
                     @foreach($listKelas as $kls)
                         <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}> {{ $kls->nama_kelas }}</option>
                     @endforeach
+                    <option value="alumni" {{ request('kelas_id') === 'alumni' ? 'selected' : '' }}>Alumni / Lulus</option>
                 </select>
             </div>
 
@@ -50,7 +51,7 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none;">
                     Cari & Filter
                 </button>
-                <a href="{{ route('admin.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #9F5261 !important; border: none;">
+                <a href="{{ route('admin.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #3D5A80 !important; border: none;">
                     <i class="bi bi-printer"></i> Cetak PDF Rekapitulasi
                 </a>
                 <a href="{{ route('admin.nilai.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
@@ -60,12 +61,78 @@
         </form>
     </div>
 
+    <!-- Search Results / History Selector -->
+    @if(request()->filled('search') && count($students) > 0)
+    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-[var(--border-light)] bg-white space-y-4">
+        <h4 class="text-xs font-bold text-[var(--primary-burgundy)] uppercase tracking-wider mb-0">Hasil Pencarian Riwayat Rapor Siswa</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach($students as $siswa)
+            <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-col justify-between gap-3 shadow-xs">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h5 class="font-bold text-slate-800 text-sm mb-0">{{ $siswa->nama }}</h5>
+                        <p class="text-[11px] text-slate-400 font-mono mt-0.5 mb-0">NISN: {{ $siswa->nisn }}</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider
+                        {{ strtolower($siswa->status) == 'alumni' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200' }}">
+                        {{ $siswa->status ?? 'Aktif' }}
+                    </span>
+                </div>
+                
+                @if(isset($siswa->rapor_history) && count($siswa->rapor_history) > 0)
+                <div class="flex flex-col sm:flex-row gap-2 items-end sm:items-center">
+                    <div class="flex-1 w-full">
+                        <label class="block text-[10px] text-slate-400 font-semibold mb-1">Pilih Riwayat Rapor Siswa:</label>
+                        <select id="select-history-{{ $siswa->id }}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[var(--primary-burgundy)] transition">
+                            @foreach($siswa->rapor_history as $hist)
+                                <option value="{{ $hist->tahun_ajaran_id }}" data-kelas-id="{{ $hist->kelas_id }}"
+                                    {{ (request('kelas_id') == $hist->kelas_id && request('tahun_ajaran_id') == $hist->tahun_ajaran_id) ? 'selected' : '' }}>
+                                    Kelas {{ $hist->nama_kelas }} - Semester {{ strtolower($hist->semester) == 'ganjil' ? '1' : '2' }} ({{ $hist->tahun }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex gap-1.5 w-full sm:w-auto pt-2 sm:pt-0">
+                        <button type="button" onclick="lihatRaporHistory({{ $siswa->id }}, '{{ addslashes($siswa->nama) }}')" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex-1 sm:flex-none border-0 cursor-pointer">
+                            Lihat
+                        </button>
+                        <button type="button" onclick="cetakRaporHistory({{ $siswa->id }})" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex-1 sm:flex-none border-0 cursor-pointer">
+                            Cetak PDF
+                        </button>
+                    </div>
+                </div>
+                @else
+                <p class="text-[11px] text-slate-400 italic mb-0">Belum ada riwayat nilai/rapor terdaftar untuk siswa ini.</p>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    <script>
+        function lihatRaporHistory(siswaId, name) {
+            const select = document.getElementById('select-history-' + siswaId);
+            const taId = select.value;
+            const option = select.options[select.selectedIndex];
+            const kelasId = option.getAttribute('data-kelas-id');
+            window.location.href = "{{ route('admin.nilai.index') }}?kelas_id=" + kelasId + "&tahun_ajaran_id=" + taId + "&search=" + encodeURIComponent(name);
+        }
+
+        function cetakRaporHistory(siswaId) {
+            const select = document.getElementById('select-history-' + siswaId);
+            const taId = select.value;
+            const printUrl = "{{ route('admin.nilai.print_siswa', ['__siswa_id__']) }}".replace('__siswa_id__', siswaId) + "?tahun_ajaran_id=" + taId;
+            window.open(printUrl, '_blank');
+        }
+    </script>
+    @endif
+
     <!-- Nilai Matrix Table -->
     <div class="glass-panel rounded-2xl overflow-hidden shadow-sm bg-white border border-[var(--border-light)]">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
-                    <tr class="bg-[#FDF4F5] border-b border-[var(--border-light)] text-[10px] font-bold text-[#9F5261] uppercase tracking-wider">
+                    <tr class="bg-[#EBF3FC] border-b border-[var(--border-light)] text-[10px] font-bold text-[#3D5A80] uppercase tracking-wider">
                         <th class="py-3.5 px-4 w-12 text-center" style="color: var(--primary-burgundy) !important;">No</th>
                         <th class="py-3.5 px-4 w-52" style="color: var(--primary-burgundy) !important;">Nama Siswa</th>
                         @foreach($mapels as $m)
@@ -95,7 +162,16 @@
                                 </div>
                                 <div class="flex gap-2 items-center text-[10px] text-slate-400 mt-0.5">
                                     <span class="font-mono">NISN: {{ $siswa->nisn }}</span>
-                                    <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">Kelas {{ $siswa->kelas->nama_kelas ?? '-' }}</span>
+                                    @php
+                                        $displayKelasName = $siswa->kelas->nama_kelas ?? '-';
+                                        if (request()->filled('kelas_id') && request('kelas_id') !== 'alumni') {
+                                            $selectedKls = $listKelas->firstWhere('id', request('kelas_id'));
+                                            if ($selectedKls) {
+                                                $displayKelasName = $selectedKls->nama_kelas;
+                                            }
+                                        }
+                                    @endphp
+                                    <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">Kelas {{ $displayKelasName }}</span>
                                 </div>
                             </td>
                             

@@ -50,7 +50,7 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none;">
                     Cari & Filter
                 </button>
-                <a href="{{ route('kepsek.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #9F5261 !important; border: none;">
+                <a href="{{ route('kepsek.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #3D5A80 !important; border: none;">
                     <i class="bi bi-printer"></i> Cetak PDF Rekapitulasi
                 </a>
                 <a href="{{ route('kepsek.nilai.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
@@ -65,7 +65,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse" style="border-radius: 12px; overflow: hidden;">
                 <thead>
-                    <tr class="bg-[#FDF4F5] border-b border-[var(--border-light)] text-[10px] font-bold text-[#9F5261] uppercase tracking-wider">
+                    <tr class="bg-[#EBF3FC] border-b border-[var(--border-light)] text-[10px] font-bold text-[#3D5A80] uppercase tracking-wider">
                         <th class="py-3.5 px-4 w-12 text-center" style="color: var(--primary-burgundy) !important;">No</th>
                         <th class="py-3.5 px-4 w-52" style="color: var(--primary-burgundy) !important;">Nama Siswa</th>
                         @foreach($mapels as $m)

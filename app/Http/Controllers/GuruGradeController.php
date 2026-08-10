@@ -28,10 +28,8 @@ class GuruGradeController extends Controller
         $activeTaId = $activeTa ? $activeTa->id : null;
 
         if ($guru) {
-            // Get the distinct kelas and mapel that this guru teaches in the active TA (filtering only mapel khusus)
             $assignmentsQuery = DB::table('guru_mapel_kelas')
                 ->join('mapels', 'guru_mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->where('mapels.jenis_mapel', 'khusus')
                 ->where('guru_mapel_kelas.guru_id', $guru->id);
 
             if ($activeTaId) {
@@ -50,13 +48,12 @@ class GuruGradeController extends Controller
 
             $all_mapel = DB::table('mapels')
                 ->whereIn('id', $all_mapel_ids)
-                ->where('jenis_mapel', 'khusus')
                 ->orderBy('nama_mapel')
                 ->get();
         } else {
             // Fallback: Load all classes and mapels when the teacher profile is not linked
             $all_kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
-            $all_mapel = DB::table('mapels')->where('jenis_mapel', 'khusus')->orderBy('nama_mapel')->get();
+            $all_mapel = DB::table('mapels')->orderBy('nama_mapel')->get();
         }
 
         $kelas_id = $request->input('kelas_id');
@@ -67,10 +64,8 @@ class GuruGradeController extends Controller
         if ($kelas_id && $mapel_id) {
             $isAuthorized = true;
             if ($guru) {
-                // Security verification: Verify that the guru actually teaches this mapel and kelas (must be mapel khusus)
                 $isAuthorized = DB::table('guru_mapel_kelas')
                     ->join('mapels', 'guru_mapel_kelas.mapel_id', '=', 'mapels.id')
-                    ->where('mapels.jenis_mapel', 'khusus')
                     ->where('guru_mapel_kelas.guru_id', $guru->id)
                     ->where('guru_mapel_kelas.kelas_id', $kelas_id)
                     ->where('guru_mapel_kelas.mapel_id', $mapel_id)
@@ -82,7 +77,6 @@ class GuruGradeController extends Controller
                 // Fallback: Verify that the selected mapel is indeed mapel khusus
                 $isAuthorized = DB::table('mapels')
                     ->where('id', $mapel_id)
-                    ->where('jenis_mapel', 'khusus')
                     ->exists();
             }
 
@@ -141,7 +135,6 @@ class GuruGradeController extends Controller
             // Security verification: Verify that the guru actually teaches this mapel and kelas (must be mapel khusus)
             $isAuthorized = DB::table('guru_mapel_kelas')
                 ->join('mapels', 'guru_mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->where('mapels.jenis_mapel', 'khusus')
                 ->where('guru_mapel_kelas.guru_id', $guru->id)
                 ->where('guru_mapel_kelas.kelas_id', $kelas_id)
                 ->where('guru_mapel_kelas.mapel_id', $mapel_id)
@@ -153,13 +146,25 @@ class GuruGradeController extends Controller
             // Fallback: Verify that the selected mapel is indeed mapel khusus
             $isAuthorized = DB::table('mapels')
                 ->where('id', $mapel_id)
-                ->where('jenis_mapel', 'khusus')
                 ->exists();
         }
 
         if (!$isAuthorized) {
             return redirect()->back()->with('error', 'Akses ditolak: Anda tidak ditugaskan untuk mengampu kombinasi kelas dan mata pelajaran ini.');
         }
+
+        $request->validate([
+            'kelas_id' => 'required',
+            'mapel_id' => 'required|exists:mapels,id',
+            'grades' => 'required|array',
+            'grades.*.siswa_id' => 'required|exists:siswas,id',
+            'grades.*.nilai_tugas' => 'nullable|numeric|min:0|max:100',
+            'grades.*.nilai_uh' => 'nullable|numeric|min:0|max:100',
+            'grades.*.nilai_uts' => 'nullable|numeric|min:0|max:100',
+            'grades.*.nilai_uas' => 'nullable|numeric|min:0|max:100',
+            'grades.*.capaian_tertinggi' => 'nullable|string',
+            'grades.*.capaian_perlu_peningkatan' => 'nullable|string',
+        ]);
 
         foreach ($grades as $g) {
             $siswa_id = $g['siswa_id'];
@@ -188,6 +193,8 @@ class GuruGradeController extends Controller
                     'nilai_uas' => $uas,
                     'nilai_akhir' => $nilaiAkhir,
                     'status_kkm' => $statusKkm,
+                    'capaian_tertinggi' => $g['capaian_tertinggi'] ?? null,
+                    'capaian_perlu_peningkatan' => $g['capaian_perlu_peningkatan'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

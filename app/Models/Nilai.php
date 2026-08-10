@@ -23,6 +23,8 @@ class Nilai extends Model
         'nilai_uas',
         'nilai_akhir',
         'status_kkm',
+        'capaian_tertinggi',
+        'capaian_perlu_peningkatan',
     ];
 
     /**

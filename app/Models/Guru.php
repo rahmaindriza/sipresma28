@@ -21,6 +21,14 @@ class Guru extends Model
     ];
 
     /**
+     * Accessor for full name (including degrees).
+     */
+    public function getNamaLengkapAttribute()
+    {
+        return $this->nama;
+    }
+
+    /**
      * Get the user account for the guru.
      */
     public function user(): BelongsTo

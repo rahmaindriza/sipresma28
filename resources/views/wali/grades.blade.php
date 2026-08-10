@@ -37,6 +37,7 @@
                             <th class="py-4 px-4 text-center">UH (30%)</th>
                             <th class="py-4 px-4 text-center">UTS (20%)</th>
                             <th class="py-4 px-4 text-center">UAS (30%)</th>
+                            <th class="py-4 px-6 text-center w-80">Capaian Kompetensi</th>
                             <th class="py-4 px-6 text-center w-40">Estimasi Akhir</th>
                             <th class="py-4 px-6 text-center w-28">Remedial?</th>
                         </tr>
@@ -45,7 +46,7 @@
                         @foreach($students as $index => $student)
                         @php
                             $grade = $grades->get($student->id);
-                        @php
+                        @endphp
                         <tr class="hover:bg-slate-900/20 transition duration-150 student-row" data-index="{{ $index }}">
                             <td class="py-4 px-6">
                                 <p class="font-semibold text-white">{{ $student->nama }}</p>
@@ -75,6 +76,18 @@
                                        name="grades[{{ $index }}][uas]" 
                                        value="{{ $grade ? $grade->uas : 0 }}" 
                                        class="w-20 px-2 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-center text-white focus:outline-none focus:border-blue-500 transition text-sm uas-input">
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="space-y-2">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Tertinggi</label>
+                                        <textarea name="grades[{{ $index }}][capaian_tertinggi]" rows="2" placeholder="Capaian Tertinggi..." class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? $grade->capaian_tertinggi : '' }}</textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Perlu Peningkatan</label>
+                                        <textarea name="grades[{{ $index }}][capaian_perlu_peningkatan]" rows="2" placeholder="Perlu Peningkatan..." class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? ($grade->capaian_perlu_peningkatan ?? $grade->capaian_terendah ?? '') : '' }}</textarea>
+                                    </div>
+                                </div>
                             </td>
                             <td class="py-4 px-6 text-center font-bold text-base text-slate-400 estimation-cell">
                                 0.00

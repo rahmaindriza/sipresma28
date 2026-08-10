@@ -16,14 +16,14 @@
         
         <style>
             :root {
-                --primary-burgundy: #9F5261;
-                --primary-hover: #86414E;
-                --bg-dark-burgundy: #1F1215;
-                --card-dark-burgundy: #2D1B1F;
-                --border-dark-burgundy: #3D262A;
-                --bg-light-cream: #FAF5F5;
-                --card-light-cream: #FFFDFD;
-                --text-dark-mauve: #4A2830;
+                --primary-burgundy: #3D5A80;
+                --primary-hover: #293E59;
+                --bg-dark-burgundy: #1B263B;
+                --card-dark-burgundy: #25354F;
+                --border-dark-burgundy: #2C3E5B;
+                --bg-light-cream: #F2EFE7;
+                --card-light-cream: #FFFFFF;
+                --text-dark-mauve: #2D3748;
             }
             body {
                 background-color: var(--bg-light-cream) !important;
@@ -31,13 +31,13 @@
             }
             .auth-card {
                 background-color: var(--card-light-cream) !important;
-                border: 1px solid rgba(159, 82, 97, 0.15) !important;
-                box-shadow: 0 10px 30px rgba(74, 40, 48, 0.06) !important;
+                border: 1px solid rgba(61, 90, 128, 0.15) !important;
+                box-shadow: 0 10px 30px rgba(61, 90, 128, 0.06) !important;
             }
             /* Override standard input and button components used in Breeze */
             input, select, textarea {
                 color: var(--text-dark-mauve) !important;
-                border-color: rgba(159, 82, 97, 0.2) !important;
+                border-color: rgba(61, 90, 128, 0.2) !important;
             }
             input:focus {
                 border-color: var(--primary-burgundy) !important;
@@ -59,7 +59,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
             <div>
                 <a href="/">
-                    <img src="{{ asset('images/logo.jpg') }}" class="w-20 h-20 object-contain rounded-2xl shadow-md border border-[#9F5261]/25" alt="Logo">
+                    <img src="{{ asset('images/logo.jpg') }}" class="w-20 h-20 object-contain rounded-2xl shadow-md border border-[#3D5A80]/25" alt="Logo">
                 </a>
             </div>
 

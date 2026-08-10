@@ -100,6 +100,8 @@ class GuruController extends Controller
             'grades.*.uh' => 'required|numeric|min:0|max:100',
             'grades.*.uts' => 'required|numeric|min:0|max:100',
             'grades.*.uas' => 'required|numeric|min:0|max:100',
+            'grades.*.capaian_tertinggi' => 'nullable|string',
+            'grades.*.capaian_perlu_peningkatan' => 'nullable|string',
         ]);
 
         foreach ($request->grades as $gradeData) {
@@ -115,6 +117,8 @@ class GuruController extends Controller
                     'nilai_uh' => $gradeData['uh'],
                     'nilai_uts' => $gradeData['uts'],
                     'nilai_uas' => $gradeData['uas'],
+                    'capaian_tertinggi' => $gradeData['capaian_tertinggi'] ?? null,
+                    'capaian_perlu_peningkatan' => $gradeData['capaian_perlu_peningkatan'] ?? null,
                 ]
             );
         }
@@ -154,7 +158,7 @@ class GuruController extends Controller
     {
         $users = \App\Models\User::whereNotIn('id', function($q) {
             $q->select('user_id')->from('gurus')->whereNotNull('user_id');
-        })->whereIn('role', ['guru_mapel', 'wali_kelas'])->orderBy('name')->get();
+        })->where('role', 'guru_mapel')->orderBy('name')->get();
 
         return view('admin.guru.create', compact('users'));
     }
@@ -207,7 +211,7 @@ class GuruController extends Controller
             if ($guru->user_id) {
                 $q->orWhere('id', $guru->user_id);
             }
-        })->whereIn('role', ['guru_mapel', 'wali_kelas'])->orderBy('name')->get();
+        })->where('role', 'guru_mapel')->orderBy('name')->get();
 
         return view('admin.guru.edit', compact('guru', 'users'));
     }

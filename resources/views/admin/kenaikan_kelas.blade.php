@@ -88,12 +88,12 @@
                         <p class="text-[11px] text-[var(--text-muted)] mt-0.5">Centang siswa yang layak atau naik kelas untuk dipindahkan.</p>
                     </div>
                     @if($students->isNotEmpty() && $kelasTujuanId)
-                        @if(isset($activeTa))
+                        @if(isset($activeTa) && !$cannotPromote)
                             <button type="submit" onclick="return confirmPromotion(event)" class="px-4 py-2 text-white font-semibold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm border-0 cursor-pointer" style="background-color: #245E49 !important; box-shadow: 0 4px 10px rgba(36, 94, 73, 0.2);">
                                 <i class="bi bi-check2-all"></i> Proses Kenaikan Kelas Selected
                             </button>
                         @else
-                            <button type="button" disabled class="px-4 py-2 bg-slate-200 text-slate-400 font-semibold rounded-xl text-xs border-0 cursor-not-allowed" title="Aktifkan Tahun Ajaran terlebih dahulu">
+                            <button type="button" disabled class="px-4 py-2 bg-slate-200 text-slate-400 font-semibold rounded-xl text-xs border-0 cursor-not-allowed" title="Proses kenaikan kelas hanya dapat dilakukan pada Semester Genap">
                                 ⚠️ Proses Kenaikan Kelas Dinonaktifkan
                             </button>
                         @endif
@@ -103,7 +103,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-[#FDF4F5] border-b border-[var(--border-light)] text-[10px] font-bold text-[#9F5261] uppercase tracking-wider">
+                            <tr class="bg-[#EBF3FC] border-b border-[var(--border-light)] text-[10px] font-bold text-[#3D5A80] uppercase tracking-wider">
                                 <th class="py-3.5 px-4 w-12 text-center">
                                     <input type="checkbox" id="select-all" class="rounded border-slate-350 text-[var(--primary-burgundy)] focus:ring-[var(--primary-burgundy)] cursor-pointer">
                                 </th>

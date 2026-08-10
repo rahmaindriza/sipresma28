@@ -35,8 +35,14 @@ class KenaikanKelasController extends Controller
         }
 
         $activeTa = TahunAjaran::active();
+        
+        $cannotPromote = false;
+        if ($activeTa && strtolower($activeTa->semester) === 'ganjil') {
+            $cannotPromote = true;
+            session()->now('error', 'Proses kenaikan kelas dan kelulusan hanya dapat dilakukan pada Semester Genap.');
+        }
 
-        return view('admin.kenaikan_kelas', compact('listKelas', 'kelasAsalId', 'kelasTujuanId', 'students', 'activeTa', 'kelasAsal'));
+        return view('admin.kenaikan_kelas', compact('listKelas', 'kelasAsalId', 'kelasTujuanId', 'students', 'activeTa', 'kelasAsal', 'cannotPromote'));
     }
 
     /**
@@ -60,8 +66,36 @@ class KenaikanKelasController extends Controller
             return redirect()->back()->with('error', 'Gagal memproses kenaikan kelas: Tidak ada Tahun Ajaran aktif saat ini. Silakan aktifkan Tahun Ajaran terlebih dahulu.');
         }
 
+        if (strtolower($activeTa->semester) === 'ganjil') {
+            return redirect()->back()->with('error', 'Proses kenaikan kelas dan kelulusan hanya dapat dilakukan pada Semester Genap.');
+        }
+
         DB::beginTransaction();
         try {
+            // Snapshot current Wali Kelas name and NIP for all students in the class for both semesters of the year
+            $currentWali = $kelasAsal->waliKelas;
+            $namaWali = $currentWali ? $currentWali->nama : '-';
+            $nipWali = $currentWali ? $currentWali->nip : '-';
+
+            $tahunAjaranIds = TahunAjaran::where('tahun', $activeTa->tahun)->pluck('id');
+            $allStudentsInClass = Siswa::where('kelas_id', $kelasAsal->id)->get();
+
+            foreach ($allStudentsInClass as $student) {
+                foreach ($tahunAjaranIds as $taId) {
+                    \App\Models\RaporSiswa::updateOrCreate(
+                        [
+                            'siswa_id' => $student->id,
+                            'kelas_id' => $kelasAsal->id,
+                            'tahun_ajaran_id' => $taId,
+                        ],
+                        [
+                            'nama_wali_kelas' => $namaWali,
+                            'nip_wali_kelas' => $nipWali,
+                        ]
+                    );
+                }
+            }
+
             if ($kelasTujuanId === 'lulus') {
                 // Graduate students (Lulus / Alumni)
                 Siswa::whereIn('id', $siswaIds)

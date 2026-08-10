@@ -287,54 +287,115 @@ class KepalaSekolahController extends Controller
         // If grades exist, use the class from the grade, otherwise fallback to student's current class
         $kelas = $nilaiKelas ? Kelas::find($nilaiKelas->kelas_id) : $siswa->kelas;
 
-        // Get Wali Kelas profile (historical)
-        $namaWaliKelas = '-';
-        $nipWaliKelas = '-';
-        if ($kelas && $selectedTa) {
-            $waliKelasHistory = DB::table('wali_kelas_history')
+        // Fetch report card data (attendance, notes, extracurriculars)
+        $rapor = null;
+        if ($selectedTa) {
+            $rapor = \App\Models\RaporSiswa::where('siswa_id', $siswa->id)
                 ->where('kelas_id', $kelas->id)
                 ->where('tahun_ajaran_id', $selectedTa->id)
                 ->first();
+        }
 
-            if ($waliKelasHistory) {
-                $namaWaliKelas = $waliKelasHistory->guru_name ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nama) : null) ?? '-';
-                $nipWaliKelas = $waliKelasHistory->guru_nip ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nip) : null) ?? '-';
-            } else {
-                $currentWali = $kelas->wali_kelas_id ? Guru::find($kelas->wali_kelas_id) : null;
-                $namaWaliKelas = $currentWali ? $currentWali->nama : '-';
-                $nipWaliKelas = $currentWali ? $currentWali->nip : '-';
+        // Get Wali Kelas profile (historical)
+        $namaWaliKelas = '-';
+        $nipWaliKelas = '-';
+        if ($rapor && $rapor->nama_wali_kelas) {
+            $namaWaliKelas = $rapor->nama_wali_kelas;
+            $nipWaliKelas = $rapor->nip_wali_kelas ?? '-';
+        } else {
+            if ($kelas && $selectedTa) {
+                $waliKelasHistory = DB::table('wali_kelas_history')
+                    ->where('kelas_id', $kelas->id)
+                    ->where('tahun_ajaran_id', $selectedTa->id)
+                    ->first();
+
+                if ($waliKelasHistory) {
+                    $namaWaliKelas = $waliKelasHistory->guru_name ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nama) : null) ?? '-';
+                    $nipWaliKelas = $waliKelasHistory->guru_nip ?? ($waliKelasHistory->guru_id ? (Guru::find($waliKelasHistory->guru_id)?->nip) : null) ?? '-';
+                } else {
+                    $currentWali = $kelas->wali_kelas_id ? Guru::find($kelas->wali_kelas_id) : null;
+                    $namaWaliKelas = $currentWali ? $currentWali->nama : '-';
+                    $nipWaliKelas = $currentWali ? $currentWali->nip : '-';
+                }
             }
         }
 
-        // Fetch grades for this student from both tables
-        $umumGrades = collect();
+        // Fetch all mapels of type 'umum' (Wajib)
+        $allUmumMapels = Mapel::where('jenis_mapel', 'umum')->orderBy('nama_mapel')->get();
+
+        // Fetch existing grades for this student from 'nilais'
+        $existingUmumGrades = collect();
         if ($selectedTa) {
-            $umumGrades = DB::table('nilais')
-                ->join('mapels', 'nilais.mapel_id', '=', 'mapels.id')
-                ->where('nilais.siswa_id', $siswa->id)
-                ->where('nilais.kelas_id', $kelas->id)
-                ->where('nilais.tahun_ajaran_id', $selectedTa->id)
-                ->where('mapels.jenis_mapel', 'umum')
-                ->select('nilais.id', 'nilais.siswa_id', 'nilais.mapel_id', 'nilais.nilai_tugas as tugas', 'nilais.nilai_uh as uh', 'nilais.nilai_uts as uts', 'nilais.nilai_uas as uas', 'nilais.nilai_akhir', 'nilais.status_kkm as status_kkm')
-                ->get();
+            $existingUmumGrades = DB::table('nilais')
+                ->where('siswa_id', $siswa->id)
+                ->where('kelas_id', $kelas->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->get()
+                ->keyBy('mapel_id');
         }
 
-        foreach ($umumGrades as $ug) {
-            $ug->mapel = Mapel::find($ug->mapel_id);
+        $umumGrades = collect();
+        foreach ($allUmumMapels as $mapel) {
+            $g = $existingUmumGrades->get($mapel->id);
+            if ($g) {
+                $g->mapel = $mapel;
+                $umumGrades->push($g);
+            } else {
+                $umumGrades->push((object)[
+                    'id' => null,
+                    'siswa_id' => $siswa->id,
+                    'mapel_id' => $mapel->id,
+                    'tugas' => 0,
+                    'uh' => 0,
+                    'uts' => 0,
+                    'uas' => 0,
+                    'nilai_akhir' => 0,
+                    'status_kkm' => 'Remedial',
+                    'capaian_tertinggi' => null,
+                    'capaian_perlu_peningkatan' => null,
+                    'mapel' => $mapel
+                ]);
+            }
+        }
+
+        // Fetch all mapels of type 'khusus' (Pilihan)
+        $allKhususMapels = Mapel::where('jenis_mapel', 'khusus')->orderBy('nama_mapel')->get();
+
+        $existingKhususGrades = collect();
+        if ($selectedTa) {
+            $existingKhususGrades = Nilai::with('mapel')
+                ->where('siswa_id', $siswa->id)
+                ->where('tahun_ajaran_id', $selectedTa->id)
+                ->get()
+                ->keyBy('mapel_id');
         }
 
         $khususGrades = collect();
-        if ($selectedTa) {
-            $khususGrades = Nilai::with('mapel')
-                ->where('siswa_id', $siswa->id)
-                ->where('tahun_ajaran_id', $selectedTa->id)
-                ->whereHas('mapel', function($q) {
-                    $q->where('jenis_mapel', 'khusus');
-                })
-                ->get();
+        foreach ($allKhususMapels as $mapel) {
+            $g = $existingKhususGrades->get($mapel->id);
+            if ($g) {
+                $khususGrades->push($g);
+            } else {
+                $khususGrades->push((object)[
+                    'id' => null,
+                    'siswa_id' => $siswa->id,
+                    'mapel_id' => $mapel->id,
+                    'nilai_tugas' => 0,
+                    'nilai_uh' => 0,
+                    'nilai_uts' => 0,
+                    'nilai_uas' => 0,
+                    'nilai_akhir' => 0,
+                    'status_kkm' => 'Remedial',
+                    'capaian_tertinggi' => null,
+                    'capaian_perlu_peningkatan' => null,
+                    'mapel' => $mapel
+                ]);
+            }
         }
 
         $grades = $umumGrades->concat($khususGrades);
+
+
 
         // Calculate rank
         $studentRank = ['rank' => '-', 'rata_rata' => 0];
@@ -368,6 +429,7 @@ class KepalaSekolahController extends Controller
             'namaWaliKelas' => $namaWaliKelas,
             'nipWaliKelas' => $nipWaliKelas,
             'kepsek' => $kepsek,
+            'rapor' => $rapor,
             'tanggal_cetak' => now()->translatedFormat('d F Y'),
         ];
 

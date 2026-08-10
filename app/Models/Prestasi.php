@@ -24,7 +24,6 @@ class Prestasi extends Model
         'jenis_pelaksanaan',
         'tingkat',
         'juara',
-        'poin',
         'sertifikat',
         'tanggal_penghargaan',
     ];
@@ -93,9 +92,40 @@ class Prestasi extends Model
             if (!$model->juara) {
                 $model->juara = 'Harapan';
             }
-            if (!$model->poin) {
-                $model->poin = 2;
-            }
         });
+    }
+
+    /**
+     * Get the dynamic point value based on tingkat and juara.
+     */
+    public function getPoinAttribute(): int
+    {
+        if ($this->juara === 'Harapan') {
+            return 2;
+        }
+
+        switch ($this->tingkat) {
+            case 'Kecamatan':
+                if ($this->juara === 'Juara 1') return 15;
+                if ($this->juara === 'Juara 2') return 10;
+                if ($this->juara === 'Juara 3') return 5;
+                break;
+            case 'Kabupaten':
+                if ($this->juara === 'Juara 1') return 30;
+                if ($this->juara === 'Juara 2') return 25;
+                if ($this->juara === 'Juara 3') return 20;
+                break;
+            case 'Provinsi':
+                if ($this->juara === 'Juara 1') return 60;
+                if ($this->juara === 'Juara 2') return 50;
+                if ($this->juara === 'Juara 3') return 40;
+                break;
+            case 'Nasional':
+                if ($this->juara === 'Juara 1') return 100;
+                if ($this->juara === 'Juara 2') return 90;
+                if ($this->juara === 'Juara 3') return 80;
+                break;
+        }
+        return 2; // default fallback
     }
 }

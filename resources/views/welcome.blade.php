@@ -13,25 +13,24 @@
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #9F5261; /* Luxury Burgundy */
-            --primary-burgundy: #9F5261; /* Burgundy Utama */
-            --primary-hover: #86414E;
-            --primary-rgb: 159, 82, 97;
-            --dark-color: #4A2830; /* Soft Cream Text / Dark Mauve */
-            --light-bg: #FAF5F5; /* Soft Cream Background */
-            --footer-bg: #1A0E11; /* Deep Cokelat-Burgundy Footer */
-            --accent-color: #3D8B6F; /* Emerald Sage Green Soft */
+            --primary-color: #3D5A80; /* Steel Blue Accent */
+            --primary-burgundy: #3D5A80; 
+            --primary-hover: #293E59; /* Darker Steel Blue */
+            --primary-rgb: 61, 90, 128;
+            --dark-color: #2D3748; /* Slate 800 for high-end text */
+            --light-bg: #FFFFFF; /* Pure White Main Background */
+            --beige-bg: #F2EFE7; /* Soft Warm Beige Highlight */
+            --pale-blue: #D8E6F2; /* Light Pale Blue */
+            --sky-blue: #CBD9E6; /* Accent Sky Blue */
+            --footer-bg: #F2EFE7; /* Warm Beige Footer */
+            --accent-color: #3D8B6F; /* Emerald Sage Green */
             --accent-hover: #2F6D56;
-            --accent-rgb: 61, 139, 111;
-            --terracotta-color: #D6455D; /* Rose Red Remedial */
-            --terracotta-hover: #B5364B;
-            --terracotta-rgb: 214, 69, 93;
             --font-title: 'Outfit', sans-serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
         }
@@ -47,62 +46,32 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-title);
             font-weight: 700;
-            color: var(--dark-color) !important;
+            color: var(--dark-color);
         }
 
-        /* Card background styling overrides to match --card-light-cream */
-        .stats-card, .feature-card, .news-card, .contact-card, .modal-content {
-            background-color: #FFFDFD !important;
-            border-color: rgba(159, 82, 97, 0.12) !important;
+        /* Lead and text secondary colors */
+        .text-muted, .text-secondary {
+            color: #64748B !important; /* Soft gray-slate */
         }
 
-        /* Section wrapper for Visi Misi dibalut warna soft burgundy */
-        .bg-light-section {
-            background-color: rgba(159, 82, 97, 0.06) !important;
-        }
-
-        /* Lead and text secondary colors override */
-        .text-muted, .text-secondary, .section-subtitle, .lead {
-            color: #7A535C !important; /* Soft mauve text */
-        }
-        
-        .tokoh-name {
-            color: var(--dark-color) !important;
-        }
-
-        /* Standardize Bootstrap color classes on landing page to use our school palette */
+        /* Standardize colors to use the steel blue/sky blue palette */
         .bg-primary {
             background-color: var(--primary-color) !important;
         }
         .text-primary {
             color: var(--primary-color) !important;
         }
-        .bg-success {
-            background-color: var(--accent-color) !important;
-        }
-        .text-success {
-            color: var(--accent-color) !important;
-        }
-        .bg-danger {
-            background-color: var(--terracotta-color) !important;
-        }
-        .text-danger {
-            color: var(--terracotta-color) !important;
-        }
-        .bg-warning {
-            background-color: #F59E0B !important; /* Keep gold accent for trophies */
-        }
-        .text-warning {
-            color: #F59E0B !important;
+        .text-blue-accent {
+            color: #3D5A80 !important;
         }
 
-        /* Balanced Burgundy Navbar & Menu Text */
+        /* Navbar Styling (Clean White Glassmorphism) */
         .navbar-custom {
-            background-color: var(--primary-burgundy) !important;
+            background-color: rgba(255, 255, 255, 0.9) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(61, 90, 128, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             transition: all 0.3s ease;
         }
 
@@ -110,26 +79,26 @@
             font-size: 1.25rem;
             font-weight: 800;
             letter-spacing: 0.5px;
-            color: #FFFFFF !important;
+            color: var(--primary-color) !important;
         }
 
         .navbar-brand-sub {
             font-size: 0.75rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.75) !important;
+            color: #8A9Aad !important;
             display: block;
             margin-top: -3px;
         }
 
         .nav-link {
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.85) !important;
+            color: var(--dark-color) !important;
             transition: color 0.25s ease;
             position: relative;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: #FFFFFF !important;
+            color: var(--primary-color) !important;
         }
 
         .nav-link::after {
@@ -139,372 +108,345 @@
             height: 2px;
             bottom: 0;
             left: 0;
-            background-color: #FFFFFF;
+            background-color: var(--primary-color);
             transition: width 0.25s ease;
         }
 
-        .nav-link:hover::after {
+        .nav-link:hover::after, .nav-link.active::after {
             width: 100%;
         }
 
-        .navbar-custom .navbar-toggler {
-            border: 1px solid rgba(255, 255, 255, 0.25) !important;
-        }
-
-        .navbar-custom .navbar-toggler-icon {
-            filter: invert(1) grayscale(1) brightness(2);
-        }
-
-        .btn-electric {
-            background-color: var(--primary-color);
-            color: #FFFFFF;
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 10px 24px;
-            border: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.3);
-        }
-
-        .btn-electric:hover {
-            background-color: var(--primary-hover);
-            color: #FFFFFF;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4);
-        }
-
-        .btn-outline-custom {
-            color: #475569;
-            background-color: transparent;
-            border: 2px solid #E2E8F0;
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 8px 24px;
-            transition: all 0.25s ease;
-        }
-
-        .btn-outline-custom:hover {
-            color: #0F172A;
-            background-color: #F1F5F9;
-            border-color: #CBD5E1;
-            transform: translateY(-2px);
-        }
-
-        /* Navbar Login Button Custom Style */
         .btn-login-nav {
-            background-color: #FFFFFF;
-            color: var(--primary-burgundy) !important;
-            font-weight: 700; /* tebal (bold) */
-            border-radius: 8px;
-            padding: 10px 24px;
+            background-color: var(--primary-color);
+            color: #FFFFFF !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 8px 24px;
             border: none;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(61, 90, 128, 0.15);
         }
 
         .btn-login-nav:hover {
-            background-color: #FDF4F5; /* rose soft sangat muda */
-            color: var(--primary-burgundy) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background-color: var(--primary-hover);
+            color: #FFFFFF !important;
+            transform: translateY(-1px);
         }
 
-        /* Hero Section */
+        /* Hero Section Styling (Light & Bright Theme with sub-blend school photo) */
         .hero-section {
-            padding: 140px 0 100px 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), url('{{ asset('images/gedung_sd.jpg') }}') no-repeat center center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(242, 239, 231, 0.92) 30%, rgba(216, 230, 242, 0.85) 100%), url("{{ asset('images/gedung_sd.jpg') }}");
             background-size: cover;
-            position: relative;
+            background-position: center;
+            color: var(--dark-color);
+            padding: 160px 0 220px 0;
             overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(var(--primary-rgb), 0.08);
-            border-radius: 50%;
-            top: -100px;
-            right: -100px;
-            filter: blur(80px);
-            z-index: 0;
-        }
-
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(var(--accent-rgb), 0.06);
-            border-radius: 50%;
-            bottom: -50px;
-            left: -50px;
-            filter: blur(80px);
-            z-index: 0;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
         }
 
         .hero-title {
-            font-size: 3rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            color: #FFFFFF !important;
-            -webkit-text-fill-color: #FFFFFF !important;
-            background: none !important;
-            -webkit-background-clip: initial !important;
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--dark-color) !important;
+            margin-bottom: 15px;
         }
 
-        .hero-section .section-subtitle {
-            color: rgba(255, 255, 255, 0.9) !important;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        .hero-accent {
+            font-family: var(--font-title);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--primary-color) !important;
         }
 
-        .hero-section .section-tag {
-            color: #FFFFFF !important;
-            background: rgba(255, 255, 255, 0.15) !important;
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #4A5568 !important;
+            max-width: 600px;
+            line-height: 1.6;
         }
 
-        .btn-outline-light-custom {
-            color: #FFFFFF !important;
-            background-color: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 10px 24px;
+        .btn-blue-primary {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 12px 30px;
+            border: none;
             transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(61, 90, 128, 0.25);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
         }
-        .btn-outline-light-custom:hover {
-            color: var(--primary-burgundy) !important;
-            background-color: #FFFFFF;
-            border-color: #FFFFFF;
+
+        .btn-blue-primary:hover {
+            background-color: var(--primary-hover);
+            color: #FFFFFF;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 20px rgba(61, 90, 128, 0.35);
         }
 
-        .hero-img-container {
-            position: relative;
-            z-index: 2;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            border: 8px solid #FFFFFF;
+        /* Stats in Hero Column (Bright card) */
+        .hero-stats-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
         }
 
-        .hero-img-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0.4) 100%);
+        .hero-stat-item {
+            text-align: left;
+            border-left: 2px solid rgba(61, 90, 128, 0.2);
+            padding-left: 15px;
         }
 
-        /* Stats Cards */
-        .stats-section {
-            margin-top: -50px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .stats-card {
-            background: #FFFFFF;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 20px;
-            padding: 30px 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(var(--primary-rgb), 0.08);
-            border-color: rgba(var(--primary-rgb), 0.3);
-        }
-
-        .stats-icon-wrapper {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .stats-card:hover .stats-icon-wrapper {
-            transform: scale(1.1);
-        }
-
-        .stats-number {
-            font-size: 2.25rem;
-            font-family: var(--font-title);
+        .hero-stat-number {
+            font-size: 1.75rem;
             font-weight: 800;
-            color: #0F172A;
-            margin-bottom: 5px;
+            color: var(--primary-color);
+            line-height: 1.2;
         }
 
-        .stats-label {
+        .hero-stat-label {
+            font-size: 0.8rem;
             color: #64748B;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 550;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* Sections General */
+        /* Overlapping Search/Action Card */
+        .search-card-wrapper {
+            position: relative;
+            margin-top: -100px;
+            z-index: 100;
+            margin-bottom: 80px;
+        }
+
+        .overlapping-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(61, 90, 128, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+            padding: 35px;
+        }
+
+        .card-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 15px;
+        }
+
+        .card-tab-btn {
+            background: transparent;
+            border: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #64748B;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.25s ease;
+        }
+
+        .card-tab-btn.active {
+            background: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .card-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group-custom label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748B;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input-custom {
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            color: var(--dark-color);
+            outline: none;
+            transition: border-color 0.2s ease;
+            background: #FAFAFA;
+        }
+
+        .form-input-custom:focus {
+            border-color: var(--primary-color);
+            background: #FFFFFF;
+        }
+
+        .btn-search-submit {
+            background: var(--primary-color);
+            color: #FFFFFF;
+            font-weight: 750;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            height: 43px;
+        }
+
+        .btn-search-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Section Global Layouts */
         .section-padding {
-            padding: 100px 0;
-        }
-
-        .bg-light-section {
-            background-color: var(--light-bg);
-        }
-
-        .section-header {
-            max-width: 700px;
-            margin: 0 auto 60px auto;
-            text-align: center;
+            padding: 80px 0;
         }
 
         .section-tag {
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--primary-color);
-            display: inline-block;
+            color: var(--primary-color) !important;
             margin-bottom: 12px;
-            background: rgba(var(--primary-rgb), 0.08);
-            padding: 6px 16px;
-            border-radius: 30px;
+            display: block;
         }
 
         .section-title {
             font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--dark-color);
             margin-bottom: 15px;
+            line-height: 1.2;
         }
 
         .section-subtitle {
+            font-size: 0.95rem;
             color: #64748B;
-            font-size: 1.1rem;
-            font-weight: 400;
+            max-width: 600px;
+            margin-bottom: 45px;
         }
 
-        /* Profile Block */
-        .profile-img-container {
-            border-radius: 24px; /* rounded-4 */
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* soft shadow */
-            border: 6px solid #FFFFFF;
-            transition: all 0.3s ease;
-        }
-        .profile-img-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(var(--primary-rgb), 0.12);
-        }
-
-        /* Visi Misi Card */
+        /* Feature Cards (Why Choose Us) */
         .feature-card {
             background: #FFFFFF;
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid rgba(61, 90, 128, 0.08);
             border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-            transition: all 0.3s ease;
+            padding: 35px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             height: 100%;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
-            border-color: rgba(var(--primary-rgb), 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(61, 90, 128, 0.05);
+            border-color: rgba(61, 90, 128, 0.25);
         }
 
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            display: inline-block;
-        }
-
-        /* Tokoh Utama Grid */
-        .tokoh-card {
-            text-align: center;
-            background: transparent;
-            padding: 20px;
-            height: 100%;
-        }
-
-        .tokoh-avatar-wrapper {
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 25px auto;
+        .feature-icon-wrapper {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            overflow: hidden;
-            border: 5px solid #FFFFFF;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .tokoh-card:hover .tokoh-avatar-wrapper {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.15);
-            border-color: var(--primary-color);
-        }
-
-        .tokoh-name {
+            background: rgba(61, 90, 128, 0.08);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.25rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card-title {
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 5px;
-            color: #0F172A;
+            margin-bottom: 12px;
+            color: var(--dark-color);
         }
 
-        .tokoh-role {
-            font-size: 0.88rem;
+        .feature-card-desc {
+            font-size: 0.85rem;
             color: #64748B;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            line-height: 1.6;
+            margin-bottom: 0;
         }
 
-        /* News Section */
+        /* Visi Misi Section (Beige background) */
+        .visi-misi-section {
+            background-color: var(--beige-bg);
+        }
+
+        .visi-misi-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .visi-misi-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .visi-misi-icon {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .visi-misi-text {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .profile-img-container {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(61, 90, 128, 0.15);
+        }
+
+        /* News & Activities Section */
         .news-card {
             background: #FFFFFF;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 20px;
+            border: 1px solid rgba(61, 90, 128, 0.08);
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
             transition: all 0.3s ease;
             height: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.01);
         }
 
         .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
-            border-color: rgba(var(--primary-rgb), 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.04);
+            border-color: rgba(61, 90, 128, 0.2);
         }
 
-        .news-img-container {
-            height: 200px;
-            overflow: hidden;
+        .news-img-wrapper {
             position: relative;
+            height: 220px;
+            overflow: hidden;
         }
 
         .news-img {
@@ -518,308 +460,290 @@
             transform: scale(1.05);
         }
 
-        .news-date {
+        .news-card-badge {
             position: absolute;
-            bottom: 15px;
+            top: 15px;
             left: 15px;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(4px);
+            background: var(--primary-color);
             color: #FFFFFF;
             padding: 4px 12px;
             border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.7rem;
+            font-weight: 750;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .news-body {
+        .news-card-date {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            color: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .news-card-body {
             padding: 25px;
         }
 
-        .news-title {
-            font-size: 1.25rem;
+        .news-card-title {
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.4;
+            line-height: 1.35;
+            margin-bottom: 10px;
+            color: var(--dark-color);
         }
 
-        .news-desc {
+        .news-card-desc {
+            font-size: 0.85rem;
             color: #64748B;
-            font-size: 0.95rem;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .news-link {
+        .news-card-btn {
             color: var(--primary-color);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.85rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            transition: all 0.2s ease;
+            transition: gap 0.2s ease;
+            background: transparent;
+            border: none;
+            padding: 0;
         }
 
-        .news-link:hover {
+        .news-card-btn:hover {
             color: var(--primary-hover);
             gap: 8px;
         }
 
-        /* Map and Contact */
-        .contact-card {
+        /* Testimonials Section (Beige background) */
+        .testimonial-section {
+            background-color: var(--beige-bg);
+        }
+
+        .testimonial-card {
             background: #FFFFFF;
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
-        }
-
-        .map-container {
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.01);
             height: 100%;
-            min-height: 380px;
         }
 
-        .form-control-custom {
-            background-color: var(--light-bg);
-            border: 1px solid #E2E8F0;
-            padding: 12px 16px;
-            border-radius: 8px;
+        .rating-stars {
+            color: #F59E0B; /* Star Gold */
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.65;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #E2E8F0;
+        }
+
+        .testimonial-name {
+            font-size: 0.95rem;
+            font-weight: 700;
             color: var(--dark-color);
-            transition: all 0.25s ease;
+            margin-bottom: 2px;
         }
 
-        .form-control-custom:focus {
-            background-color: #FFFFFF;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
-            outline: none;
+        .testimonial-relation {
+            font-size: 0.75rem;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        /* Staf & Guru Section */
+        .guru-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(61, 90, 128, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.25s ease;
+            height: 100%;
+        }
+
+        .guru-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+            border-color: rgba(61, 90, 128, 0.15);
+        }
+
+        .guru-avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px auto;
+            border: 2px solid rgba(61, 90, 128, 0.2);
+        }
+
+        .guru-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .guru-role {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0;
+        }
+
+        /* Pre-footer CTA (Bright Beige & Sky Blue Gradient instead of dark navy) */
+        .cta-section {
+            background: linear-gradient(135deg, var(--beige-bg) 0%, var(--pale-blue) 100%);
+            color: var(--dark-color);
+            padding: 70px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(61, 90, 128, 0.05);
+        }
+
+        .cta-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .cta-desc {
+            font-size: 1rem;
+            color: #4A5568;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
         }
 
         /* Footer */
-        .footer-custom {
+        .footer-section {
             background-color: var(--footer-bg);
-            color: #94A3B8;
+            color: #475569;
             padding: 80px 0 30px 0;
-            border-top: 1px solid #1E293B;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(61, 90, 128, 0.08);
         }
 
-        .footer-logo-title {
-            font-family: var(--font-title);
-            font-weight: 800;
-            color: #FFFFFF;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .footer-link-group h5 {
-            color: #FFFFFF;
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-link-group h5::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 2px;
-            background-color: var(--primary-color);
-            bottom: 0;
-            left: 0;
+        .footer-title {
+            color: var(--dark-color);
+            font-size: 0.95rem;
+            font-weight: 750;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
         }
 
         .footer-links {
             list-style: none;
             padding: 0;
             margin: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .footer-links a {
-            color: #94A3B8;
+            color: #475569;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease;
         }
 
         .footer-links a:hover {
-            color: #FFFFFF;
-            padding-left: 5px;
+            color: var(--primary-color);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .social-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background-color: #1E293B;
-            color: #FFFFFF;
-            display: inline-flex;
+            background: rgba(61, 90, 128, 0.08);
+            display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 10px;
-            transition: all 0.25s ease;
+            color: #475569;
+            transition: all 0.2s ease;
             text-decoration: none;
         }
 
         .social-btn:hover {
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: #FFFFFF;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .footer-bottom {
-            border-top: 1px solid #1E293B;
-            padding-top: 30px;
-            margin-top: 60px;
-            font-size: 0.9rem;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(61, 90, 128, 0.08);
         }
 
         /* Scroll Top Button */
         .btn-scroll-top {
             position: fixed;
             bottom: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            background-color: var(--primary-color);
-            color: #FFFFFF;
+            right: -60px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
+            background: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            z-index: 999;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            border: none;
-            transition: all 0.25s ease;
-            opacity: 0;
-            visibility: hidden;
         }
 
         .btn-scroll-top.show {
-            opacity: 1;
-            visibility: visible;
+            right: 30px;
         }
 
         .btn-scroll-top:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-3px);
-        }
-
-        /* Kegiatan Slider Container Styles */
-        .slider-relative-container {
-            position: relative;
-            padding: 0 40px; /* space for arrow buttons */
-        }
-        
-        .kegiatan-slider {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x mandatory;
-            gap: 24px;
-            padding: 15px 5px 25px 5px;
-            scrollbar-width: thin; /* Firefox thin scrollbar */
-            scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
-        }
-
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .kegiatan-slider::-webkit-scrollbar {
-            height: 6px;
-        }
-        .kegiatan-slider::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        .kegiatan-slider::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.2); 
-            border-radius: 10px;
-        }
-        .kegiatan-slider::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.4); 
-        }
-
-        .kegiatan-slider-item {
-            flex: 0 0 100%;
-            scroll-snap-align: start;
-            max-width: 100%;
-            transition: transform 0.3s ease;
-        }
-
-        @media (min-width: 768px) {
-            .kegiatan-slider-item {
-                flex: 0 0 calc(50% - 12px);
-                max-width: calc(50% - 12px);
-            }
-        }
-
-        @media (min-width: 992px) {
-            .kegiatan-slider-item {
-                flex: 0 0 calc(33.333% - 16px);
-                max-width: calc(33.333% - 16px);
-            }
-        }
-
-        /* Navigation Arrow Buttons */
-        .slider-control-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 50%;
-            color: var(--dark-color);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            z-index: 10;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slider-control-btn:hover {
-            background-color: var(--primary-color);
+            background: var(--primary-hover);
             color: #FFFFFF;
-            border-color: var(--primary-color);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .slider-control-btn.btn-prev {
-            left: 0;
-        }
-
-        .slider-control-btn.btn-next {
-            right: 0;
-        }
-
-        .slider-control-btn:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-
-        .slider-control-btn.disabled {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        @media (max-width: 576px) {
-            .slider-relative-container {
-                padding: 0;
-            }
-            .slider-control-btn {
-                display: none; /* Swipe is natural on mobile */
-            }
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -830,7 +754,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#beranda">
                 <div class="me-2 d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('images/logo.jpg') }}" style="height: 40px; width: auto;" alt="Logo">
+                    <img src="{{ asset('images/logo.jpg') }}" style="height: 40px; width: auto; border-radius: 4px;" alt="Logo">
                 </div>
                 <div>
                     <span class="navbar-brand-title">SIPRESMA 28</span>
@@ -838,7 +762,7 @@
                 </div>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon" style="filter: brightness(0.2);"></span>
             </button>
             <div class="collapse navbar-collapse text-center" id="navbarContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
@@ -849,7 +773,10 @@
                         <a class="nav-link" href="#profil">Profil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#informasi">Informasi</a>
+                        <a class="nav-link" href="#guru">Staf & Guru</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#informasi">Kabar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#kontak">Kontak</a>
@@ -858,9 +785,9 @@
                 <div class="d-flex justify-content-center mt-3 mt-lg-0">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="btn-login-nav" id="btn-login-auth">Ke Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="btn-login-nav">Ke Dashboard</a>
                         @else
-                            <a href="{{ url('/login') }}" class="btn-login-nav" id="btn-login-auth">Login</a>
+                            <a href="{{ url('/login') }}" class="btn-login-nav">Login</a>
                         @endauth
                     @endif
                 </div>
@@ -871,575 +798,380 @@
     <!-- 2. HERO SECTION -->
     <header class="hero-section">
         <div class="container">
-            <div class="row justify-content-center g-5">
-                <div class="col-lg-10 hero-content text-center">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7 text-start">
                     <span class="section-tag">Portal Resmi</span>
-                    <h1 class="hero-title">Sistem Informasi Manajemen Nilai & Monitoring Prestasi (SIPRESMA 28)</h1>
-                    <p class="section-subtitle mb-4">Portal integrasi penilaian akademik dan pemantauan capaian prestasi siswa SD Negeri 28 Kinali secara transparan, akurat, dan modern.</p>
-                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                        <a href="#profil" class="btn-electric py-3 px-4">Mulai Jelajah</a>
-                        <a href="#informasi" class="btn-outline-light-custom py-3 px-4">Panduan Sistem</a>
+                    <h1 class="hero-title">Raih Impian & Ukir <span class="hero-accent">Prestasi Terbaik</span></h1>
+                    <p class="hero-subtitle mb-4">Sistem Informasi Manajemen Nilai & Monitoring Prestasi (SIPRESMA 28) SD Negeri 28 Kinali. Mengintegrasikan pencatatan akademis secara digital, transparan, dan akuntabel.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#profil" class="btn-blue-primary">Mulai Jelajah <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <!-- Stat items stacked on hero left/right card -->
+                    <div class="p-4 rounded-3xl" style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px); border: 1px solid rgba(61,90,128,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                        <h4 class="mb-4 fw-bold text-blue-accent" style="font-size: 1.1rem; border-bottom: 1px solid rgba(61,90,128,0.1); padding-bottom: 10px;">Statistik Sekolah</h4>
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="hero-stat-item">
+                                    <div class="hero-stat-number">{{ $siswaCount ?? 350 }}</div>
+                                    <div class="hero-stat-label">Siswa Aktif</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="hero-stat-item">
+                                    <div class="hero-stat-number">{{ $guruCount ?? 25 }}</div>
+                                    <div class="hero-stat-label">Guru & Staf</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="hero-stat-item">
+                                    <div class="hero-stat-number">{{ $prestasiCount ?? 50 }}</div>
+                                    <div class="hero-stat-label">Prestasi</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="hero-stat-item">
+                                    <div class="hero-stat-number">{{ $mapelCount ?? 12 }}</div>
+                                    <div class="hero-stat-label">Mapel</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- 3. STATISTIK SEKOLAH -->
-    <section class="stats-section">
+    <!-- 3. OVERLAPPING ACTION/SEARCH CARD -->
+    <div class="container search-card-wrapper">
+        <div class="overlapping-card">
+            <div class="card-tabs">
+                <button class="card-tab-btn active">Cari Informasi Cepat</button>
+            </div>
+            <form action="{{ url('/login') }}" method="GET" class="card-form-grid">
+                <div class="form-group-custom">
+                    <label>Kategori Data</label>
+                    <select class="form-input-custom">
+                        <option value="siswa">Siswa & Rapor</option>
+                        <option value="prestasi">Daftar Prestasi</option>
+                        <option value="kegiatan">Kegiatan Sekolah</option>
+                    </select>
+                </div>
+                <div class="form-group-custom">
+                    <label>Pencarian</label>
+                    <input type="text" placeholder="Nama, NISN, atau Judul..." class="form-input-custom">
+                </div>
+                <div class="form-group-custom">
+                    <label>Tahun Ajaran</label>
+                    <select class="form-input-custom">
+                        <option>2026/2027</option>
+                        <option>2025/2026</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn-search-submit w-100">
+                        <i class="bi bi-search"></i> Cek Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. WHY CHOOSE US SECTION -->
+    <section class="section-padding pt-0">
         <div class="container">
-            <div class="row g-4 justify-content-center">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stats-card">
-                        <div class="stats-icon-wrapper bg-primary bg-opacity-10 text-primary">
+            <div class="text-center mb-5">
+                <span class="section-tag">Mengapa Memilih Kami</span>
+                <h2 class="section-title">Pendidikan Unggul & Berkarakter</h2>
+                <p class="section-subtitle mx-auto">Kami bertekad menciptakan lingkungan belajar yang kondusif guna melahirkan generasi muda yang cerdas, kompetitif, dan berakhlak mulia.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="bi bi-award-fill"></i>
+                        </div>
+                        <h4 class="feature-card-title">Kurikulum Terpadu</h4>
+                        <p class="feature-card-desc">Pembelajaran terintegrasi dengan pengembangan karakter kepribadian dan wawasan keilmuan yang luas.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
                             <i class="bi bi-people-fill"></i>
                         </div>
-                        <div class="stats-number">{{ $siswaCount ?? 350 }}</div>
-                        <div class="stats-label">Siswa Aktif</div>
+                        <h4 class="feature-card-title">Pendidik Profesional</h4>
+                        <p class="feature-card-desc">Didampingi oleh dewan guru yang berpengalaman dan ahli di bidang pengembangan potensi siswa.</p>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stats-card">
-                        <div class="stats-icon-wrapper bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-person-badge-fill"></i>
-                        </div>
-                        <div class="stats-number">{{ $guruCount ?? 25 }}</div>
-                        <div class="stats-label">Guru & Staf</div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stats-card">
-                        <div class="stats-icon-wrapper bg-warning bg-opacity-10 text-warning">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
                             <i class="bi bi-book-half"></i>
                         </div>
-                        <div class="stats-number">{{ $mapelCount ?? 12 }}</div>
-                        <div class="stats-label">Mata Pelajaran</div>
+                        <h4 class="feature-card-title">Fasilitas Lengkap</h4>
+                        <p class="feature-card-desc">Didukung oleh sarana kelas yang representatif, perpustakaan, dan penunjang kreativitas siswa.</p>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stats-card">
-                        <div class="stats-icon-wrapper bg-danger bg-opacity-10 text-danger">
-                            <i class="bi bi-trophy-fill"></i>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="bi bi-cpu-fill"></i>
                         </div>
-                        <div class="stats-number">{{ $prestasiCount ?? 50 }}</div>
-                        <div class="stats-label">Prestasi Terdaftar</div>
+                        <h4 class="feature-card-title">SIPRESMA 28</h4>
+                        <p class="feature-card-desc">Penerapan teknologi rekap nilai rapor berbasis digital guna menjamin transparansi data belajar.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. SAMBUTAN & PROFIL SINGKAT -->
-    <section class="section-padding pb-5 mb-4" id="profil">
+    <!-- 5. PROFIL SEKOLAH SECTION (Warm Beige backdrop) -->
+    <section class="section-padding visi-misi-section" id="profil">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
                     <span class="section-tag">Profil Sekolah</span>
-                    <h2 class="section-title">Visi & Misi Utama Sekolah</h2>
-                    <p class="lead text-muted mb-4">Melahirkan generasi penerus yang cerdas, berkarakter mulia, dan siap berkontribusi positif bagi bangsa dan negara.</p>
-                    <p class="text-secondary mb-4">SD Negeri 28 Kinali berkomitmen untuk terus berinovasi dalam mengintegrasikan teknologi digital guna meningkatkan tata kelola akademik. Kami meyakini bahwa transparansi penilaian, interaksi sinergis dengan wali murid, serta pendataan prestasi siswa secara terpadu melalui platform <strong>SIPRESMA 28</strong> merupakan fondasi utama dalam menciptakan ekosistem sekolah yang unggul dan akuntabel.</p>
+                    <h2 class="section-title">Visi & Misi Utama</h2>
+                    <p class="lead text-muted mb-4">Melahirkan generasi penerus yang cerdas, berkarakter mulia, dan siap berkontribusi positif bagi bangsa.</p>
+                    <p class="text-secondary mb-4">SD Negeri 28 Kinali terus berkomitmen untuk memberikan layanan pendidikan berkualitas terbaik. Melalui platform digital <strong>SIPRESMA 28</strong>, kami mendukung transparansi dan integrasi data penilaian rapor serta rekapitulasi prestasi yang dapat diakses dengan cepat dan aman oleh wali kelas, guru, dan admin.</p>
                     
-                    <!-- Poin Ringkas Visi & Misi -->
-                    <div class="mb-0 pt-2">
-                        <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-                            <li class="d-flex align-items-start gap-2">
-                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                                <span class="text-secondary"><strong>Visi:</strong> Terwujudnya insan yang religius, unggul dalam prestasi, berkarakter mulia, dan peduli lingkungan.</span>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                                <span class="text-secondary"><strong>Misi 1:</strong> Melaksanakan pembelajaran aktif, inovatif, kreatif, dan menyenangkan.</span>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                                <span class="text-secondary"><strong>Misi 2:</strong> Membimbing bakat anak secara maksimal demi mendorong prestasi.</span>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                                <span class="text-secondary"><strong>Misi 3:</strong> Menerapkan nilai keimanan yang kokoh dalam aktivitas sehari-hari.</span>
-                            </li>
-                        </ul>
+                    <div class="visi-misi-list">
+                        <div class="visi-misi-item">
+                            <i class="bi bi-check-circle-fill visi-misi-icon"></i>
+                            <div class="visi-misi-text">
+                                <strong>Visi:</strong> Terwujudnya insan yang religius, unggul dalam prestasi, berkarakter mulia, dan peduli lingkungan.
+                            </div>
+                        </div>
+                        <div class="visi-misi-item">
+                            <i class="bi bi-check-circle-fill visi-misi-icon"></i>
+                            <div class="visi-misi-text">
+                                <strong>Misi 1:</strong> Melaksanakan proses belajar mengajar secara efektif, kreatif, inovatif, dan menyenangkan.
+                            </div>
+                        </div>
+                        <div class="visi-misi-item">
+                            <i class="bi bi-check-circle-fill visi-misi-icon"></i>
+                            <div class="visi-misi-text">
+                                <strong>Misi 2:</strong> Memfasilitasi pengembangan minat dan bakat secara berkesinambungan demi melahirkan siswa berprestasi.
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="profile-img-container">
-                        <img src="{{ asset('images/suasana_kelas.jpg') }}" alt="Suasana Kelas Belajar SDN 28 Kinali" class="img-fluid w-100">
+                        <img src="{{ asset('images/suasana_sekolah.jpeg') }}" alt="Suasana Sekolah SDN 28 Kinali" class="img-fluid w-100">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. VISI, MISI & ARTIKEL STRATEGIS -->
-    <section class="section-padding bg-light-section py-5">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Fokus Mutu</span>
-                <h2 class="section-title">Arah & Strategi</h2>
-                <p class="section-subtitle">Arah strategis yang memandu langkah SDN 28 Kinali dalam mendidik dan mengembangkan siswa secara holistik.</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
-                        <div class="feature-icon bg-primary bg-opacity-10 text-primary p-3 rounded-4 d-inline-flex">
-                            <i class="bi bi-trophy"></i>
-                        </div>
-                        <h4 class="mb-3">Monitoring Prestasi</h4>
-                        <p class="text-secondary mb-0">SIPRESMA 28 berfokus pada pencatatan dan pemantauan rekam jejak capaian prestasi siswa, baik akademik maupun non-akademik secara digital untuk membangun generasi unggul.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
-                        <div class="feature-icon bg-success bg-opacity-10 text-success p-3 rounded-4 d-inline-flex">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <h4 class="mb-3">Budaya Sekolah</h4>
-                        <p class="text-secondary mb-3">Penerapan budaya 5S (Senyum, Sapa, Salam, Sopan, Santun) serta penanaman integritas dan disiplin waktu di seluruh lingkungan sekolah.</p>
-                        <p class="text-secondary mb-0">Melalui pembiasaan rutin, kami membangun sinergi kekeluargaan dan semangat kerja keras bagi seluruh elemen warga sekolah.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="feature-card card h-100 shadow-sm border-0" style="border-radius: 20px;">
-                        <div class="feature-icon bg-danger bg-opacity-10 text-danger p-3 rounded-4 d-inline-flex">
-                            <i class="bi bi-mortarboard"></i>
-                        </div>
-                        <h4 class="mb-3">Mutu Akademik</h4>
-                        <p class="text-secondary mb-3">Mengedepankan standardisasi pembelajaran kurikulum nasional yang relevan, berbasis evaluasi berlanjut dan terukur secara transparan.</p>
-                        <p class="text-secondary mb-0">Melalui platform SIPRESMA 28, orang tua dapat langsung melihat rekap capaian nilai siswa secara berkala dan akurat.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. DAFTAR GURU & STAF PENDIDIK -->
+    <!-- 6. GURU & STAF SECTION -->
     <section class="section-padding" id="guru">
         <div class="container">
-            <div class="section-header">
+            <div class="text-center mb-5">
                 <span class="section-tag">Tenaga Pendidik</span>
                 <h2 class="section-title">Guru & Staf Sekolah</h2>
-                <p class="section-subtitle">Pendidik profesional penggerak kemajuan mutu pendidikan di SD Negeri 28 Kinali.</p>
+                <p class="section-subtitle mx-auto">Pendidik profesional yang berdedikasi membimbing dan mengarahkan siswa mencapai puncak prestasi.</p>
             </div>
             <div class="row g-4 justify-content-center">
                 @forelse ($gurusSorted as $guru)
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="tokoh-card">
-                        <div class="tokoh-avatar-wrapper">
+                    <div class="guru-card">
+                        <div class="guru-avatar-wrapper">
                             @if($guru->foto && file_exists(public_path('uploads/guru/' . $guru->foto)))
                                 <img src="{{ asset('uploads/guru/' . $guru->foto) }}" alt="{{ $guru->nama }}" class="w-100 h-100 object-fit-cover">
                             @else
-                                <img src="https://ui-avatars.com/api/?name=Guru&background=eaeaea&color=666666" alt="Placeholder Guru" class="w-100 h-100 object-fit-cover">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($guru->nama) }}&background=CBD9E6&color=3D5A80" alt="{{ $guru->nama }}" class="w-100 h-100 object-fit-cover">
                             @endif
                         </div>
-                        <h4 class="tokoh-name fw-bold text-dark">{{ $guru->nama }}</h4>
-                        <p class="tokoh-role" style="color: #9F5261 !important; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">{{ $guru->jabatan }}</p>
+                        <h4 class="guru-name">{{ $guru->nama }}</h4>
+                        <p class="guru-role">{{ $guru->jabatan }}</p>
                     </div>
                 </div>
                 @empty
                 <div class="col-12 text-center text-secondary py-5">
-                    <div class="fs-1 text-muted mb-3"><i class="bi bi-people"></i></div>
-                    <p>Belum ada data guru atau staf terdaftar.</p>
+                    <p class="italic">Belum ada data guru atau staf terdaftar.</p>
                 </div>
                 @endforelse
             </div>
         </div>
     </section>
 
-    <!-- 7. BERITA & AKTIVITAS TERBARU -->
-    <section class="section-padding bg-light-section" id="informasi">
+    <!-- 7. NEWS & ACTIVITIES SECTION -->
+    <section class="section-padding bg-white" id="informasi">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Kabar Sekolah</span>
-                <h2 class="section-title">Berita & Aktivitas Terbaru</h2>
-                <p class="section-subtitle">Ikuti perkembangan prestasi, agenda sekolah, dan kegiatan belajar mengajar terkini.</p>
-            </div>
-            <div class="slider-relative-container">
-                <!-- Navigation Buttons -->
-                <button class="slider-control-btn btn-prev" id="sliderPrevBtn" aria-label="Previous Slide">
-                    <i class="bi bi-chevron-left fs-5"></i>
-                </button>
-                <button class="slider-control-btn btn-next" id="sliderNextBtn" aria-label="Next Slide">
-                    <i class="bi bi-chevron-right fs-5"></i>
-                </button>
-
-                <div class="kegiatan-slider" id="kegiatanSlider">
-                    @forelse($kegiatan_terbaru as $keg)
-                    <div class="kegiatan-slider-item">
-                        <div class="news-card">
-                            <div class="news-img-container">
-                                @if($keg->gambar)
-                                <img src="{{ asset('storage/' . $keg->gambar) }}" alt="{{ $keg->nama_kegiatan }}" class="news-img">
-                                @else
-                                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=500&q=80" alt="{{ $keg->nama_kegiatan }}" class="news-img">
-                                @endif
-                                <span class="news-date">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d M Y') }}</span>
-                            </div>
-                            <div class="news-body text-start">
-                                <span class="badge {{ strtolower($keg->kategori) === 'organisasi' ? 'bg-success' : 'bg-primary' }} mb-2 text-uppercase tracking-wider text-[10px]">{{ strtolower($keg->kategori) === 'organisasi' ? 'KEGIATAN BELAJAR' : $keg->kategori }}</span>
-                                <h4 class="news-title">{{ $keg->nama_kegiatan }}</h4>
-                                <p class="news-desc">{{ \Illuminate\Support\Str::limit($keg->deskripsi, 100) }}</p>
-                                <button type="button" class="btn btn-link news-link p-0 text-decoration-none border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#modalKegiatan{{ $keg->id }}">
-                                    Baca Selengkapnya <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    @empty
-                    <!-- Static Card 1 -->
-                    <div class="kegiatan-slider-item">
-                        <div class="news-card">
-                            <div class="news-img-container">
-                                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=500&q=80" alt="Lomba Sains" class="news-img">
-                                <span class="news-date">28 Jun 2026</span>
-                            </div>
-                            <div class="news-body text-start">
-                                <span class="badge bg-primary mb-2 text-uppercase tracking-wider text-[10px]">perlombaan</span>
-                                <h4 class="news-title">Juara 1 Lomba Sains Tingkat Kabupaten</h4>
-                                <p class="news-desc">Siswa SDN 28 Kinali kembali menorehkan prestasi membanggakan dengan meraih juara pertama pada ajang Kompetisi Sains tingkat Kabupaten.</p>
-                                <button type="button" class="btn btn-link news-link p-0 text-decoration-none border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#modalStatic1">
-                                    Baca Selengkapnya <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Static Card 2 -->
-                    <div class="kegiatan-slider-item">
-                        <div class="news-card">
-                            <div class="news-img-container">
-                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500&q=80" alt="Evaluasi Digital" class="news-img">
-                                <span class="news-date">15 Jun 2026</span>
-                            </div>
-                            <div class="news-body text-start">
-                                <span class="badge bg-primary mb-2 text-uppercase tracking-wider text-[10px]">resmi</span>
-                                <h4 class="news-title">Penilaian Digital Menggunakan SIPRESMA 28</h4>
-                                <p class="news-desc">Penerapan portal SIPRESMA 28 secara berkala mempermudah guru melakukan rekap nilai harian serta ujian semester secara paperless dan transparan.</p>
-                                <button type="button" class="btn btn-link news-link p-0 text-decoration-none border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#modalStatic2">
-                                    Baca Selengkapnya <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Static Card 3 -->
-                    <div class="kegiatan-slider-item">
-                        <div class="news-card">
-                            <div class="news-img-container">
-                                <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=500&q=80" alt="Kegiatan Literasi" class="news-img">
-                                <span class="news-date">08 Jun 2026</span>
-                            </div>
-                            <div class="news-body text-start">
-                                <span class="badge bg-primary mb-2 text-uppercase tracking-wider text-[10px]">ekstrakurikuler</span>
-                                <h4 class="news-title">Gerakan Literasi Sekolah Tiap Sabtu Pagi</h4>
-                                <p class="news-desc">Program membaca bersama buku bacaan non-akademik di lapangan sekolah guna memperluas wawasan dan menumbuhkan minat membaca sejak dini.</p>
-                                <button type="button" class="btn btn-link news-link p-0 text-decoration-none border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#modalStatic3">
-                                    Baca Selengkapnya <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    @endforelse
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 gap-3">
+                <div>
+                    <span class="section-tag">Kabar Sekolah</span>
+                    <h2 class="section-title mb-0">Berita & Aktivitas Terbaru</h2>
                 </div>
+                <a href="#beranda" class="btn btn-outline-dark rounded-pill px-4 py-2 text-xs fw-bold">Lihat Semua Berita</a>
             </div>
-
-            <!-- Modals placed outside the slider wrapper to avoid flex layout issues -->
-            @foreach($kegiatan_terbaru as $keg)
-            <!-- Modal Detail Kegiatan Dinamis -->
-            <div class="modal fade text-dark" id="modalKegiatan{{ $keg->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $keg->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 rounded-4 shadow">
-                        <div class="modal-header border-0 pb-0 justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge {{ strtolower($keg->kategori) === 'organisasi' ? 'bg-success' : 'bg-primary' }} text-uppercase tracking-wider text-[10px] me-2">{{ strtolower($keg->kategori) === 'organisasi' ? 'KEGIATAN BELAJAR' : $keg->kategori }}</span>
-                                <span class="text-secondary small">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d F Y') }}</span>
-                            </div>
-                            <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            <div class="row g-4">
+                @forelse($kegiatan_terbaru->take(3) as $keg)
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            @if($keg->gambar)
+                            <img src="{{ asset('storage/' . $keg->gambar) }}" alt="{{ $keg->nama_kegiatan }}" class="news-img">
+                            @else
+                            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=500&q=80" alt="{{ $keg->nama_kegiatan }}" class="news-img">
+                            @endif
+                            <span class="news-card-badge">{{ $keg->kategori }}</span>
+                            <span class="news-card-date">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d M Y') }}</span>
                         </div>
-                        <div class="modal-body pt-3 text-start">
-                            <h3 class="modal-title fw-bold mb-3" id="modalLabel{{ $keg->id }}">{{ $keg->nama_kegiatan }}</h3>
-                            
-                            <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px; background-color: #f8fafc;">
-                                @if($keg->gambar)
-                                <img src="{{ asset('storage/' . $keg->gambar) }}" alt="{{ $keg->nama_kegiatan }}" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
-                                @else
-                                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80" alt="{{ $keg->nama_kegiatan }}" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
-                                @endif
-                            </div>
-                            
-                            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-secondary small">
-                                <div><i class="bi bi-tag-fill text-primary"></i> <span class="text-capitalize">{{ $keg->jenis_kegiatan }}</span></div>
-                                <div>|</div>
-                                <div><i class="bi bi-calendar3 text-primary"></i> Semester: {{ $keg->semester_aktif }}</div>
-                            </div>
-
-                            <div class="text-secondary lh-lg" style="white-space: pre-line;">
-                                {{ $keg->deskripsi }}
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                        <div class="news-card-body">
+                            <h4 class="news-card-title">{{ $keg->nama_kegiatan }}</h4>
+                            <p class="news-card-desc">{{ \Illuminate\Support\Str::limit($keg->deskripsi, 100) }}</p>
+                            <button type="button" class="news-card-btn" data-bs-toggle="modal" data-bs-target="#modalKegiatan{{ $keg->id }}">
+                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            @endforeach
-
-            @if($kegiatan_terbaru->isEmpty())
-            <!-- Modal Static 1 -->
-            <div class="modal fade text-dark" id="modalStatic1" tabindex="-1" aria-labelledby="modalLabelStatic1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 rounded-4 shadow">
-                        <div class="modal-header border-0 pb-0 justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge bg-primary text-uppercase tracking-wider text-[10px] me-2">perlombaan</span>
-                                <span class="text-secondary small">28 Juni 2026</span>
-                            </div>
-                            <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                @empty
+                <!-- Static Event Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=500&q=80" alt="Lomba Sains" class="news-img">
+                            <span class="news-card-badge">Perlombaan</span>
+                            <span class="news-card-date">28 Jun 2026</span>
                         </div>
-                        <div class="modal-body pt-3 text-start">
-                            <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic1">Juara 1 Lomba Sains Tingkat Kabupaten</h3>
-                            
-                            <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px; background-color: #f8fafc;">
-                                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80" alt="Lomba Sains" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
-                            </div>
-                            
-                            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-secondary small">
-                                <div><i class="bi bi-tag-fill text-primary"></i> Akademik</div>
-                                <div>|</div>
-                                <div><i class="bi bi-calendar3 text-primary"></i> Semester: 2025/2026 Genap</div>
-                            </div>
-
-                            <div class="text-secondary lh-lg">
-                                Siswa SDN 28 Kinali kembali menorehkan prestasi membanggakan dengan meraih juara pertama pada ajang Kompetisi Sains tingkat Kabupaten. Kompetisi ini diikuti oleh puluhan sekolah dasar dari berbagai kecamatan, di mana perwakilan dari sekolah kami berhasil menunjukkan keunggulan dalam pemahaman sains dasar, praktikum, dan analisis logis. Sekolah sangat bangga dan berkomitmen untuk terus membimbing bakat anak secara maksimal demi prestasi masa depan.
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                        <div class="news-card-body">
+                            <h4 class="news-card-title">Juara 1 Lomba Sains Tingkat Kabupaten</h4>
+                            <p class="news-card-desc">Siswa SDN 28 Kinali kembali menorehkan prestasi membanggakan dengan meraih juara pertama pada ajang Kompetisi Sains tingkat Kabupaten.</p>
+                            <button type="button" class="news-card-btn" data-bs-toggle="modal" data-bs-target="#modalStatic1">
+                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Modal Static 2 -->
-            <div class="modal fade text-dark" id="modalStatic2" tabindex="-1" aria-labelledby="modalLabelStatic2" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 rounded-4 shadow">
-                        <div class="modal-header border-0 pb-0 justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge bg-primary text-uppercase tracking-wider text-[10px] me-2">resmi</span>
-                                <span class="text-secondary small">15 Juni 2026</span>
-                            </div>
-                            <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Static Event Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500&q=80" alt="Evaluasi Digital" class="news-img">
+                            <span class="news-card-badge">Resmi</span>
+                            <span class="news-card-date">15 Jun 2026</span>
                         </div>
-                        <div class="modal-body pt-3 text-start">
-                            <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic2">Penilaian Digital Menggunakan SIPRESMA 28</h3>
-                            
-                            <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px; background-color: #f8fafc;">
-                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="Evaluasi Digital" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
-                            </div>
-                            
-                            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-secondary small">
-                                <div><i class="bi bi-tag-fill text-primary"></i> Akademik</div>
-                                <div>|</div>
-                                <div><i class="bi bi-calendar3 text-primary"></i> Semester: 2025/2026 Genap</div>
-                            </div>
-
-                            <div class="text-secondary lh-lg">
-                                Penerapan portal SIPRESMA 28 secara berkala mempermudah guru melakukan rekap nilai harian serta ujian semester secara paperless dan transparan. Wali murid juga dapat memantau capaian belajar anak secara berkala dan langsung. Inovasi digital ini mendukung target efisiensi tata kelola sekolah dasar yang unggul dan mandiri.
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                        <div class="news-card-body">
+                            <h4 class="news-card-title">Penilaian Digital Menggunakan SIPRESMA 28</h4>
+                            <p class="news-card-desc">Penerapan portal SIPRESMA 28 secara berkala mempermudah guru melakukan rekap nilai harian secara paperless dan terintegrasi.</p>
+                            <button type="button" class="news-card-btn" data-bs-toggle="modal" data-bs-target="#modalStatic2">
+                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Modal Static 3 -->
-            <div class="modal fade text-dark" id="modalStatic3" tabindex="-1" aria-labelledby="modalLabelStatic3" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 rounded-4 shadow">
-                        <div class="modal-header border-0 pb-0 justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge bg-primary text-uppercase tracking-wider text-[10px] me-2">ekstrakurikuler</span>
-                                <span class="text-secondary small">08 Juni 2026</span>
-                            </div>
-                            <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Static Event Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=500&q=80" alt="Literasi Sabtu Pagi" class="news-img">
+                            <span class="news-card-badge">Ekstrakurikuler</span>
+                            <span class="news-card-date">08 Jun 2026</span>
                         </div>
-                        <div class="modal-body pt-3 text-start">
-                            <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic3">Gerakan Literasi Sekolah Tiap Sabtu Pagi</h3>
-                            
-                            <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px; background-color: #f8fafc;">
-                                <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80" alt="Kegiatan Literasi" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
-                            </div>
-                            
-                            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-secondary small">
-                                <div><i class="bi bi-tag-fill text-primary"></i> Non-Akademik</div>
-                                <div>|</div>
-                                <div><i class="bi bi-calendar3 text-primary"></i> Semester: 2025/2026 Genap</div>
-                            </div>
-
-                            <div class="text-secondary lh-lg">
-                                Program membaca bersama buku bacaan non-akademik di lapangan sekolah guna memperluas wawasan dan menumbuhkan minat membaca sejak dini. Gerakan literasi ini diikuti oleh seluruh siswa dari Kelas I hingga Kelas VI, staf pengajar, dan didampingi langsung oleh Kepala Sekolah. Kami meyakini minat baca yang tinggi melahirkan generasi yang cerdas dan kaya perspektif.
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                        <div class="news-card-body">
+                            <h4 class="news-card-title">Gerakan Literasi Sekolah Tiap Sabtu Pagi</h4>
+                            <p class="news-card-desc">Program membaca bersama buku bacaan non-akademik di lapangan sekolah guna menumbuhkan minat membaca sejak dini.</p>
+                            <button type="button" class="news-card-btn" data-bs-toggle="modal" data-bs-target="#modalStatic3">
+                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
+                @endforelse
             </div>
-            @endif
         </div>
     </section>
 
-    <!-- 8. LOKASI PETA & HUBUNGI KAMI -->
-    <section class="section-padding" id="kontak">
+
+
+    <!-- 8.5 LOKASI & KONTAK -->
+    <section class="section-padding bg-white" id="kontak">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Hubungi Kami</span>
-                <h2 class="section-title">Lokasi & Aspirasi</h2>
-                <p class="section-subtitle">Temukan lokasi kami secara langsung atau kirimkan kritik dan saran Anda untuk meningkatkan pelayanan kami.</p>
+            <div class="text-center mb-4">
+                <span class="section-tag">Lokasi Sekolah</span>
+                <h2 class="section-title">Temukan Lokasi Kami</h2>
+                <p class="section-subtitle mx-auto">Kunjungi alamat resmi SD Negeri 28 Kinali secara langsung melalui penunjuk peta digital di bawah ini.</p>
             </div>
-            <div class="row g-5">
-                <div class="col-lg-6">
-                    <div class="map-container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="profile-img-container" style="height: 350px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); border: 1px solid rgba(61, 90, 128, 0.15);">
                         <!-- Sematan Google Maps SDN 28 Kinali, Sumatera Barat -->
                         <iframe 
                             src="https://maps.google.com/maps?q=-0.15333495126860688,99.76505095952322&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                             width="100%" 
                             height="100%" 
-                            style="border:0; min-height:380px;" 
+                            style="border:0; display:block;" 
                             allowfullscreen="" 
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="contact-card">
-                        <h4 class="mb-4">Kirim Pesan</h4>
-                        <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Aspirasi Anda berhasil dikirim! Terima kasih atas masukan yang diberikan.'); this.reset();">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label font-medium small text-secondary">Nama Lengkap</label>
-                                    <input type="text" class="form-control form-control-custom" id="name" placeholder="Contoh: Budi Santoso" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label font-medium small text-secondary">Email Resmi / Aktif</label>
-                                    <input type="email" class="form-control form-control-custom" id="email" placeholder="Contoh: budi@gmail.com" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="subject" class="form-label font-medium small text-secondary">Perihal / Subjek</label>
-                                    <input type="text" class="form-control form-control-custom" id="subject" placeholder="Perihal pengajuan aspirasi" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="message" class="form-label font-medium small text-secondary">Isi Pesan / Aspirasi</label>
-                                    <textarea class="form-control form-control-custom" id="message" rows="4" placeholder="Tuliskan kritik, saran, atau masukan Anda di sini..." required></textarea>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn-electric w-100 py-3">Kirim Aspirasi</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row g-4 mt-5">
-                <div class="col-md-4">
-                    <div class="d-flex align-items-center gap-3 p-4 bg-light-section rounded-4">
-                        <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-geo-alt-fill fs-5"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 text-dark">Alamat Sekolah</h6>
-                            <p class="text-secondary small mb-0">Kinali, Kabupaten Pasaman Barat, Sumatera Barat</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="d-flex align-items-center gap-3 p-4 bg-light-section rounded-4">
-                        <div class="p-3 bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-envelope-fill fs-5"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 text-dark">Email Sekolah</h6>
-                            <p class="text-secondary small mb-0">info@sdn28kinali.sch.id</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="d-flex align-items-center gap-3 p-4 bg-light-section rounded-4">
-                        <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-telephone-fill fs-5"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 text-dark">Nomor Telepon</h6>
-                            <p class="text-secondary small mb-0">+62 822-1234-5678</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- 9. FOOTER PEKAT (#0B0E14) -->
-    <footer class="footer-custom">
+    <!-- 9. PRE-FOOTER CTA SECTION (Warm Beige & Sky Blue Gradient instead of dark navy) -->
+    <section class="cta-section">
         <div class="container">
-            <div class="row g-5">
+            <h2 class="cta-title">Siap Mengukir Prestasi Bersama Kami?</h2>
+            <p class="cta-desc">Hubungi kami hari ini untuk informasi pendaftaran siswa baru, kurikulum sekolah, atau akses platform monitoring rapor SIPRESMA 28.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url('/login') }}" class="btn-blue-primary">Mulai Akses Rapor <i class="bi bi-box-arrow-in-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FOOTER (Light Beige background) -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="me-2 d-flex align-items-center justify-content-center">
-                            <img src="{{ asset('images/logo.jpg') }}" style="height: 40px; width: auto;" alt="Logo">
-                        </div>
-                        <span class="footer-logo-title">SIPRESMA 28</span>
-                    </div>
-                    <p class="mb-4">Portal integrasi digital penilaian akademik dan pemantauan prestasi murid SD Negeri 28 Kinali secara modern, akurat, aman, dan efisien.</p>
-                    <div class="d-flex">
-                        <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+                    <h5 class="mb-4 fw-bold text-blue-accent" style="font-size: 1.2rem;">SDN 28 KINALI</h5>
+                    <p class="small mb-4" style="line-height: 1.6;">Portal integrasi monitoring nilai rapor dan rekapitulasi prestasi siswa. Mendukung tata kelola sekolah dasar yang transparan, modern, dan akuntabel.</p>
+                    <div class="footer-social-links">
+                        <a href="#beranda" class="social-btn"><i class="bi bi-facebook"></i></a>
+                        <a href="#beranda" class="social-btn"><i class="bi bi-instagram"></i></a>
+                        <a href="#beranda" class="social-btn"><i class="bi bi-youtube"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 footer-link-group">
-                    <h5>Navigasi Cepat</h5>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Navigasi</h5>
                     <ul class="footer-links">
                         <li><a href="#beranda">Beranda</a></li>
                         <li><a href="#profil">Profil Sekolah</a></li>
-                        <li><a href="#informasi">Informasi</a></li>
-                        <li><a href="#kontak">Hubungi Kami</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6 footer-link-group">
-                    <h5>Sistem & Akses</h5>
-                    <ul class="footer-links">
-                        @if (Route::has('login'))
-                            @auth
-                                <li><a href="{{ url('/dashboard') }}">Dashboard Panel</a></li>
-                            @else
-                                <li><a href="{{ url('/login') }}">Login </a></li>
-                            @endauth
-                        @endif
-                        <li><a href="#informasi">Panduan Guru</a></li>
-                        <li><a href="#informasi">Panduan Wali</a></li>
+                        <li><a href="#guru">Guru & Staf</a></li>
+                        <li><a href="#informasi">Kabar Sekolah</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4 position-relative padding-bottom-10" style="font-size: 1.1rem;">SDN 28 Kinali</h5>
-                    <p class="small mb-2"><i class="bi bi-geo-alt-fill text-primary me-2"></i> Kinali, Kabupaten Pasaman Barat, Sumatera Barat, Indonesia</p>
-                    <p class="small mb-2"><i class="bi bi-telephone-fill text-primary me-2"></i> +62 822-1234-5678</p>
-                    <p class="small mb-0"><i class="bi bi-envelope-fill text-primary me-2"></i> info@sdn28kinali.sch.id</p>
+                    <h5 class="footer-title">Sistem & Akses</h5>
+                    <ul class="footer-links">
+                        <li><a href="{{ url('/login') }}">Login Guru & Admin</a></li>
+                        <li><a href="{{ url('/login') }}">Monitoring Nilai Siswa</a></li>
+                        <li><a href="{{ url('/login') }}">Akses Rapor Digital</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-title">Kontak Sekolah</h5>
+                    <p class="small mb-2"><i class="bi bi-geo-alt-fill text-blue-accent me-2"></i> Katiagan, Kecamatan Kinali, Kabupaten Pasaman Barat, Sumatera Barat, Indonesia</p>
+                    <p class="small mb-0"><i class="bi bi-envelope-fill text-blue-accent me-2"></i> sdn28katiagan@gmail.com</p>
                 </div>
             </div>
-            
-            <div class="row footer-bottom">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+
+            <div class="row footer-bottom text-center">
+                <div class="col-md-6 text-md-start mb-3 mb-md-0">
                     <span>&copy; 2026 SIPRESMA 28 - SD Negeri 28 Kinali. All Rights Reserved.</span>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <span class="text-secondary">Didukung oleh Tim Pengembang IT SDN 28 Kinali</span>
+                <div class="col-md-6 text-md-end text-blue-accent fw-semibold">
+                    <span>Didukung oleh Tim TI SD Negeri 28 Kinali</span>
                 </div>
             </div>
         </div>
@@ -1449,6 +1181,120 @@
     <button class="btn-scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
         <i class="bi bi-arrow-up-short fs-4"></i>
     </button>
+
+    <!-- Modals Detail Kegiatan Dinamis -->
+    @foreach($kegiatan_terbaru as $keg)
+    <div class="modal fade text-dark" id="modalKegiatan{{ $keg->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $keg->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="badge text-uppercase tracking-wider text-[10px] me-2" style="background: var(--primary-color);">{{ $keg->kategori }}</span>
+                        <span class="text-secondary small">{{ \Carbon\Carbon::parse($keg->tanggal_kegiatan)->translatedFormat('d F Y') }}</span>
+                    </div>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 text-start">
+                    <h3 class="modal-title fw-bold mb-3" id="modalLabel{{ $keg->id }}">{{ $keg->nama_kegiatan }}</h3>
+
+                    <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px; background-color: #f8fafc;">
+                        @if($keg->gambar)
+                        <img src="{{ asset('storage/' . $keg->gambar) }}" alt="{{ $keg->nama_kegiatan }}" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
+                        @else
+                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80" alt="{{ $keg->nama_kegiatan }}" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
+                        @endif
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-secondary small">
+                        <div><i class="bi bi-tag-fill text-blue-accent"></i> <span class="text-capitalize">{{ $keg->jenis_kegiatan }}</span></div>
+                        <div>|</div>
+                        <div><i class="bi bi-calendar3 text-blue-accent"></i> Semester: {{ $keg->semester_aktif }}</div>
+                    </div>
+
+                    <div class="text-secondary lh-lg" style="white-space: pre-line;">
+                        {{ $keg->deskripsi }}
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
+    <!-- Static Modals -->
+    <div class="modal fade text-dark" id="modalStatic1" tabindex="-1" aria-labelledby="modalLabelStatic1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="badge text-uppercase tracking-wider text-[10px] me-2" style="background: var(--primary-color);">Perlombaan</span>
+                        <span class="text-secondary small">28 Juni 2026</span>
+                    </div>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 text-start">
+                    <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic1">Juara 1 Lomba Sains Tingkat Kabupaten</h3>
+                    <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px;">
+                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80" alt="Lomba Sains" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
+                    </div>
+                    <p class="text-secondary lh-lg">Siswa SDN 28 Kinali kembali menorehkan prestasi membanggakan dengan meraih juara pertama pada ajang Kompetisi Sains tingkat Kabupaten. Kompetisi ini diikuti oleh puluhan sekolah dasar dari berbagai kecamatan. Sekolah sangat bangga dan berkomitmen untuk terus membimbing bakat anak secara maksimal demi prestasi masa depan.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-dark" id="modalStatic2" tabindex="-1" aria-labelledby="modalLabelStatic2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="badge text-uppercase tracking-wider text-[10px] me-2" style="background: var(--primary-color);">Resmi</span>
+                        <span class="text-secondary small">15 Juni 2026</span>
+                    </div>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 text-start">
+                    <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic2">Penilaian Digital Menggunakan SIPRESMA 28</h3>
+                    <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px;">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="Evaluasi Digital" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
+                    </div>
+                    <p class="text-secondary lh-lg">Penerapan portal SIPRESMA 28 secara berkala mempermudah guru melakukan rekap nilai harian secara paperless dan terintegrasi. Wali murid juga dapat memantau capaian belajar anak secara berkala dan langsung. Inovasi digital ini mendukung target efisiensi tata kelola sekolah dasar yang unggul dan mandiri.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-dark" id="modalStatic3" tabindex="-1" aria-labelledby="modalLabelStatic3" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="badge text-uppercase tracking-wider text-[10px] me-2" style="background: var(--primary-color);">Ekstrakurikuler</span>
+                        <span class="text-secondary small">08 Juni 2026</span>
+                    </div>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 text-start">
+                    <h3 class="modal-title fw-bold mb-3" id="modalLabelStatic3">Gerakan Literasi Sekolah Tiap Sabtu Pagi</h3>
+                    <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 400px;">
+                        <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80" alt="Kegiatan Literasi" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 400px;">
+                    </div>
+                    <p class="text-secondary lh-lg">Program membaca bersama buku bacaan non-akademik di lapangan sekolah guna menumbuhkan minat membaca sejak dini. Gerakan literasi ini diikuti oleh seluruh siswa dari Kelas I hingga Kelas VI, staf pengajar, dan didampingi langsung oleh Kepala Sekolah. Kami meyakini minat baca yang tinggi melahirkan generasi yang cerdas.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -1472,7 +1318,6 @@
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
                 if (window.scrollY >= (sectionTop - 150)) {
                     current = section.getAttribute('id');
                 }
@@ -1485,64 +1330,6 @@
                 }
             });
         });
-
-        // Kegiatan Slider Horizontal Scroll Logic
-        const slider = document.getElementById('kegiatanSlider');
-        const prevBtn = document.getElementById('sliderPrevBtn');
-        const nextBtn = document.getElementById('sliderNextBtn');
-        
-        if (slider && prevBtn && nextBtn) {
-            const getScrollAmount = () => {
-                const firstItem = slider.querySelector('.kegiatan-slider-item');
-                if (firstItem) {
-                    return firstItem.offsetWidth + 24; // item width + gap
-                }
-                return 300;
-            };
-            
-            prevBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: -getScrollAmount(),
-                    behavior: 'smooth'
-                });
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: getScrollAmount(),
-                    behavior: 'smooth'
-                });
-            });
-            
-            const updateButtons = () => {
-                const scrollLeft = slider.scrollLeft;
-                const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-                
-                if (maxScrollLeft <= 2) {
-                    prevBtn.classList.add('disabled');
-                    nextBtn.classList.add('disabled');
-                    return;
-                }
-                
-                if (scrollLeft <= 5) {
-                    prevBtn.classList.add('disabled');
-                } else {
-                    prevBtn.classList.remove('disabled');
-                }
-                
-                if (scrollLeft >= maxScrollLeft - 5) {
-                    nextBtn.classList.add('disabled');
-                } else {
-                    nextBtn.classList.remove('disabled');
-                }
-            };
-            
-            slider.addEventListener('scroll', updateButtons);
-            window.addEventListener('resize', updateButtons);
-            
-            // Initial check
-            setTimeout(updateButtons, 300);
-        }
     </script>
 </body>
 </html>
