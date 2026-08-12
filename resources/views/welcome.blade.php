@@ -801,7 +801,7 @@
             <div class="row align-items-center justify-content-between g-5">
                 <div class="col-lg-7 text-start">
                     <span class="section-tag">Portal Resmi</span>
-                    <h1 class="hero-title">Raih Impian & Ukir <span class="hero-accent">Prestasi Terbaik</span></h1>
+                    <h1 class="hero-title">Raih Impian & Ukir <br> <span class="hero-accent">Prestasi Terbaik</span></h1>
                     <p class="hero-subtitle mb-4">Sistem Informasi Manajemen Nilai & Monitoring Prestasi (SIPRESMA 28) SD Negeri 28 Kinali. Mengintegrasikan pencatatan akademis secara digital, transparan, dan akuntabel.</p>
                     <div class="d-flex gap-3">
                         <a href="#profil" class="btn-blue-primary">Mulai Jelajah <i class="bi bi-arrow-right"></i></a>
