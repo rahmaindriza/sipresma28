@@ -798,7 +798,7 @@
     <!-- 2. HERO SECTION -->
     <header class="hero-section">
         <div class="container">
-            <div class="row align-items-center g-5">
+            <div class="row align-items-center justify-content-between g-5">
                 <div class="col-lg-7 text-start">
                     <span class="section-tag">Portal Resmi</span>
                     <h1 class="hero-title">Raih Impian & Ukir <span class="hero-accent">Prestasi Terbaik</span></h1>
@@ -807,7 +807,7 @@
                         <a href="#profil" class="btn-blue-primary">Mulai Jelajah <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <!-- Stat items stacked on hero left/right card -->
                     <div class="p-4 rounded-3xl" style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px); border: 1px solid rgba(61,90,128,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <h4 class="mb-4 fw-bold text-blue-accent" style="font-size: 1.1rem; border-bottom: 1px solid rgba(61,90,128,0.1); padding-bottom: 10px;">Statistik Sekolah</h4>
