@@ -138,7 +138,7 @@
         /* Hero Section Styling (Light & Bright Theme with sub-blend school photo) */
         .hero-section {
             position: relative;
-            background: linear-gradient(135deg, rgba(242, 239, 231, 0.92) 30%, rgba(216, 230, 242, 0.85) 100%), url("{{ asset('images/gedung_sd.jpg') }}");
+            background: linear-gradient(135deg, rgba(242, 239, 231, 0.4) 30%, rgba(216, 230, 242, 0.3) 100%), url("{{ asset('images/gedung_sd.jpg') }}");
             background-size: cover;
             background-position: center;
             color: var(--dark-color);
