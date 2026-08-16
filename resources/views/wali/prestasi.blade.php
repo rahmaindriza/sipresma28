@@ -117,9 +117,6 @@
                                 </button>
                             </form>
 
-                            <a href="{{ route('wali.prestasi.cetak', $p->siswa_id) }}" target="_blank" class="text-emerald-600 hover:text-emerald-800 text-[11px] font-bold px-2.5 py-1 hover:bg-emerald-50 border border-transparent hover:border-emerald-200 rounded-lg transition inline-block">
-                                <i class="bi bi-file-pdf"></i> PDF Rapor
-                            </a>
                         </td>
                     </tr>
                     @empty

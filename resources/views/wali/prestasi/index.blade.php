@@ -117,10 +117,6 @@
                                         <i class="bi bi-trash mr-1"></i> Hapus
                                     </button>
                                 </form>
-
-                                <a href="{{ route('wali.prestasi.cetak', $p->siswa_id) }}" target="_blank" class="text-[11px] font-bold px-2.5 py-1 rounded-lg transition inline-flex items-center whitespace-nowrap" style="color: #15803d !important; background-color: #dcfce7 !important; border: 1px solid #bbf7d0 !important;">
-                                    <i class="bi bi-file-pdf mr-1"></i> cetak aPDF
-                                </a>
                             </div>
                         </td>
                     </tr>
