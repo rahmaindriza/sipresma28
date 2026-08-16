@@ -10,14 +10,6 @@
             <h3 class="text-xl font-bold text-[var(--text-dark-main)]">Monitoring Prestasi Siswa Global</h3>
             <p class="text-xs text-[var(--text-muted)] mt-1">Pantau prestasi seluruh siswa lintas kelas secara real-time.</p>
         </div>
-        <div class="mt-4 sm:mt-0 flex flex-wrap items-center gap-2">
-            <a href="{{ route('kepsek.prestasi.cetak_rekap', request()->all()) }}" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs transition flex items-center shadow-sm border-0">
-                <i class="bi bi-file-pdf me-1.5"></i> Cetak Rekapitulasi PDF
-            </a>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-55 text-emerald-800 border border-emerald-250">
-                Semester: {{ $selectedTa ? $selectedTa->tahun . ' (' . $selectedTa->semester . ')' : '-' }}
-            </span>
-        </div>
     </div>
 
     <!-- Search Box and Filters -->
@@ -33,7 +25,7 @@
                 <select name="kelas_id" class="w-full px-4 py-2 bg-white border border-[var(--border-light)] rounded-xl text-[var(--text-dark-main)] focus:outline-none focus:border-[var(--primary-burgundy)] transition text-sm">
                     <option value="">-- Semua Kelas --</option>
                     @foreach($listKelas as $kls)
-                        <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}>Kelas {{ $kls->nama_kelas }}</option>
+                        <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}>{{ $kls->nama_kelas }}</option>
                     @endforeach
                 </select>
             </div>
@@ -62,6 +54,9 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none;">
                     Cari & Filter
                 </button>
+                <a href="{{ route('kepsek.prestasi.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #3D5A80 !important; border: none; color: white !important;">
+                    <i class="bi bi-file-pdf me-1.5"></i> Cetak Rekapitulasi PDF
+                </a>
                 <a href="{{ route('kepsek.prestasi.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
                     Reset
                 </a>

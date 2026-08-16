@@ -69,11 +69,7 @@
                         <td class="py-4 px-6">
                             <div class="flex items-center gap-2">
                                 <span class="font-bold text-[#2D3748]">{{ $s->nama }}</span>
-                                <button type="button" onclick="showHistoriSiswa({{ $s->id }})" title="Lihat Histori Rapor & Prestasi" class="p-1 hover:bg-[#EBF3FC] text-blue-600 rounded transition border-0 bg-transparent cursor-pointer">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </button>
+
                             </div>
                         </td>
                         <td class="py-4 px-6 font-semibold text-slate-700">{{ $s->nis ?? '-' }} / {{ $s->nisn }}</td>
@@ -113,108 +109,5 @@
     </div>
 </div>
 
-<!-- Detail Modal -->
-<div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-slate-950/60 p-4">
-    <div class="bg-white border border-[#D8E6F2] rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden">
-        <!-- Modal Header -->
-        <div class="flex justify-between items-center bg-[#3D5A80] px-6 py-4">
-            <h4 class="text-lg font-bold text-white flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Detail Informasi Siswa
-            </h4>
-            <button onclick="toggleModal('detail-modal')" class="text-white/80 hover:text-white transition text-2xl">&times;</button>
-        </div>
-
-        <!-- Modal Body -->
-        <div class="p-6 space-y-6">
-            <!-- Seksi Header Nama -->
-            <div class="pb-3 border-b border-[#D8E6F2]">
-                <h3 id="detail-nama" class="text-2xl font-bold text-[#3D5A80]">Nama Lengkap Siswa</h3>
-                <p id="detail-kelas" class="text-sm font-medium text-[#7A6266] mt-1">Nama Kelas</p>
-            </div>
-
-            <!-- Grid 2 Kolom -->
-            <div class="row g-4 text-sm text-[#2D3748]">
-                <!-- Kolom Kiri -->
-                <div class="col-md-6 space-y-4">
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">NIS</span>
-                        <span id="detail-nis" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">NISN</span>
-                        <span id="detail-nisn" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">NIK</span>
-                        <span id="detail-nik" class="text-sm font-bold text-[#2D3748] font-mono">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">Jenis Kelamin</span>
-                        <span id="detail-jk" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">Agama</span>
-                        <span id="detail-agama" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                </div>
-
-                <!-- Kolom Kanan -->
-                <div class="col-md-6 space-y-4">
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">Tempat Lahir</span>
-                        <span id="detail-tempat_lahir" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-1">Tanggal Lahir</span>
-                        <span id="detail-tanggal_lahir" class="text-sm font-bold text-[#2D3748]">-</span>
-                    </div>
-                </div>
-
-                <!-- Alamat Lengkap (Full Width) -->
-                <div class="col-12">
-                    <span class="block text-xs text-[#8E797D] font-bold uppercase tracking-wider mb-2">Alamat Lengkap</span>
-                    <div class="bg-[#EBF3FC] border border-[#D8E6F2] rounded-xl p-3.5 shadow-sm">
-                        <p id="detail-alamat" class="text-sm font-medium text-[#2D3748] m-0 whitespace-pre-wrap">-</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Footer -->
-        <div class="flex justify-end px-6 py-4 border-t border-[#D8E6F2] bg-[#FAFAF9]">
-            <button type="button" onclick="toggleModal('detail-modal')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">Tutup</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.toggle('hidden');
-    }
-
-    function showDetailSiswa(siswa) {
-        document.getElementById('detail-nama').innerText = siswa.nama;
-        document.getElementById('detail-kelas').innerText = 'Kelas: ' + (siswa.kelas ? siswa.kelas.nama_kelas : '-');
-        document.getElementById('detail-nis').innerText = siswa.nis || '-';
-        document.getElementById('detail-nisn').innerText = siswa.nisn;
-        document.getElementById('detail-nik').innerText = siswa.nik;
-        document.getElementById('detail-jk').innerText = siswa.jk;
-        document.getElementById('detail-agama').innerText = siswa.agama;
-        document.getElementById('detail-tempat_lahir').innerText = siswa.tempat_lahir;
-
-        // Format tanggal lahir to local ID readable
-        if (siswa.tanggal_lahir) {
-            const date = new Date(siswa.tanggal_lahir);
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('detail-tanggal_lahir').innerText = date.toLocaleDateString('id-ID', options);
-        } else {
-            document.getElementById('detail-tanggal_lahir').innerText = '-';
-        }
-
-        document.getElementById('detail-alamat').innerText = siswa.alamat;
-        toggleModal('detail-modal');
-    }
-</script>
+@include('admin.siswa.show')
 @endsection

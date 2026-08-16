@@ -16,11 +16,6 @@
             <h3 class="text-2xl font-bold text-white">{{ $kelas->nama_kelas }}</h3>
             <p class="text-xs text-slate-400 mt-1">Wali Kelas: <span class="text-white font-semibold">{{ auth()->user()->nama_tampil }}</span></p>
         </div>
-        <div class="mt-4 sm:mt-0">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
-                Tahun Ajaran: {{ $activeTa->tahun }} ({{ $activeTa->semester }})
-            </span>
-        </div>
     </div>
 
     <!-- Stats Matrix -->
@@ -84,7 +79,7 @@
     <!-- Chart Section -->
     <div class="glass-panel p-6 rounded-3xl space-y-4">
         <h4 class="text-lg font-bold text-white">Grafik Monitoring Perkembangan Rata-Rata Kelas</h4>
-        <p class="text-xs text-slate-400">Menampilkan rata-rata nilai akhir siswa di kelas {{ $kelas->nama_kelas }} berdasarkan komponen nilai mata pelajaran aktif.</p>
+        <p class="text-xs text-slate-400">Menampilkan rata-rata nilai akhir siswa di {{ $kelas->nama_kelas }} berdasarkan komponen nilai mata pelajaran aktif.</p>
         
         <div class="h-80 relative flex items-end justify-center">
             <canvas id="classAveragesChart"></canvas>
@@ -96,7 +91,7 @@
         <!-- Donut Chart: Kategori Prestasi Kelas -->
         <div class="glass-panel p-6 rounded-3xl space-y-4">
             <h4 class="text-lg font-bold text-white">Distribusi Kategori Prestasi Kelas</h4>
-            <p class="text-xs text-slate-400">Menampilkan perbandingan prestasi akademik vs non-akademik di kelas {{ $kelas->nama_kelas }}.</p>
+            <p class="text-xs text-slate-400">Menampilkan perbandingan prestasi akademik vs non-akademik di {{ $kelas->nama_kelas }}.</p>
             
             <div style="position: relative; height: 200px; width: 100%;" class="flex items-center justify-center">
                 <canvas id="classPrestasiChart"></canvas>
@@ -112,7 +107,7 @@
         <div class="glass-panel p-6 rounded-3xl flex flex-col justify-between space-y-4">
             <div>
                 <h4 class="text-lg font-bold text-white">3 Besar Siswa Berprestasi Kelas</h4>
-                <p class="text-xs text-slate-400 mt-1">Papan peringkat siswa di kelas {{ $kelas->nama_kelas }} berdasarkan perolehan akumulasi sertifikat penghargaan.</p>
+                <p class="text-xs text-slate-400 mt-1">Papan peringkat siswa di {{ $kelas->nama_kelas }} berdasarkan perolehan akumulasi sertifikat penghargaan.</p>
             </div>
             <div class="flex-1 divide-y divide-slate-800/60 mt-2">
                 @forelse($topPrestasiKelas as $index => $tp)

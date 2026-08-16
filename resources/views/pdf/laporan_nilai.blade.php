@@ -333,7 +333,7 @@
     <!-- Footer Page 1 -->
     <table class="footer-table">
         <tr>
-            <td style="text-align: left; width: 70%;">Kelas {{ $kelas->nama_kelas }} | {{ strtoupper($siswa->nama) }} | {{ $siswa->nis ?? '-' }}</td>
+            <td style="text-align: left; width: 70%;">{{ $kelas->nama_kelas }} | {{ strtoupper($siswa->nama) }} | {{ $siswa->nis ?? '-' }}</td>
             <td style="text-align: right; width: 30%;">Halaman : 1</td>
         </tr>
     </table>
@@ -555,7 +555,7 @@
     <!-- Footer Page 2 -->
     <table class="footer-table">
         <tr>
-            <td style="text-align: left; width: 70%;">Kelas {{ $kelas->nama_kelas }} | {{ strtoupper($siswa->nama) }} | {{ $siswa->nis ?? '-' }}</td>
+            <td style="text-align: left; width: 70%;">{{ $kelas->nama_kelas }} | {{ strtoupper($siswa->nama) }} | {{ $siswa->nis ?? '-' }}</td>
             <td style="text-align: right; width: 30%;">Halaman : 2</td>
         </tr>
     </table>

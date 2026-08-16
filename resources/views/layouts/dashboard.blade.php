@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SIPRESMA 28') - SDN 28 Kinali</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <style>
         :root {
             /* 1. Komponen Navigasi Utama Gelap (Slate-steel blue) */
             --bg-sidebar-dark: #25354F;      /* Warna dasar sidebar steel blue */
-            --bg-topbar-dark: #293E59;       /* Warna header/topbar atas */
+            --bg-topbar-dark: #25354F;       /* Warna header/topbar atas disamakan dengan sidebar */
             --border-dark: #334C6E;          /* Batas garis komponen gelap */
-            
+
             /* 2. Komponen Halaman Konten Cerah Beraksen */
             --bg-content-soft: #F2EFE7;      /* Latar belakang dasar halaman kanan: krem/rose sangat lembut */
             --card-white: #FFFFFF;           /* Latar kotak card/tabel utama: putih bersih */
             --border-light: #D8E6F2;         /* Garis batas/border di area cerah */
-            
+
             /* 3. Aksen Warna & Teks */
             --primary-burgundy: #3D5A80;     /* Warna tombol utama (seperti '+ Tambah Kelas') dan teks header tabel */
             --primary-hover: #293E59;         /* Burgundy lebih gelap saat di-hover */
@@ -51,6 +51,7 @@
         aside, aside.bg-slate-900 {
             background-color: var(--bg-sidebar-dark) !important;
             border-right: 1px solid var(--border-dark) !important;
+            border-radius: 0 !important;
         }
 
         /* Sidebar Logo Area */
@@ -127,6 +128,11 @@
         header.bg-slate-900, header {
             background-color: var(--bg-topbar-dark) !important;
             border-bottom: 1px solid var(--border-dark) !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            border-left: none !important;
+            border-right: none !important;
+            border-top: none !important;
         }
         header h2 {
             color: #FFFFFF !important;
@@ -154,11 +160,11 @@
         }
 
         /* Global text overrides inside main content for readability and contrast */
-        main h1, main h2, main h3, main h4, main h5, main h6, 
+        main h1, main h2, main h3, main h4, main h5, main h6,
         main .text-white, main .font-bold, .text-white-always {
             color: var(--text-dark-main) !important;
         }
-        main p, main .text-slate-400, main .text-slate-500, main .text-slate-300, 
+        main p, main .text-slate-400, main .text-slate-500, main .text-slate-300,
         main .text-gray-400, main .text-gray-500, main .text-slate-450 {
             color: var(--text-muted) !important;
         }
@@ -174,8 +180,8 @@
         }
 
         /* Icons in stats boxes (Soft sky blue circular highlight with steel blue icons) */
-        .glass-panel div[style*="background-color: rgba"], 
-        .glass-panel .p-3, 
+        .glass-panel div[style*="background-color: rgba"],
+        .glass-panel .p-3,
         .bg-[#2D1B1F] .p-3 {
             background-color: #EBF3FC !important;
             color: var(--primary-burgundy) !important;
@@ -294,8 +300,8 @@
         }
 
         /* Primary Action Buttons */
-        button[type="submit"], .btn-primary, .btn-electric-blue, 
-        .bg-blue-600, button.bg-blue-600, 
+        button[type="submit"], .btn-primary, .btn-electric-blue,
+        .bg-blue-600, button.bg-blue-600,
         .bg-indigo-600, button.bg-indigo-600,
         .bg-emerald-600, button.bg-emerald-600,
         .bg-teal-600, button.bg-teal-600,
@@ -309,8 +315,8 @@
             transition: all 0.2s ease-in-out !important;
             box-shadow: 0 4px 10px rgba(61, 90, 128, 0.15) !important;
         }
-        button[type="submit"]:hover, .btn-primary:hover, .btn-electric-blue:hover, 
-        .bg-blue-600:hover, button.bg-blue-600:hover, 
+        button[type="submit"]:hover, .btn-primary:hover, .btn-electric-blue:hover,
+        .bg-blue-600:hover, button.bg-blue-600:hover,
         .bg-indigo-600:hover, button.bg-indigo-600:hover,
         .bg-emerald-600:hover, button.bg-emerald-600:hover,
         .bg-teal-600:hover, button.bg-teal-600:hover,
@@ -321,7 +327,7 @@
             box-shadow: 0 4px 15px rgba(61, 90, 128, 0.3) !important;
             transform: translateY(-1px) !important;
         }
-        
+
         /* Force text color to white inside primary buttons to bypass global body styling overrides */
         main a[class*="bg-[#3D5A80]"], main a[class*="bg-[#3d5a80]"],
         main a[class*="bg-[#293E59]"], main a[class*="bg-[#293e59]"],
@@ -339,10 +345,10 @@
         }
 
         /* Status & KKM Badges overrides */
-        .kkm-lulus, 
-        .bg-green-950, 
+        .kkm-lulus,
+        .bg-green-950,
         .bg-green-900\/40,
-        [class*="text-green-"], 
+        [class*="text-green-"],
         [class*="bg-green-"] {
             background-color: #E9F5F0 !important;
             color: #245E49 !important;
@@ -352,10 +358,10 @@
             background-color: #245E49 !important;
         }
 
-        .kkm-remedial, 
-        .bg-red-950, 
+        .kkm-remedial,
+        .bg-red-950,
         .bg-red-900\/40,
-        [class*="text-red-"], 
+        [class*="text-red-"],
         [class*="bg-red-"] {
             background-color: #FDF0F2 !important;
             color: #A82E43 !important;
@@ -538,7 +544,7 @@
                     </p>
                 </div>
             </div>
-            
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="text-slate-400 hover:text-red-400 transition p-1.5 hover:bg-slate-800 rounded-lg">
@@ -560,11 +566,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
-            
+
             <div class="flex items-center space-x-4">
                 <h2 class="text-lg font-semibold text-white hidden md:block">Sistem Informasi Manajemen Nilai & Monitoring Prestasi</h2>
             </div>
-            
+
             <!-- Academic Term Info -->
             <div class="flex items-center space-x-3">
                 @if(isset($activeTa))
@@ -600,7 +606,7 @@
                 </h4>
                 <button onclick="closeHistoriModal()" class="text-white/80 hover:text-white transition text-2xl border-0 bg-transparent">&times;</button>
             </div>
-            
+
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-[#F2EFE7] text-[#2D3748]">
                 <!-- Student Header Profile Details -->
@@ -615,7 +621,7 @@
                         </span>
                     </div>
                 </div>
-                
+
                 <!-- Timeline / Semester Blocks Container -->
                 <div id="histori-blocks" class="space-y-6">
                     <!-- Dynamic Blocks Injected Here -->
@@ -633,7 +639,7 @@
         function showHistoriSiswa(siswaId) {
             const modal = document.getElementById('histori-rapor-modal');
             const container = document.getElementById('histori-blocks');
-            
+
             // Show loading placeholder
             container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-16 text-slate-400">

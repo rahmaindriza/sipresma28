@@ -9,7 +9,7 @@
             <h3 class="text-xl font-bold text-[#2D3748]">Tambah Siswa Baru</h3>
             <p class="text-xs text-[#8E797D] mt-1">Daftarkan data siswa baru dengan lengkap ke dalam sistem informasi.</p>
         </div>
-        <a href="{{ route('admin.siswas') }}" class="px-4 py-2 border border-[#3D5A80] text-[#3D5A80] hover:bg-[#3D5A80] hover:text-white font-semibold rounded-xl text-xs transition flex items-center">
+        <a href="{{ route('admin.siswas') }}" class="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 hover:text-slate-800 font-semibold rounded-xl text-xs transition flex items-center bg-white shadow-sm">
             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Kembali ke Daftar
         </a>

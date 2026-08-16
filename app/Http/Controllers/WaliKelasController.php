@@ -704,6 +704,31 @@ class WaliKelasController extends Controller
         return $pdf->stream('Data_Siswa_Kelas_' . str_replace(' ', '_', $kelas->nama_kelas) . '.pdf');
     }
 
+    public function editRaporSiswa($siswa_id)
+    {
+        $user = Auth::user();
+        $guru = $this->getGuruForUser($user);
+        $activeTa = TahunAjaran::active();
+
+        if (!$guru) {
+            return redirect()->route('dashboard')->with('error', 'Profil Guru tidak ditemukan.');
+        }
+
+        $kelas = $user->kelas;
+        if (!$kelas) {
+            abort(404, 'Kelas tidak ditemukan.');
+        }
+
+        $siswa = Siswa::where('kelas_id', $kelas->id)->findOrFail($siswa_id);
+        
+        $rapor = \App\Models\RaporSiswa::where('siswa_id', $siswa_id)
+            ->where('kelas_id', $kelas->id)
+            ->where('tahun_ajaran_id', $activeTa->id)
+            ->first();
+
+        return view('wali.rapor_edit', compact('siswa', 'kelas', 'activeTa', 'rapor'));
+    }
+
     public function storeOrUpdateRaporSiswa(Request $request, $siswa_id)
     {
         $user = Auth::user();

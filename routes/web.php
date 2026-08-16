@@ -111,7 +111,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Users
     Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/users/create', [AdminController::class, 'userCreate'])->name('users.create');
     Route::post('/users', [AdminController::class, 'userStore'])->name('users.store');
+    Route::get('/users/{id}/edit', [AdminController::class, 'userEdit'])->name('users.edit');
     Route::put('/users/{id}', [AdminController::class, 'userUpdate'])->name('users.update');
     Route::delete('/users/{id}', [AdminController::class, 'userDestroy'])->name('users.destroy');
     Route::patch('/users/{id}/toggle', [AdminController::class, 'userToggleStatus'])->name('users.toggle');
@@ -158,10 +160,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Prestasis
     Route::get('/prestasis', [PrestasiController::class, 'index'])->name('prestasis');
+    Route::get('/prestasis/create', [PrestasiController::class, 'create'])->name('prestasis.create');
     Route::post('/prestasis', [PrestasiController::class, 'store'])->name('prestasis.store');
+    Route::get('/prestasis/{id}', [PrestasiController::class, 'show'])->name('prestasis.show');
+    Route::get('/prestasis/{id}/edit', [PrestasiController::class, 'edit'])->name('prestasis.edit');
     Route::put('/prestasis/{id}', [PrestasiController::class, 'update'])->name('prestasis.update');
     Route::delete('/prestasis/{id}', [PrestasiController::class, 'destroy'])->name('prestasis.destroy');
-    Route::get('/prestasis/cetak/{siswa_id}', [PrestasiController::class, 'cetakPdf'])->name('prestasis.cetak');
+    Route::get('/prestasis/cetak/{siswa_id}', [PrestasiController::class, 'cetak'])->name('prestasis.cetak');
+    Route::get('/prestasi/download/{id}', [PrestasiController::class, 'downloadSertifikat'])->name('prestasi.download');
 
     // Kegiatans
     Route::get('/kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
@@ -206,12 +212,17 @@ Route::middleware(['auth', 'role:wali_kelas'])->prefix('wali')->name('wali.')->g
     Route::get('/nilai', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/rekap', [WaliKelasController::class, 'rekap'])->name('rekap');
     Route::get('/print/{siswa_id}', [WaliKelasController::class, 'printPdf'])->name('print');
+    Route::get('/rapor/{siswa_id}', [WaliKelasController::class, 'editRaporSiswa'])->name('rapor.edit');
     Route::post('/rapor/{siswa_id}', [WaliKelasController::class, 'storeOrUpdateRaporSiswa'])->name('rapor.store');
     Route::get('/prestasi', [WaliPrestasiController::class, 'index'])->name('prestasi');
+    Route::get('/prestasi/create', [WaliPrestasiController::class, 'create'])->name('prestasi.create');
     Route::post('/prestasi', [WaliPrestasiController::class, 'store'])->name('prestasi.store');
+    Route::get('/prestasi/{id}', [WaliPrestasiController::class, 'show'])->name('prestasi.show');
+    Route::get('/prestasi/{id}/edit', [WaliPrestasiController::class, 'edit'])->name('prestasi.edit');
     Route::put('/prestasi/{id}', [WaliPrestasiController::class, 'update'])->name('prestasi.update');
     Route::delete('/prestasi/{id}', [WaliPrestasiController::class, 'destroy'])->name('prestasi.destroy');
-    Route::get('/prestasi/cetak/{siswa_id}', [WaliPrestasiController::class, 'cetakPdf'])->name('prestasi.cetak');
+    Route::get('/prestasi/cetak/{siswa_id}', [WaliPrestasiController::class, 'cetak'])->name('prestasi.cetak');
+    Route::get('/prestasi/download/{id}', [WaliPrestasiController::class, 'downloadSertifikat'])->name('prestasi.download');
     Route::get('/grades/{mapel_id}', [WaliKelasController::class, 'showGeneralGradeForm'])->name('grades');
     Route::post('/grades/{mapel_id}', [WaliKelasController::class, 'storeGeneralGrades'])->name('grades.store');
 });

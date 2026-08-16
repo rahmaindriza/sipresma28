@@ -78,7 +78,13 @@ class AdminController extends Controller
 
         $users = $query->orderBy('name')->get();
         $kelas = Kelas::orderBy('nama_kelas')->get();
-        return view('admin.users', compact('users', 'kelas'));
+        return view('admin.user.index', compact('users', 'kelas'));
+    }
+
+    public function userCreate()
+    {
+        $kelas = Kelas::orderBy('nama_kelas')->get();
+        return view('admin.user.create', compact('kelas'));
     }
 
     public function userStore(Request $request)
@@ -104,7 +110,14 @@ class AdminController extends Controller
             'kelas_id' => $request->role === 'wali_kelas' ? $request->kelas_id : null,
         ]);
 
-        return redirect()->back()->with('success', 'User berhasil ditambahkan.');
+        return redirect()->route('admin.users')->with('success', 'User berhasil ditambahkan.');
+    }
+
+    public function userEdit($id)
+    {
+        $user = User::findOrFail($id);
+        $kelas = Kelas::orderBy('nama_kelas')->get();
+        return view('admin.user.edit', compact('user', 'kelas'));
     }
 
     public function userUpdate(Request $request, $id)
@@ -140,7 +153,7 @@ class AdminController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success', 'User berhasil diperbarui.');
+        return redirect()->route('admin.users')->with('success', 'User berhasil diperbarui.');
     }
 
     public function userDestroy($id)

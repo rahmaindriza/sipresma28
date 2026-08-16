@@ -70,6 +70,15 @@ class PrestasiController extends Controller
     }
 
     /**
+     * Show the form for creating a new achievement.
+     */
+    public function create()
+    {
+        $siswas = Siswa::orderBy('nama')->get();
+        return view('prestasi.create', compact('siswas'));
+    }
+
+    /**
      * Store a newly created achievement.
      */
     public function store(Request $request)
@@ -113,8 +122,27 @@ class PrestasiController extends Controller
 
         Prestasi::create($data);
 
-        $redirectRoute = Auth::user()->isAdmin() ? 'admin.prestasis' : 'wali.prestasi';
+        $redirectRoute = Auth::user()->isAdmin() ? 'prestasis' : 'prestasi';
         return redirect()->route($redirectRoute)->with('success', 'Data prestasi siswa berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified achievement.
+     */
+    public function show($id)
+    {
+        $prestasi = Prestasi::with('siswa.kelas.waliKelas')->findOrFail($id);
+        return view('prestasi.show', compact('prestasi'));
+    }
+
+    /**
+     * Show the form for editing the specified achievement.
+     */
+    public function edit($id)
+    {
+        $prestasi = Prestasi::findOrFail($id);
+        $siswas = Siswa::orderBy('nama')->get();
+        return view('prestasi.edit', compact('prestasi', 'siswas'));
     }
 
     /**
@@ -168,7 +196,7 @@ class PrestasiController extends Controller
 
         $prestasi->update($data);
 
-        $redirectRoute = Auth::user()->isAdmin() ? 'admin.prestasis' : 'wali.prestasi';
+        $redirectRoute = Auth::user()->isAdmin() ? 'prestasis' : 'prestasi';
         return redirect()->route($redirectRoute)->with('success', 'Data prestasi siswa berhasil diperbarui.');
     }
 
@@ -186,16 +214,15 @@ class PrestasiController extends Controller
                 @unlink($filePath);
             }
         }
-
         $prestasi->delete();
-
-        return redirect()->back()->with('success', 'Data prestasi siswa berhasil dihapus.');
+        $redirectRoute = Auth::user()->isAdmin() ? 'prestasis' : 'prestasi';
+        return redirect()->route($redirectRoute)->with('success', 'Data prestasi siswa berhasil dihapus.');
     }
 
     /**
-     * Generate PDF "Lembar Lampiran Prestasi Rapor" for a specific student.
+     * Print PDF "Lembar Lampiran Prestasi Rapor" for a specific student.
      */
-    public function cetakPdf(Request $request, $siswa_id)
+    public function cetak(Request $request, $siswa_id)
     {
         $activeTa = TahunAjaran::active();
         $selectedTaId = $request->input('tahun_ajaran_id', $activeTa->id ?? null);

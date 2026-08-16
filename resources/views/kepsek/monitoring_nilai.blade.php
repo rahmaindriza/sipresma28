@@ -10,11 +10,6 @@
             <h3 class="text-xl font-bold text-[var(--text-dark-main)]">Monitoring Nilai Siswa Global</h3>
             <p class="text-xs text-[var(--text-muted)] mt-1">Pantau seluruh nilai mata pelajaran siswa di semua kelas secara real-time.</p>
         </div>
-        <div class="mt-4 sm:mt-0 flex items-center gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                Semester: {{ $selectedTa ? $selectedTa->tahun . ' (' . $selectedTa->semester . ')' : '-' }}
-            </span>
-        </div>
     </div>
 
     <!-- Search & Filter Form -->
@@ -50,7 +45,7 @@
                 <button type="submit" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition" style="background-color: var(--primary-burgundy) !important; border: none;">
                     Cari & Filter
                 </button>
-                <a href="{{ route('kepsek.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #3D5A80 !important; border: none;">
+                <a href="{{ route('kepsek.nilai.cetak_rekap', request()->all()) }}" target="_blank" class="w-full md:w-auto px-4 py-2 text-white font-semibold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5" style="background-color: #3D5A80 !important; border: none; color: white !important;">
                     <i class="bi bi-printer"></i> Cetak PDF Rekapitulasi
                 </a>
                 <a href="{{ route('kepsek.nilai.index') }}" class="w-full md:w-auto px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition text-center flex items-center justify-center">
@@ -87,15 +82,11 @@
                             <td class="py-3.5 px-4">
                                 <div class="flex items-center gap-2">
                                     <p class="font-bold text-[var(--text-dark-main)] text-sm mb-0">{{ $siswa->nama }}</p>
-                                    <button type="button" onclick="showHistoriSiswa({{ $siswa->id }})" title="Lihat Histori Rapor & Prestasi" class="p-1 hover:bg-slate-100 text-blue-600 rounded transition border-0 bg-transparent cursor-pointer">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </button>
+
                                 </div>
                                 <div class="flex gap-2 items-center text-[10px] text-slate-400 mt-0.5">
                                     <span class="font-mono">NISN: {{ $siswa->nisn }}</span>
-                                    <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">Kelas {{ $siswa->kelas->nama_kelas ?? '-' }}</span>
+                                    <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">{{ $siswa->kelas->nama_kelas ?? '-' }}</span>
                                 </div>
                             </td>
                             

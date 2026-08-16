@@ -16,11 +16,6 @@
             <h3 class="text-xl font-bold text-white">Data Siswa Kelas ({{ $kelas->nama_kelas }})</h3>
             <p class="text-xs text-slate-400 mt-1">Daftar lengkap siswa aktif yang terdaftar di kelas Anda.</p>
         </div>
-        <div class="mt-4 sm:mt-0">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-900/40 text-blue-300 border border-blue-800">
-                TA: {{ $activeTa->tahun }}
-            </span>
-        </div>
     </div>
 
     <!-- Search Box -->

@@ -53,16 +53,22 @@
     $totalSiswaText = $totalSiswaCount > 0 ? $totalSiswaCount . ' Siswa' : '180 Siswa';
 
     // Kartu 4: Status Rapor / Progress Input
-    $percentFilled = 85; // default fallback
+    $percentFilled = 0;
     if ($assignmentsList->isNotEmpty()) {
-        $kelasIds = $assignmentsList->pluck('kelas_id')->unique()->toArray();
-        $mapelIds = $assignmentsList->pluck('mapel_id')->unique()->toArray();
-        $totalExpectedGrades = DB::table('siswas')->whereIn('kelas_id', $kelasIds)->count() * count($mapelIds);
-        if ($totalExpectedGrades > 0) {
-            $totalGrades = DB::table('nilais')
-                ->whereIn('kelas_id', $kelasIds)
-                ->whereIn('mapel_id', $mapelIds)
+        $totalExpectedGrades = 0;
+        $totalGrades = 0;
+        foreach ($assignmentsList as $assign) {
+            $totalExpectedGrades += DB::table('siswas')->where('kelas_id', $assign->kelas_id)->count();
+            $totalGrades += DB::table('nilais')
+                ->where('kelas_id', $assign->kelas_id)
+                ->where('mapel_id', $assign->mapel_id)
+                ->whereNotNull('nilai_tugas')
+                ->whereNotNull('nilai_uh')
+                ->whereNotNull('nilai_uts')
+                ->whereNotNull('nilai_uas')
                 ->count();
+        }
+        if ($totalExpectedGrades > 0) {
             $percentFilled = round(($totalGrades / $totalExpectedGrades) * 100);
         }
     }
@@ -100,6 +106,10 @@
             $nilai_count = DB::table('nilais')
                 ->where('kelas_id', $assign->kelas_id)
                 ->where('mapel_id', $assign->mapel_id)
+                ->whereNotNull('nilai_tugas')
+                ->whereNotNull('nilai_uh')
+                ->whereNotNull('nilai_uts')
+                ->whereNotNull('nilai_uas')
                 ->count();
             $percentage = $jumlah_siswa > 0 ? round(($nilai_count / $jumlah_siswa) * 100) : 0;
             
@@ -150,8 +160,8 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Mata Pelajaran</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $mapelsList ?: 'PJOK' }}</h4>
             </div>
-            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                <i class="bi bi-dribbble fs-4" style="color: var(--primary-burgundy);"></i>
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full flex items-center justify-center" style="width: 48px; height: 48px;">
+                <svg class="w-6 h-6" style="color: var(--primary-burgundy);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
             </div>
         </div>
 
@@ -161,8 +171,8 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Total Kelas Diajar</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $totalKelasText }}</h4>
             </div>
-            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                <i class="bi bi-door-closed fs-4" style="color: var(--primary-burgundy);"></i>
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full flex items-center justify-center" style="width: 48px; height: 48px;">
+                <svg class="w-6 h-6" style="color: var(--primary-burgundy);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
             </div>
         </div>
 
@@ -172,8 +182,8 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Total Siswa</p>
                 <h4 class="text-base font-bold text-[var(--text-dark-main)] mt-1">{{ $totalSiswaText }}</h4>
             </div>
-            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                <i class="bi bi-people fs-4" style="color: var(--primary-burgundy);"></i>
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full flex items-center justify-center" style="width: 48px; height: 48px;">
+                <svg class="w-6 h-6" style="color: var(--primary-burgundy);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             </div>
         </div>
 
@@ -183,12 +193,12 @@
                 <p class="text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">Status Rapor</p>
                 <div class="mt-2">
                     <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-bold bg-[#E9F5F0] text-[#245E49] border border-[rgba(36,94,73,0.25)]">
-                        <i class="bi bi-check-circle-fill me-1"></i> {{ $percentFilled }}% Data Terisi
+                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> {{ $percentFilled }}% Data Terisi
                     </span>
                 </div>
             </div>
-            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                <i class="bi bi-journal-check fs-4" style="color: var(--primary-burgundy);"></i>
+            <div class="p-3 bg-[#EBF3FC] text-[#3D5A80] rounded-full flex items-center justify-center" style="width: 48px; height: 48px;">
+                <svg class="w-6 h-6" style="color: var(--primary-burgundy);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </div>
         </div>
     </div>
@@ -223,7 +233,7 @@
                     <div class="p-3 rounded-xl border border-[rgba(168,46,67,0.15)] bg-[#FDF0F2] flex items-center justify-between transition hover:shadow-sm">
                         <div class="min-w-0 flex-1 me-2">
                             <p class="text-xs font-bold text-[#A82E43] truncate">{{ $student->nama }}</p>
-                            <p class="text-[10px] text-[var(--text-muted)] truncate">Kelas {{ $student->nama_kelas }} | {{ $student->nama_mapel }}</p>
+                            <p class="text-[10px] text-[var(--text-muted)] truncate">{{ $student->nama_kelas }} | {{ $student->nama_mapel }}</p>
                         </div>
                         <span class="px-2 py-1 rounded text-[10px] font-bold bg-[#A82E43] text-white shrink-0 shadow-sm">
                             Nilai: {{ round($student->nilai_akhir, 1) }}
@@ -309,8 +319,8 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <a href="{{ route('guru.grades', $assign->id) }}" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.2);">
-                                <i class="bi bi-plus-lg me-1"></i> Input Nilai
+                            <a href="{{ route('guru.grades.index', ['kelas_id' => $assign->kelas->id, 'mapel_id' => $assign->mapel->id]) }}" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg flex items-center justify-center" style="background-color: var(--primary-burgundy) !important; border: none; box-shadow: 0 4px 10px rgba(61, 90, 128, 0.2);">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Input Nilai
                             </a>
                         </td>
                     </tr>
@@ -330,8 +340,8 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
-                                <i class="bi bi-plus-lg me-1"></i> Input Nilai
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed flex items-center justify-center" style="background-color: var(--primary-burgundy) !important; border: none;">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Input Nilai
                             </button>
                         </td>
                     </tr>
@@ -349,8 +359,8 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
-                                <i class="bi bi-plus-lg me-1"></i> Input Nilai
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed flex items-center justify-center" style="background-color: var(--primary-burgundy) !important; border: none;">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Input Nilai
                             </button>
                         </td>
                     </tr>
@@ -368,8 +378,8 @@
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed" style="background-color: var(--primary-burgundy) !important; border: none;">
-                                <i class="bi bi-plus-lg me-1"></i> Input Nilai
+                            <button type="button" class="btn btn-sm px-3 py-1.5 font-bold text-xs text-white bg-[#3D5A80] hover:bg-[#293E59] transition rounded-lg opacity-60 cursor-not-allowed flex items-center justify-center" style="background-color: var(--primary-burgundy) !important; border: none;">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Input Nilai
                             </button>
                         </td>
                     </tr>

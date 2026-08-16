@@ -12,17 +12,6 @@
                 Pindahkan siswa dari tingkat kelas asal ke kelas tujuan berikutnya secara massal tanpa mengubah/mempengaruhi riwayat nilai rapor dan prestasi terdahulu.
             </p>
         </div>
-        <div class="mt-4 sm:mt-0">
-            @if(isset($activeTa))
-            <span class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-green-50 text-green-700 border border-green-250 shadow-sm">
-                📌 Tahun Ajaran Aktif Target: {{ $activeTa->tahun }} ({{ $activeTa->semester }})
-            </span>
-            @else
-            <span class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-red-50 text-red-700 border border-red-200 shadow-sm">
-                ⚠️ Tahun Ajaran Aktif Target: Belum Ada (Silakan Aktifkan TA Baru Dahulu!)
-            </span>
-            @endif
-        </div>
     </div>
 
     <!-- Filter Kelas Asal & Kelas Tujuan -->
@@ -34,7 +23,7 @@
                     <option value="">-- Pilih Kelas Asal --</option>
                     @foreach($listKelas as $kls)
                         <option value="{{ $kls->id }}" {{ $kelasAsalId == $kls->id ? 'selected' : '' }}>
-                            Kelas {{ $kls->nama_kelas }} (Wali: {{ $kls->waliKelas->nama ?? '-' }})
+                            {{ $kls->nama_kelas }} (Wali: {{ $kls->waliKelas->nama ?? '-' }})
                         </option>
                     @endforeach
                 </select>
@@ -52,7 +41,7 @@
                         @foreach($listKelas as $kls)
                             @if(!isset($kelasAsalId) || $kls->id != $kelasAsalId)
                                 <option value="{{ $kls->id }}" {{ $kelasTujuanId == $kls->id ? 'selected' : '' }}>
-                                    Kelas {{ $kls->nama_kelas }} (Wali: {{ $kls->waliKelas->nama ?? '-' }})
+                                    {{ $kls->nama_kelas }} (Wali: {{ $kls->waliKelas->nama ?? '-' }})
                                 </option>
                             @endif
                         @endforeach

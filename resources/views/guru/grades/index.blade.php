@@ -31,15 +31,15 @@
     </div>
 
     <!-- Alert bobot nilai -->
-    <div class="p-5 rounded-2xl bg-blue-950/45 border border-blue-900/45 flex items-start space-x-3.5 shadow-lg">
-        <div class="p-2.5 bg-blue-600/20 text-blue-400 rounded-xl shrink-0">
+    <div class="p-5 rounded-2xl bg-blue-50 border border-blue-200 flex items-start space-x-3.5 shadow-sm">
+        <div class="p-2.5 bg-blue-100 text-blue-600 rounded-xl shrink-0">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
         </div>
-        <div class="text-xs text-slate-300 leading-relaxed">
-            <span class="font-bold text-blue-400">Aturan Bobot Penilaian (SDN 28 Kinali):</span> Tugas: 20%, Ulangan Harian (UH): 20%, UTS: 30%, UAS: 30%.
-            KKM standar kelulusan minimal mata pelajaran adalah <span class="font-bold text-white">75</span>. Estimasi Nilai Akhir dan status kelulusan akan dihitung secara langsung di tabel saat Anda mengetikkan nilai komponen.
+        <div class="text-xs text-slate-700 leading-relaxed">
+            <span class="font-bold text-blue-800">Aturan Bobot Penilaian (SDN 28 Kinali):</span> Tugas: 20%, Ulangan Harian (UH): 20%, UTS: 30%, UAS: 30%.
+            KKM standar kelulusan minimal mata pelajaran adalah <span class="font-bold text-slate-900">75</span>. Estimasi Nilai Akhir dan status kelulusan akan dihitung secara langsung di tabel saat Anda mengetikkan nilai komponen.
         </div>
     </div>
 
@@ -98,9 +98,9 @@
 
         <div class="bg-slate-950/45 border border-slate-800/60 rounded-2xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse table-dark-custom">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-900/60 border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                        <tr class="bg-blue-50/50 border-b border-blue-100 text-xs font-semibold text-blue-800 uppercase tracking-wider">
                             <th class="py-4 px-4 text-center w-16">No</th>
                             <th class="py-4 px-6 w-1/4">Nama Siswa</th>
                             <th class="py-4 px-4 text-center w-36">Nilai Tugas (20%)</th>
@@ -112,49 +112,48 @@
                             <th class="py-4 px-6 text-center w-32">Status KKM</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800 text-sm text-slate-300">
+                    <tbody class="divide-y divide-slate-200 text-sm text-slate-700">
                         @forelse($all_students as $idx => $student)
                             @php
                                 $grade = $all_grades->get($student->id);
                             @endphp
-                            <tr class="hover:bg-slate-900/20 transition duration-150 student-row" data-index="{{ $idx }}">
+                            <tr class="hover:bg-slate-50 transition duration-150 student-row" data-index="{{ $idx }}">
                                 <td class="py-4 px-4 text-center font-semibold text-slate-500">{{ $idx + 1 }}</td>
                                 <td class="py-4 px-6">
-                                    <p class="font-bold text-white text-sm">{{ $student->nama }}</p>
+                                    <p class="font-bold text-slate-800 text-sm">{{ $student->nama }}</p>
                                     <p class="text-[10px] text-slate-500 mt-0.5 font-mono">NISN: {{ $student->nisn }}</p>
                                     <input type="hidden" name="grades[{{ $idx }}][siswa_id]" value="{{ $student->id }}">
                                 </td>
                                 <td class="py-4 px-4 text-center">
                                     <input type="number" name="grades[{{ $idx }}][nilai_tugas]" step="any" min="0" max="100" 
-                                           value="{{ $grade ? $grade->nilai_tugas : 0 }}" 
-                                           class="w-24 px-3 py-2 bg-slate-900 border border-slate-800/80 rounded-xl text-center text-white focus:outline-none focus:border-blue-500 transition text-sm tugas-input">
+                                           value="{{ $grade ? $grade->nilai_tugas : '' }}" 
+                                           class="w-24 px-3 py-2 bg-white border border-slate-200 rounded-xl text-center text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm tugas-input">
                                 </td>
                                 <td class="py-4 px-4 text-center">
                                     <input type="number" name="grades[{{ $idx }}][nilai_uh]" step="any" min="0" max="100" 
-                                           value="{{ $grade ? $grade->nilai_uh : 0 }}" 
-                                           class="w-24 px-3 py-2 bg-slate-900 border border-slate-800/80 rounded-xl text-center text-white focus:outline-none focus:border-blue-500 transition text-sm uh-input">
+                                           value="{{ $grade ? $grade->nilai_uh : '' }}" 
+                                           class="w-24 px-3 py-2 bg-white border border-slate-200 rounded-xl text-center text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm uh-input">
                                 </td>
                                 <td class="py-4 px-4 text-center">
                                     <input type="number" name="grades[{{ $idx }}][nilai_uts]" step="any" min="0" max="100" 
-                                           value="{{ $grade ? $grade->nilai_uts : 0 }}" 
-                                           class="w-24 px-3 py-2 bg-slate-900 border border-slate-800/80 rounded-xl text-center text-white focus:outline-none focus:border-blue-500 transition text-sm uts-input">
+                                           value="{{ $grade ? $grade->nilai_uts : '' }}" 
+                                           class="w-24 px-3 py-2 bg-white border border-slate-200 rounded-xl text-center text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm uts-input">
                                 </td>
                                 <td class="py-4 px-4 text-center">
                                     <input type="number" name="grades[{{ $idx }}][nilai_uas]" step="any" min="0" max="100" 
-                                           value="{{ $grade ? $grade->nilai_uas : 0 }}" 
-                                           class="w-24 px-3 py-2 bg-slate-900 border border-slate-800/80 rounded-xl text-center text-white focus:outline-none focus:border-blue-500 transition text-sm uas-input">
+                                           value="{{ $grade ? $grade->nilai_uas : '' }}" 
+                                           class="w-24 px-3 py-2 bg-white border border-slate-200 rounded-xl text-center text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm uas-input">
                                 </td>
                                  <!-- Capaian Kompetensi -->
-                                 <td class="py-3 px-2">
-                                     <div class="space-y-2">
-                                         <div>
-                                             <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Tertinggi</label>
-                                             <textarea name="grades[{{ $idx }}][capaian_tertinggi]" rows="2" placeholder="Capaian Tertinggi..." class="w-full px-2 py-1 bg-slate-900 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? $grade->capaian_tertinggi : '' }}</textarea>
-                                         </div>
-                                         <div>
-                                             <label class="block text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Perlu Peningkatan</label>
-                                             <textarea name="grades[{{ $idx }}][capaian_perlu_peningkatan]" rows="2" placeholder="Perlu Peningkatan..." class="w-full px-2 py-1 bg-slate-900 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-blue-500 transition text-xs">{{ $grade ? $grade->capaian_perlu_peningkatan : '' }}</textarea>
-                                         </div>
+                                 <td class="py-3 px-2 text-center align-middle">
+                                     <input type="hidden" class="capaian-tertinggi-hidden" name="grades[{{ $idx }}][capaian_tertinggi]" value="{{ $grade ? $grade->capaian_tertinggi : '' }}">
+                                     <input type="hidden" class="capaian-perlu-hidden" name="grades[{{ $idx }}][capaian_perlu_peningkatan]" value="{{ $grade ? $grade->capaian_perlu_peningkatan : '' }}">
+                                     <button type="button" onclick="openCapaianModal(this, '{{ addslashes($student->nama) }}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-md transition inline-flex items-center justify-center gap-1.5 capaian-btn">
+                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                         Isi Capaian
+                                     </button>
+                                     <div class="mt-1.5 text-xs capaian-status font-bold {{ ($grade && $grade->capaian_tertinggi) ? 'text-emerald-600' : 'text-red-500' }}">
+                                         {{ ($grade && $grade->capaian_tertinggi) ? '✓ Terisi' : '✗ Belum diisi' }}
                                      </div>
                                  </td>
                                 <td class="py-4 px-6 text-center font-extrabold text-sm estimation-cell">
@@ -177,17 +176,46 @@
         </div>
     </form>
     @else
-    <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800/60 text-center space-y-3">
-        <svg class="w-12 h-12 text-slate-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200 text-center space-y-3">
+        <svg class="w-12 h-12 text-slate-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
         </svg>
-        <h4 class="text-white font-bold text-base">Silakan Pilih Filter Terlebih Dahulu</h4>
-        <p class="text-xs text-slate-450 max-w-sm mx-auto">Pilih kelas dan mata pelajaran yang ingin diinput nilainya melalui menu dropdown filter di atas.</p>
+        <h4 class="text-slate-700 font-bold text-base">Silakan Pilih Filter Terlebih Dahulu</h4>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto">Pilih kelas dan mata pelajaran yang ingin diinput nilainya melalui menu dropdown filter di atas.</p>
     </div>
     @endif
 </div>
 
 @if($kelas_id && $mapel_id)
+<!-- Capaian Modal -->
+<div id="capaianModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col transform transition-all">
+        <div class="flex items-center justify-between p-5 border-b border-slate-100">
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">Input Capaian Kompetensi</h3>
+                <p class="text-xs text-slate-500 mt-0.5" id="modalStudentName">Nama Siswa</p>
+            </div>
+            <button type="button" onclick="closeCapaianModal()" class="text-slate-400 hover:text-slate-700 transition bg-transparent border-0 cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="p-5 space-y-5">
+            <div>
+                <label class="block text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">Capaian Tertinggi</label>
+                <textarea id="modal_capaian_tertinggi" rows="4" placeholder="Siswa sangat baik dalam..." class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm"></textarea>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-rose-600 uppercase tracking-wider mb-2">Capaian Perlu Peningkatan</label>
+                <textarea id="modal_capaian_perlu_peningkatan" rows="4" placeholder="Siswa perlu pendampingan pada..." class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition text-sm"></textarea>
+            </div>
+        </div>
+        <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-slate-50 rounded-b-2xl">
+            <button type="button" onclick="closeCapaianModal()" class="px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold rounded-xl text-xs transition cursor-pointer">Batal</button>
+            <button type="button" onclick="saveCapaianModal()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition shadow-lg shadow-blue-500/30 border-0 cursor-pointer">Simpan Capaian</button>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.student-row');
@@ -224,6 +252,55 @@
             });
         });
     });
+
+    // Capaian Modal Logic
+    let currentCapaianBtn = null;
+
+    function openCapaianModal(btn, studentName) {
+        currentCapaianBtn = btn;
+        const td = btn.closest('td');
+        const tertinggiInput = td.querySelector('.capaian-tertinggi-hidden');
+        const perluInput = td.querySelector('.capaian-perlu-hidden');
+
+        document.getElementById('modalStudentName').textContent = studentName;
+        document.getElementById('modal_capaian_tertinggi').value = tertinggiInput.value;
+        document.getElementById('modal_capaian_perlu_peningkatan').value = perluInput.value;
+
+        const modal = document.getElementById('capaianModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeCapaianModal() {
+        const modal = document.getElementById('capaianModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        currentCapaianBtn = null;
+    }
+
+    function saveCapaianModal() {
+        if (!currentCapaianBtn) return;
+        
+        const td = currentCapaianBtn.closest('td');
+        const tertinggiInput = td.querySelector('.capaian-tertinggi-hidden');
+        const perluInput = td.querySelector('.capaian-perlu-hidden');
+        const statusDiv = td.querySelector('.capaian-status');
+
+        tertinggiInput.value = document.getElementById('modal_capaian_tertinggi').value;
+        perluInput.value = document.getElementById('modal_capaian_perlu_peningkatan').value;
+
+        if (tertinggiInput.value.trim() !== '' || perluInput.value.trim() !== '') {
+            statusDiv.textContent = '✓ Terisi';
+            statusDiv.classList.remove('text-red-500');
+            statusDiv.classList.add('text-emerald-600');
+        } else {
+            statusDiv.textContent = '✗ Belum diisi';
+            statusDiv.classList.add('text-red-500');
+            statusDiv.classList.remove('text-emerald-600');
+        }
+
+        closeCapaianModal();
+    }
 </script>
 @endif
 @endsection

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data Siswa Kelas {{ $kelas->nama_kelas }}</title>
+    <title>Data Siswa {{ $kelas->nama_kelas }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -190,7 +190,7 @@
         </div>
         <div class="signature-box-right">
             <p>Kinali, {{ $tanggal_cetak }}</p>
-            <p>Wali Kelas {{ $kelas->nama_kelas }}</p>
+            <p>Wali {{ $kelas->nama_kelas }}</p>
             <div class="signature-space"></div>
             <p class="font-bold" style="text-decoration: underline;">{{ $waliKelas->nama }}</p>
             <p>NIP: {{ $waliKelas->nip ?? '-' }}</p>

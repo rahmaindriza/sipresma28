@@ -70,6 +70,26 @@ class WaliPrestasiController extends Controller
     }
 
     /**
+     * Show the form for creating a new achievement.
+     */
+    public function create()
+    {
+        $user = Auth::user();
+        $guru = $this->getGuruForUser($user);
+        if (!$guru) {
+            return redirect()->back()->with('error', 'Profil Guru tidak ditemukan.');
+        }
+        $kelas = $user->kelas;
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas.');
+        }
+
+        $students = Siswa::where('kelas_id', $kelas->id)->orderBy('nama')->get();
+
+        return view('wali.prestasi.create', compact('kelas', 'students'));
+    }
+
+    /**
      * Store a newly created achievement.
      */
     public function store(Request $request)
@@ -129,6 +149,56 @@ class WaliPrestasiController extends Controller
         Prestasi::create($data);
 
         return redirect()->route('wali.prestasi')->with('success', 'Data prestasi siswa berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified achievement.
+     */
+    public function show($id)
+    {
+        $user = Auth::user();
+        $guru = $this->getGuruForUser($user);
+        if (!$guru) {
+            return redirect()->back()->with('error', 'Profil Guru tidak ditemukan.');
+        }
+        $kelas = $user->kelas;
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas.');
+        }
+
+        $prestasi = Prestasi::with('siswa.kelas.waliKelas')->findOrFail($id);
+
+        if ($prestasi->siswa->kelas_id !== $kelas->id) {
+            abort(403, 'Anda hanya dapat melihat prestasi siswa di kelas Anda sendiri.');
+        }
+
+        return view('wali.prestasi.show', compact('prestasi'));
+    }
+
+    /**
+     * Show the form for editing the specified achievement.
+     */
+    public function edit($id)
+    {
+        $user = Auth::user();
+        $guru = $this->getGuruForUser($user);
+        if (!$guru) {
+            return redirect()->back()->with('error', 'Profil Guru tidak ditemukan.');
+        }
+        $kelas = $user->kelas;
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum ditugaskan sebagai Wali Kelas.');
+        }
+
+        $prestasi = Prestasi::findOrFail($id);
+        
+        if ($prestasi->siswa->kelas_id !== $kelas->id) {
+            abort(403, 'Anda hanya dapat mengedit prestasi siswa di kelas Anda sendiri.');
+        }
+
+        $students = Siswa::where('kelas_id', $kelas->id)->orderBy('nama')->get();
+
+        return view('wali.prestasi.edit', compact('prestasi', 'students', 'kelas'));
     }
 
     /**
@@ -243,7 +313,7 @@ class WaliPrestasiController extends Controller
     /**
      * Print PDF "Lembar Lampiran Prestasi Rapor" for a specific student in homeroom class.
      */
-    public function cetakPdf(Request $request, $siswa_id)
+    public function cetak(Request $request, $siswa_id)
     {
         $user = Auth::user();
         $guru = $this->getGuruForUser($user);

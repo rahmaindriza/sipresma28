@@ -5,7 +5,7 @@
 :root {
   /* 1. Komponen Navigasi Utama Gelap (Slate-steel blue) */
   --bg-sidebar-dark: #25354F;      /* Warna dasar sidebar steel blue */
-  --bg-topbar-dark: #293E59;       /* Warna header/topbar atas */
+  --bg-topbar-dark: #25354F;       /* Warna header/topbar atas disamakan dengan sidebar */
   --border-dark: #334C6E;          /* Batas garis komponen gelap */
   
   /* 2. Komponen Halaman Konten Cerah Beraksen */

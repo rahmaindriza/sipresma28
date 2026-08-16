@@ -61,8 +61,8 @@
                         <td class="py-4 px-6 font-semibold text-blue-400 uppercase">{{ $m->kode_mapel }}</td>
                         <td class="py-4 px-6 text-white font-medium">{{ $m->nama_mapel }}</td>
                         <td class="py-4 px-6">
-                            <span class="inline-flex px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider
-                                {{ $m->jenis_mapel === 'umum' ? 'bg-indigo-950 text-indigo-400 border border-indigo-900' : 'bg-rose-950 text-rose-400 border border-rose-900' }}">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border shadow-sm
+                                {{ $m->jenis_mapel === 'umum' ? 'bg-indigo-900/40 text-indigo-300 border-indigo-500/30' : 'bg-rose-900/40 text-rose-300 border-rose-500/30' }}">
                                 {{ $m->jenis_mapel }}
                             </span>
                         </td>
