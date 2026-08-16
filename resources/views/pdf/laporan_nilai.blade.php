@@ -234,8 +234,15 @@
             <tr>
                 <td colspan="4" class="font-bold" style="background-color: #f2f2f2; text-align: left; padding: 4px 6px;">Kelompok A</td>
             </tr>
-            @php $no = 1; @endphp
-            @forelse($grades->where('mapel.jenis_mapel', 'umum') as $grade)
+            @php 
+                $no = 1; 
+                $kelompokA = $grades->filter(function($grade) {
+                    $nama = strtolower($grade->mapel->nama_mapel);
+                    $isPilihan = str_contains($nama, 'qur\'an') || str_contains($nama, 'quran') || str_contains($nama, 'keminangkabauan') || str_contains($nama, 'bam');
+                    return !$isPilihan;
+                });
+            @endphp
+            @forelse($kelompokA as $grade)
                 @php
                     $highest = $grade->capaian_tertinggi;
                     $lowest = $grade->capaian_perlu_peningkatan;
@@ -283,8 +290,14 @@
             <tr>
                 <td colspan="4" class="font-bold" style="background-color: #f2f2f2; text-align: left; padding: 4px 6px;">Kelompok B</td>
             </tr>
-            @php $noPilihan = 1; @endphp
-            @forelse($grades->where('mapel.jenis_mapel', 'khusus') as $grade)
+            @php 
+                $noPilihan = 1; 
+                $kelompokB = $grades->filter(function($grade) {
+                    $nama = strtolower($grade->mapel->nama_mapel);
+                    return str_contains($nama, 'qur\'an') || str_contains($nama, 'quran') || str_contains($nama, 'keminangkabauan') || str_contains($nama, 'bam');
+                });
+            @endphp
+            @forelse($kelompokB as $grade)
                 @php
                     $highest = $grade->capaian_tertinggi;
                     $lowest = $grade->capaian_perlu_peningkatan;
