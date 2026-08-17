@@ -165,7 +165,7 @@
                 <tr>
                     <td class="text-center">{{ $idx + 1 }}</td>
                     <td class="font-bold">{{ $siswa->nama }}</td>
-                    <td class="text-center">Kelas {{ $siswa->kelas->nama_kelas ?? '-' }}</td>
+                    <td class="text-center">{{ $siswa->kelas->nama_kelas ?? '-' }}</td>
                     @foreach($mapels as $m)
                         @php
                             $g = $siswaGrades->where('mapel_id', $m->id)->first();

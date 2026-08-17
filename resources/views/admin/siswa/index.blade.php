@@ -85,7 +85,7 @@
                                 </span>
                             @else
                                 <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#EBF3FC] text-[#3D5A80] border border-[#D8E6F2]">
-                                    Kelas {{ $s->kelas->nama_kelas ?? '-' }}
+                                    {{ $s->kelas->nama_kelas ?? '-' }}
                                 </span>
                             @endif
                         </td>

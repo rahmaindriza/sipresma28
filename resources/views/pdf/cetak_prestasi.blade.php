@@ -204,7 +204,7 @@
         </div>
         <div class="signature-box-right">
             <p>Kinali, {{ $tanggal_cetak }}</p>
-            <p>Wali Kelas {{ $kelas->nama_kelas ?? '-' }}</p>
+            <p>Wali {{ $kelas->nama_kelas ?? '-' }}</p>
             <div class="signature-space"></div>
             <p class="font-bold" style="text-decoration: underline;">{{ $waliKelas ? $waliKelas->nama : 'Wali Kelas' }}</p>
             <p>NIP: {{ $waliKelas && $waliKelas->nip ? $waliKelas->nip : '-' }}</p>
